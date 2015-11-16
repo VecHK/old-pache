@@ -1,0 +1,48 @@
+#main{
+	width: 100%;
+}
+#duoshuo{
+	width: 100%;
+}
+
+ul#list{
+	padding-left: 1em;
+}
+#list li{
+	font-size: 2em;	/*xx-large;*/
+	font-weight: lighter;
+	position: relative;
+	margin-top: 0.5em;
+	margin-left: 0px;
+	width: 100%;
+}
+#list .datetime{
+	font-size: xx-small;
+	display: block;
+	position: static;
+	/* top: 0px; */
+	right: 0px;
+	bottom: 0px;
+}
+#main{
+	margin-top: 4em;
+}
+#main header h1{
+	font-size: x-large;
+}
+article#article{
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+#article.content blockquote {
+	padding: 0;
+	margin: auto 0 auto 0.5em;
+}
+#article {
+	font-family: "Hiragino Sans GB", "microsoft yahei", "WenQuanYi Microhei", "黑体";
+	font-size: medium;
+}
+#article .footnote{
+
+}

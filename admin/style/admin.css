@@ -1,0 +1,11 @@
+#editor {
+	width: 800px;
+}
+#editor input{
+	font-size: 2em;
+}
+#editor textarea{
+	width: 100%;
+	font-size: 24px;
+	display: block;
+}
