@@ -51,12 +51,14 @@ if ( is_null($article->id) ){
 	<link rel="stylesheet" href="style/min.css" type="text/css" media="screen and (max-width: 850px)" />
 	<link rel="stylesheet" href="style/myprettify.css" type="text/css" />
 
-
+<!--
 	<script type="text/javascript" src="js/Markdown.Converter.min.js"></script>
 	<script type="text/javascript" src="js/Markdown.Sanitizer.min.js"></script>
-	<script type="text/javascript" src="js/prettify.min.js"></script>
 	<script type="text/javascript" src="js/Markdown.Extra.min.js"></script>
+-->
+	<script type="text/javascript" src="code-prettify-master\src\prettify.js"></script>
 
+	<!--<script type="text/javascript" src="js/prettify.min.js"></script>-->
 </head>
 <body>
 		<?php
@@ -81,7 +83,13 @@ if ( is_null($article->id) ){
 		</header>
 		<article id="article" class="content">
 <?php
-	echo $article->article;
+	require_once '/Michelf/MarkdownExtra.inc.php';
+	use \Michelf\MarkdownExtra;
+
+	$parser = new \Michelf\MarkdownExtra;
+	$parser->fn_id_prefix = "mmd-";//Michelf markdown
+	$my_html = $parser->transform($article->article);
+	echo $my_html;
 ?>
 		</article>
 			tag: <?php
