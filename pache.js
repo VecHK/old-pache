@@ -81,11 +81,8 @@ var myDateFormat = function (d){
 	var articleContent = document.getElementById('article').innerHTML;
 
 	console.info(articleContent);
+/*
 
-	function escape2Html(str) {
-		var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
-		return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
-	}
 	articleContent = escape2Html(articleContent);	//HTMl转义字符转换
 
 	var converter = new Markdown.Converter();
@@ -93,7 +90,27 @@ var myDateFormat = function (d){
 	document.getElementById('article').innerHTML = converter.makeHtml(articleContent); //Markdown 转HTML
 
 	document.getElementById('article').onload = prettyPrint();
+
+*/
 	noFound();
+	function escape2Html(str) {
+		var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+		return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+	}
+	function codeLight(){
+		function unit(arr){
+			function light(item){
+				if ( item.className !== '' ){
+					item.innerHTML = prettyPrintOne(item.innerHTML);
+					item.parentElement.className = 'prettyprint';
+				}
+				return true;
+			}
+			return arr.length && light(arr.shift()) && arguments.callee(arr);
+		}
+		unit(Array.prototype.slice.call(arguments));
+	}
+	codeLight.apply(null, document.getElementById('article').getElementsByTagName('code'));
 
 try{
 	var articleTime = innerText(document.getElementById('time').getElementsByTagName('time')[0]);
