@@ -1,49 +1,3 @@
-/*::::::::::::::,::sSr::,::::::::::,,,,,,,,.............,,,,,,;S33S;:;:::::::::::::::::
-: .........,,.....,,:,........     .                          ;SS5;     .,,,,,,.,......
-:.::::::::::::::::::,,,ii,.     s3GXXG5.      .,             .h93i   .;:...,,,,::::::::
-:.::::::::::::::,,..  .8AXhir,i8G9S5S3H8.    ;5hh1r:,,.      :S3r   :599r.     ..,,::::
-:,:::::::::,,..       :&HGi8AXA8h38G85SG;:ir5Srir15S3S5hh1sri;::   iS9Sr,           ..,
-, ,,,,::,..           iHAshA&A&&AHHHAA&Shhh53riririir15h1hh553hri,.rS1,
-3551r:.            i158G5iGA&&&AA&X951iiiii51ssirririiiiiiiiirShshh;.
-####BA8h:         .8B&119AH&AAX9hr;;;irrirrSh1rrrrrrrSSirrrrri13hrshhi                ,
-ss58AM@@H8s       .8HG;9B##A9s:,::;iirsir;s8s;;;;;;;iS85i;iiiiii15hssS5,              .
-    .;SA#@MXr      3HAhsHHS;.,;;,,,.,;i1r;5h:;;;;;i;59s59s;iiiiiiir1h159i
-       .1B@#BS.    rAAGsh:,i1s:,:;;r39GSshhrirrrrrisX1 .h8hs5sirrissi1hh9;
-         :G@##X:    hHGi:ShsriirrisGX51s5i1ishirrii33;ii:iS1hhiiii19sir133.
-           3##M&:   .h1S91;1irrrir8Gs:shr,1iS5irri19r,     i15iirisG5ii;5&h
-            5##MG. .rihHs,hriirri5G1:sS1:.1s11riirS1.:r15SSSG5iiri1G1ii18X&5i.
-             9@MMh ih.sh.sSrrrrir8h. ih:. sh;ssiih5s8B#@@BXAH1irii39is9XGGX95h1r,     .
-             ,&@#&,r,:8;;h3ii1ris&5:18X88r,5i,1rr51hA##MBBSs3rii;1&55GGG8GGG85115hi.
-      ..      1##M1. 1S;ihGsihs;hXXHHA@@@H;,r.:shsii18&83HXr1iir5XX8GGGGGGG8GG9hirh5r
-       ;; ,.  :H##9  15;i1G8rs1;5G&H1SHA8&r .. .ss,,;G898&8srr5GX&XGXGGGGGGGXGGG9s;r55,
-       .sh:   ,&@#8  ;91rs8X3i51sGX8;s399G; ..   ,  ,irrrsh1rhXXG8GXG8GGGG8XX8GGG81ii1S
-        ;8i   ,A@#G   :1h19&GSG&3GX9.SH3hi,,,.   ...  ...sh;r8G3h3GGGG8GG8GXG8GGGX3i;18
-       ;1:3i  :H@#G     ,r599X&X&XXS.,;,,.,..,shh1hh1;..is,r8Ssi1X88GG8G&GXXGGGGG&5;h3i
-  ,:. :h:1r1: ;B##8   i11hsrSXAAX8G9, .,,,,. iA85hh555r., :9hiii3&GGGGG8&&XGGGGG8Gsh5,
-  .irr5:si ., 1##MG..hhri;r3X&G&GG8G5:  .... ,S5hhhhh51.  i5;iii3GGXXXG8G&XGGG&X8X9;
-    .51S5,   .&@MBA:;5iiihXH&XGXXG8GG85r:.    ,111hhhh:   ,58hiirr5XGG&G8GXGGG8GGG&5
-    si;1:rr:.9@#BHHS93;i9HBS:588XXGG8GXX&8S1i,.....,,.,is3GGXX83hr;SXXXGGGGGG888G8XS
-   ;s:1.  ,;9##MBBBMB&r3BB5   ...iG&GG8XX358&X831riirs18A83GGGXGhs1r8HGGXHHAAA&XGGX;
-   ,.;:    1M#MBB#MBBH&BMGiiirrrs8XXX&&X1iihSA9sh51ss1r59h951h9;  ;35S&8HMHHHHHHHH5
-        .rG@#MHHHH#MBHA8GXAA3i.,:;i111r:.. ;r1A8rshhsrr5SsA9;s95i. r:,X&93BHHAHHHBGi
-511111S9&M#BHHBHHABBMAr;.,sXAX1.        ..   .5&8ii5&9G9ii8&irrrr1s.  sHS 5BHAAHHABHS,
-######MMBBHHHBBHBBBBA33i   i&AAs ......... .rsrr&S8H9S&AX13G;i;h,.i1r. ih: r&BAHHAAHB&h
-SS9939&BHHHHBBBMBBB&55i :;:5A&A5 .   ..  .:;55;;3A8i:;i;5XA3rs5S;. .i1i     ,XMHHHHAHHB
-    i8HHAAAHAAH&isX853,,553AA&As .;s1r;s55h1S;;hiS: ;1;, :89,1sSs,.. .i1r.   sGHHHHH&&H
-  i8HBHAHHHHHHBs  iS3X5hS1sh9&A5h931;,;S91hS1.,:;;...:i11 135X&8S:.... .rhr  1:hBHHHA8S
-;SHBHHHHHHHHHHH91h59h1h55hShshXhi:  :r119511r;... ... ih;.. .sr,SS:  ... ,1hrs. hBHAHHA
-HBHHHHHHHHHHHHHHBMM31S95hh5919h   ,r111s5hirrr;........r. ..  . ;8ss;..... :S1.. 1HHHAH
-;1HHHHHHHHHHHHAHBGr  ,isss1SS1...:s1s1h5S8srrrr,................ hr.r3r....  1S,  5BHHH
- ;HHHHHHHHHHAHB&8h  ..     ..  .;1s1551i,93irr;................. :S;sr..... :55,  .8BAH
- :AHHHHHHHHHHBG: 1S. ..........;shSSr,   ;G1ri:.................. hGi .... iSs.... ;&HH
- ;HHAHHHHHHBHh    rh. ........;h3Sr.     ,95ri,.................. iS.... .s5; ..... 9BA
- rBHHHHHAHBXi      rh........r39r        hG5r......................S; . ,11. .... ,15AH
- hBAHHHAHHS.        1h .....19h.         :&5.....,,,,,.......,...  11  ;hi ..... ih; 3B
-:9HAHHHBXi           Sr . ,S9;           53::;;;;;::,,,,:...,;irir;s8i1S, .... .s1.  rH
-5&HHHHB9,            ;S. :Sh.           58i,,,...,.... ;i ... .r:,:rXBAh: ... ,5r    :&
-HAAAHA1               1:,5;            i9r:     ,;     ,:      ,:   sGi1S;   ,S;      &
-         智者之智，就是了解自身之愚                                                  */
-
 var Remilia = function() {
 	console.info('永远鲜红的幼月 v0.11');
 } ();
@@ -216,7 +170,7 @@ var SS = (function (){
 		this.vjax = function(URL, method, pgdata, callback, fail) {
 			method = method.toLowerCase();
 
-			if (window.XMLHttpRequest) 
+			if (window.XMLHttpRequest)
 				var vj = new XMLHttpRequest();
 
 			vj.onreadystatechange = function() {
@@ -249,7 +203,7 @@ var SS = (function (){
 					}
 				}else{
 					console.info('no ?');
-	
+
 					vj.send(pgdata);
 				}
 			} else if (method.toLowerCase() === 'get') {
@@ -258,7 +212,7 @@ var SS = (function (){
 			} else {
 				console.error('Method is empty!')
 			}
-			
+
 		};
 		this.sendJSON = function(URL, obj, callback) {
 			/*	console.warn(encodeURIComponent('json='+json));*/
@@ -285,7 +239,7 @@ var SS = (function (){
 									callback && callback(cssRules[ii], i, ii);
 							}
 						);
-					else 
+					else
 						if (cssRules[ii].selectorText === s){
 							callback && callback(cssRules[ii], i, ii);
 						}
@@ -297,7 +251,7 @@ var SS = (function (){
 				return function (str){
 					return str.substr(0, str.length-1);
 				}( function (objKeys){
-					return objKeys.length ? 
+					return objKeys.length ?
 						(function (){
 							return objKeys[0] + '=' + encodeURIComponent( (
 								function (obj, key){
@@ -314,7 +268,7 @@ var SS = (function (){
 	};
 	var domMethod = function (ele){
 		var interArguments = arguments;
-		
+
 		var domArguments = arguments;
 		var lthis = this;
 		this.toHTML= function (str){
@@ -354,7 +308,7 @@ function bechMark(testCount, count, func, canshu){
 	var start = performance.now();
 	function testUnit(count, func, canshu){
 		this.start = performance.now();
-		
+
 		for ( var i=0; i<count; ++i )
 			func.apply(null, canshu);
 
@@ -377,7 +331,7 @@ function bechMark(testCount, count, func, canshu){
 		'unit': testUnitArr,
 		'average': he/testUnitArr.length
 	}
-} 
+}
 
 var stringifyPostRequest = function (obj, p){
 	var keys = Object.keys(obj);
