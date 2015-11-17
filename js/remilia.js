@@ -221,10 +221,19 @@ var SS = (function (){
 					callback(d, s);
 				});
 		};
-		this.getRequest = function(name) {
+		this.getRequest = function() {
 			/* thanks jiekk:  http://www.cnblogs.com/jiekk/archive/2011/06/28/2092444.html */
+			function getStrRequest(str){
+				return str.split('?')[1];
+			}
+			var name = arguments[0];
+			var request = window.location.search.substr(1);
+			if ( arguments[1] !== undefined ){
+				request = getStrRequest(arguments[0]);
+				name = arguments[1];
+			}
 			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-			var r = window.location.search.substr(1).match(reg);
+			var r = request.match(reg);
 			if (r != null) return unescape(r[2]);
 			return null;
 		};
