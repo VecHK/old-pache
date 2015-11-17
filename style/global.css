@@ -52,10 +52,11 @@ ins {
 }
 
 /*  Markdown 相关 */
+
 #article .footnotes{
 	font-family: sans-serif, "宋体";
 	font-size: small;
-	color:rgba(31, 15, 31, 0.618)
+	color:rgba(31, 15, 31, 0.618);
 }
 #article .footnotes ol{
 	margin: 0;
@@ -66,8 +67,11 @@ ins {
 	/* display: none; */
 	margin: 16px 0 16px 0;
 }
-a.footnote{vertical-align: super; font-family: serif;}
-a.footnote:link,a.footnote:visited{color:#999;text-decoration:none;}
+#article .footnotes ol li p{
+	margin: 0;
+}
+a.footnote-ref{vertical-align: super; font-family: serif;}
+a.footnote-ref:link,a.footnote-ref:visited{color:#999;text-decoration:none;}
 
 ul{
 	list-style-position: inside;
@@ -90,12 +94,7 @@ code {
 	border-radius: 2px;
 }
 
-pre.prettyprint code{
-	font-family: Consolas, "宋体";
-	border: 0px;
-	padding: 0;
-	margin: 0;
-}
+
 #article pre code {
 	/* border-bottom-width: 0; */
 	/* border-bottom-color: transparent; */
