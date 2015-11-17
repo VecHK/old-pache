@@ -1,3 +1,9 @@
+pre.prettyprint code{
+	font-family: Consolas, "宋体";
+	border: 0px;
+	padding: 0;
+	margin: 0;
+}
 .pln {
 	color: #9f9;
 }
