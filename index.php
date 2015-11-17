@@ -67,13 +67,14 @@ else if ( isset($_GET['tag']) ){
 	<link rel="stylesheet" href="style/global.css" type="text/css" />
 	<link rel="stylesheet" href="style/normal.css" type="text/css" media="screen and (min-width: 851px)" />
 	<link rel="stylesheet" href="style/min.css" type="text/css" media="screen and (max-width: 850px)" />
+<!--
 	<link rel="stylesheet" href="style/myprettify.css" type="text/css" />
-
 
 	<script type="text/javascript" src="js/Markdown.Converter.min.js"></script>
 	<script type="text/javascript" src="js/Markdown.Sanitizer.min.js"></script>
 	<script type="text/javascript" src="js/prettify.min.js"></script>
 	<script type="text/javascript" src="js/Markdown.Extra.min.js"></script>
+-->
 	<script type="text/javascript" src="js/remilia.js"></script>
 
 </head>
