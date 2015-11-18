@@ -15,9 +15,86 @@ function connectSQL(){
 	mysql_query("SET NAMES utf8");
 	return $sql;
 }
+function createArticle($create){
+	$sql = connectSQL();
+
+	class escapeSQL{
+		function __construct($create){
+			$this->title = mysql_escape_string($create['title']);
+			$this->type = mysql_escape_string($create['type']);
+			$this->permission = NULL;
+			$this->article = mysql_escape_string($create['article']);
+
+			if ( isset($create['class']) ){
+				if ( count($create['class']) == 0 ){
+					$this->class = '';
+				}else{
+					$this->class = mysql_escape_string($create['class']);
+				}
+			}else{
+				$this->class = '';
+			}
+
+
+			if ( strtolower($create['type']) === 'markdown' ){
+				require('/Michelf/MarkdownExtra.inc.php');
+				require_once '/Michelf/MarkdownExtra.inc.php';
+				//use Michelf\MarkdownExtra;
+
+				$parser = new \Michelf\MarkdownExtra;
+				$parser->fn_id_prefix = "mmd-";//Michelf markdown
+				$my_html = $parser->transform($create['article']);
+				$this->format = mysql_escape_string($my_html);
+			}else{
+				$this->format = ' ';
+			}
+		}
+	}
+	$insert = new escapeSQL($create);
+
+	$sqlstr = "INSERT INTO `pache_article` ( title, type, permission, article, format, class, time, ltime )
+	VALUES
+	(
+		'$insert->title',
+		'$insert->type',
+		NULL,
+		'$insert->article',
+		'$insert->format',
+		'$insert->class',
+		now(),
+		now()
+	)
+	";
+
+	$sqlresult = mysql_query($sqlstr, $sql->con);
+	if ( $sqlresult ){
+		mysql_close($sql->con);
+	}else{
+		mysql_close($sql->con);
+		die(mysql_error($sql->con));
+	}
+	return true;
+}
 
 function updateArticleById($id, $update){
+	$sql = connectSQL();
 
+	$sqlstr = "UPDATE pache_article SET ";
+
+	foreach( $update as $key => $value ){
+		$sqlstr = $sqlstr . "".mysql_escape_string($key)."" . ' = ' . "'".mysql_escape_string($value). "'" . ', ';
+	}
+	$sqlstr = $sqlstr . ' ltime = now() ';
+	$sqlstr = $sqlstr . ' WHERE id = '. (int)$id;
+
+	$sqlresult = mysql_query($sqlstr, $sql->con);
+	if ( $sqlresult ){
+		mysql_close($sql->con);
+	}else{
+		mysql_close($sql->con);
+		die(mysql_error($sql->con));
+	}
+	return true;
 }
 function newResult($id, $title, $type, $class, $time, $ltime, $article){
 	$obj = new stdClass();
