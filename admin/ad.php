@@ -42,6 +42,15 @@ if ( !isset($_GET['type']) ){
 }
 
 switch($_GET['type']){
+	case 'getclass':
+		if( isset($_GET['display']) ){
+			if ( $_GET['display'] == 'json' ){
+				echo outClassIndexJson();
+			}
+			return 0;
+		}
+		echo outClassIndexHTML();
+		break;
 	case 'update':
 		if ( isset($_POST['id']) ){
 			if ( checkRequestAny($_POST, $pache->updateAble) ){

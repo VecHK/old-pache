@@ -52,7 +52,7 @@
 	opacity: 0.75;
 	font-family: "思源黑体 CN Light", "Hiragino Sans GB", "microsoft yahei", "WenQuanYi Microhei", "黑体";
 }
-#editor input{
+#editor input.title{
 	font-size: 3em;
 	font-family: "方正姚体";
 	margin: auto;
@@ -65,7 +65,7 @@
 	border-bottom-color: #F12828;
 	border-bottom-style: groove;
 }
-#editor input:focus{
+#editor input.title:focus{
 	outline: none;
 }
 #editor textarea{

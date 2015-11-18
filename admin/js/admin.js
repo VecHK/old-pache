@@ -29,6 +29,15 @@ var mEvent = {
 };
 var display = {
 	'editorForm': {},
+	'displayEditorClass': function (classArr){
+		var classList = document.getElementById('class_list');
+		classList.innerHTML = '';
+		classArr.forEach(function (classItem){
+			var option = document.createElement('option');
+			option.value = classItem;
+			classList.appendChild(option);
+		});
+	},
 	'status': function (s){
 		var ele = document.getElementById('status');
 		if ( s.length ){
@@ -71,9 +80,42 @@ var display = {
 		this.article.value = article.article;
 		this.type.value = article.type;
 
+		this['class'] = document.getElementsByName('class')[0];
+
 		console.log('constructForm ok.');
 	},
 	loadEditor: function (article){
+
+		var url = 'ad.php?' + $.stringifyRequest({
+			'type': 'getclass',
+			'pw':$.getRequest('pw'),
+			'display': 'json'
+		});
+		var classListInput = $('#class_list_input')[0];
+		var placeholderTemp = classListInput.placeholder;
+		classListInput.placeholder = 'loading';
+
+		$.vjax(url, 'GET',
+			function (d){
+				$.json2obj(d,
+					function (obj){
+						classListInput.placeholder = 'class';
+						if ( article.class.length !== 0 ){
+							classListInput.value = article.class;
+						}
+						display.displayEditorClass(obj);
+					},
+					function (err, json){
+						console.error('get class fail.');
+						console.error(json);
+						//throw new Error(err);
+					}
+				);
+			},
+			function (err){
+				throw new Error(err);
+			}
+		);
 		this.constructForm.apply( this.editorForm, [article] );
 		this.animated.Editor.open.apply( $('#editor')[0], [] );
 	}
@@ -116,6 +158,7 @@ document.getElementById('editor').getElementsByTagName('form')[0].onsubmit = fun
 		'title': this['title'].value,
 		'article': this['article'].value,
 		'type': this['type'].value,
+		'class': this['class'].value,
 	};
 	var url = 'ad.php?pw='+ $.getRequest('pw') +'&type='+envir.mode;
 	display.status('saving');

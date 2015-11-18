@@ -8,7 +8,8 @@ class pache{
 	public $updateAble = Array(
 		'title',
 		'article',
-		'type'
+		'type',
+		'class'
 	);
 }
 $pache = new pache;
@@ -55,6 +56,9 @@ function listingArticleBy($by, $start, $limit, $arg/*, $sort*/){
 		default:
 			return getArticles($start, $limit);
 	}
+}
+function outClassIndexJson(){
+	return json_encode(getClassIndex());
 }
 function outClassIndexHTML(){
 	$pache = new pache;

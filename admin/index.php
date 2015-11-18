@@ -41,9 +41,17 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 	<button id="delete">删除</button>
 	<div id="editor">
 		<form method="post">
-			<input name="title" placeholder="标题" />
+			<input class="title" name="title" placeholder="标题" />
 			<textarea name="article" placeholder="正文"></textarea>
-			<select name="type">
+
+			<input id="class_list_input" type="class" list="class_list" name="class" placeholder="class" />
+			<datalist id="class_list" >
+				<option label="9" value="http://www.w3school.com.cn" />
+				<option label="23" value="http://www.google.com" />
+				<option label="84" value="http://www.microsoft.com" />
+			</datalist>
+
+			<select name="type" >
 				<option value="markdown">Markdown</option>
 				<option value="text">text</option>
 			</select>
