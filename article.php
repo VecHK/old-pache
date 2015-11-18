@@ -5,11 +5,14 @@ class pache{
 	public $pagelimit = 10;
 	public $title = "myBlog";
 	public $root = "/pache";
-
+	public $updateAble = Array(
+		'title',
+		'article',
+		'type'
+	);
 }
 $pache = new pache;
 date_default_timezone_set("Asia/Shanghai");
-
 
 function backInfo($c, $s){
 	class outputInfo{
@@ -80,4 +83,30 @@ function outArticleTagListByIdHTML($id){
 	}
 	$str = $str.'</ul>';
 	return $str;
+}
+class updateAble{
+	public function __construct($op){
+		$pache = new pache;
+		for ( $i=0; $i<count($pache->updateAble); ++$i ){
+			if ( isset($op[ $pache->updateAble[$i] ]) ){
+				$str = $pache->updateAble[$i];
+				$this->$str = $op[ $pache->updateAble[$i] ];
+			}
+		}
+	}
+}
+function updateArticleByIdProcess($id, $op){
+	$up = new updateAble($op);
+	if ( updateArticleById($id, $up) ){
+		return echoInfoJson(0, 'ok');
+	}else{
+		return echoInfoJson(2, 'fail');
+	}
+}
+function createArticleProcess($POST){
+	if ( createArticle($POST) ){
+		return echoInfoJson(0, 'ok');
+	}else{
+		return echoInfoJson(2, 'fail');
+	}
 }
