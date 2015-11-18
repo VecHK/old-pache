@@ -1,8 +1,13 @@
 var articleIdList = document.getElementById('articlelist').getElementsByTagName('a');
+var envir = {
+	/* mode: 'new'(create Articcle), 'update'(edit Article) */
+	'mode': null
+};
 var mEvent = {
 	articleList: {
 		click: function (){
 			var id = $.getRequest(this.href, 'id');
+			envir.mode = 'update';
 			manager.getArticleById( id,
 				function (){
 
@@ -12,10 +17,27 @@ var mEvent = {
 				}
 			);
 		}
+	},
+	create: function (e){
+		envir.mode = 'new';
+		display.loadEditor({
+			'title': 'Hello, World',
+			'article': '在这儿输入你的文章',
+			'type': 'text'
+		});
 	}
 };
 var display = {
 	'editorForm': {},
+	'status': function (s){
+		var ele = document.getElementById('status');
+		if ( s.length ){
+			ele.innerText = s;
+			ele.style.opacity = '1';
+		}else{
+			ele.style.opacity = '0.01';
+		}
+	},
 	animated: {
 		'Editor':{
 			'status': false,
@@ -38,6 +60,8 @@ var display = {
 	'constructForm': function (article){
 		var editor = $('#editor')[0];
 		var form = editor.getElementsByTagName('form');
+		this.articleObj = article;
+
 		this.form	= editor.getElementsByTagName('form')[0];
 		this.title	= document.getElementsByName('title')[0];
 		this.type = document.getElementsByName('type')[0];
@@ -45,7 +69,7 @@ var display = {
 
 		this.title.value = article.title;
 		this.article.value = article.article;
-
+		this.type.value = article.type;
 
 		console.log('constructForm ok.');
 	},
@@ -55,6 +79,7 @@ var display = {
 	}
 };
 display.animated.Editor.close.apply($('#editor')[0], []);
+display.status('');
 
 var manager = {
 	getArticleById: function (id, ok, fail){
@@ -74,6 +99,7 @@ var manager = {
 	getArticleList: function (){
 
 	},
+
 };
 
 /* listing ArticleList links */
@@ -83,3 +109,27 @@ for ( var i=0; i<articleIdList.length; ++i){
 		return false;
 	}
 }
+
+document.getElementById('editor').getElementsByTagName('form')[0].onsubmit = function (e){
+	var articleInfo = {
+		'id': display.editorForm.articleObj.id,
+		'title': this['title'].value,
+		'article': this['article'].value,
+		'type': this['type'].value,
+	};
+	var url = 'ad.php?pw='+ $.getRequest('pw') +'&type='+envir.mode;
+	display.status('saving');
+	$.vjax(url, 'POST', articleInfo,
+		function (d){
+			console.info(d);
+			display.status('');
+		},
+		function (err){
+			console.error(err);
+		}
+	);
+//	console.info($.stringifyPostRequest(articleInfo));
+	return false;
+
+};
+document.getElementById('create').onclick = mEvent.create;

@@ -65,10 +65,15 @@
 	border-bottom-color: #F12828;
 	border-bottom-style: groove;
 }
+#editor input:focus{
+	outline: none;
+}
 #editor textarea{
 	display: block;
 	margin: 64px 0px 0px 0px;
-	width: 100%;
+	padding-left: 20px;
+	padding-right: 20px;
+	width: calc( 100% - 40px );
 	height: 480px;
 
 	font-size: 17px;
@@ -82,8 +87,38 @@
 	border-right-width: 0px;
 }
 #editor textarea:focus{
+	outline: none;
+	border: 0px;/*solid #FF7720 1px;*/
 	border-left-width: 0px;
 	border-right-width: 0px;
+}
+
+#editor select{
+	background-color: black;
+	color: #59A2FF;
+	border: 0;
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	padding-right: 14px;
+	background: url("http://ourjs.github.io/static/2015/arrow.png") no-repeat scroll right center transparent;
+}
+select::-ms-expand { display: none; }
+
+#editor button{
+	background-color: black;
+	color: #59A2FF;
+	border: 0;
+	border-width: 1px;
+	border-color: #59A2FF;
+	border-style: double;
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+#status {
+	transition: opacity 0.618s;
 }
 
 ::-webkit-scrollbar {
