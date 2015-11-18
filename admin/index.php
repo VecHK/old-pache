@@ -37,8 +37,10 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 		}
 		?>
 	</ul>
+	<button id='create'>创建文章</button>
+	<button id="delete">删除</button>
 	<div id="editor">
-		<form>
+		<form method="post">
 			<input name="title" placeholder="标题" />
 			<textarea name="article" placeholder="正文"></textarea>
 			<select name="type">
@@ -46,6 +48,7 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 				<option value="text">text</option>
 			</select>
 			<button type="submit">post</button>
+			<div id="status">N/A</div>
 		</form>
 	</div>
 </body>
