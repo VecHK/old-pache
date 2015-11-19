@@ -11,6 +11,12 @@ class pache{
 		'type',
 		'class'
 	);
+	public $createAble = Array(
+		'title',
+		'article',
+		'type',
+		'class'
+	);
 }
 $pache = new pache;
 date_default_timezone_set("Asia/Shanghai");
