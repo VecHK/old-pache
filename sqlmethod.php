@@ -27,7 +27,7 @@ function createArticle($create){
 
 			if ( isset($create['class']) ){
 				if ( count($create['class']) == 0 ){
-					$this->class = '';
+					$this->class = NULL;
 				}else{
 					$this->class = mysql_escape_string($create['class']);
 				}
@@ -67,6 +67,7 @@ function createArticle($create){
 	";
 
 	$sqlresult = mysql_query($sqlstr, $sql->con);
+
 	if ( $sqlresult ){
 		mysql_close($sql->con);
 	}else{
