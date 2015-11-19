@@ -100,9 +100,10 @@ var display = {
 				$.json2obj(d,
 					function (obj){
 						classListInput.placeholder = 'class';
-						if ( article.class.length !== 0 ){
-							classListInput.value = article.class;
-						}
+						if ( envir.mode !== 'new' )
+							if ( article.class.length !== 0 )
+								classListInput.value = article.class;
+						
 						display.displayEditorClass(obj);
 					},
 					function (err, json){

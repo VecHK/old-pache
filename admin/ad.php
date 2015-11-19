@@ -65,7 +65,7 @@ switch($_GET['type']){
 
 	case 'new':
 		if ( isset($_POST['id']) ){
-			if ( checkRequestAll($_POST, Array('title', 'type', 'article')) ){
+			if ( checkRequestAll($_POST, $pache->createAble) ){
 				createArticleProcess($_POST);
 			}else{
 				return echoFailJson(1, 'new: 哦是吗？参数是不是少了？');
