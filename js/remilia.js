@@ -127,7 +127,7 @@ var SS = (function (){
 				var arr = this[key];
 				var str = '' ;
 				for ( var i=0; i<arr.length; ++i ){
-					str += key + '[]=' + this[key][i] + '&';
+					str += key + '[]=' + encodeURIComponent(this[key][i]) + '&';
 				}
 				return str;
 			}
