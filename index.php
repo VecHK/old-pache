@@ -109,11 +109,11 @@ else if ( isset($_GET['tag']) ){
 					echo '<a href="?page='.$i.'">'.$i.'</a> ';
 				}
 			}
-			/*
+		/*
 			echo '当前第'.$page.'页，';
 			echo "一共". $countPage .'页，';
 			echo '一共有'.articleCount('default').'篇文章';
-			*/
+		*/
 		?>
 
 			<input name="page" size="4" />
