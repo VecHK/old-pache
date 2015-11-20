@@ -15,6 +15,7 @@ function connectSQL(){
 	mysql_query("SET NAMES utf8");
 	return $sql;
 }
+
 function createArticle($create){
 	$sql = connectSQL();
 
@@ -76,7 +77,26 @@ function createArticle($create){
 	}
 	return true;
 }
+function deleteArticlesById( $idArr ){
+	$sql = connectSQL();
+	$sqlstr = "DELETE FROM pache_article WHERE id IN ";
 
+	$sqlin = "";
+	for ( $i=0; $i<count($idArr); ++$i ){
+		$idstr = $idArr[$i];
+		$sqlin = $sqlin."'".mysql_escape_string($idArr[$i])."',";
+	}
+	$sqlstr = $sqlstr ."(".substr($sqlin, 0, -count($sqlin)).")";
+
+	$sqlresult = mysql_query($sqlstr, $sql->con);
+	if ( $sqlresult ){
+		mysql_close($sql->con);
+		return true;
+	}else{
+		mysql_close($sql->con);
+		die(mysql_error($sql->con));
+	}
+}
 function updateArticleById($id, $update){
 	$sql = connectSQL();
 
@@ -293,10 +313,6 @@ function getClassIndex(){
 	}
 	mysql_close($sql->con);
 	return $list;
-};
-
-function deleteArticlesById( $idArr ){
-	
 }
 
 ?>

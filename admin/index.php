@@ -34,7 +34,7 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 
 			$list = getArticles(((int)$page - 1) * $pache->pagelimit, $pache->pagelimit);
 			for ( $i=0; $i<count($list); ++$i){
-				echo '<li><div class="link">'. '<input type="checkbox" name="selid" value="'. $list[$i]['id'] .'" />' .'<a href="get.php?id='. $list[$i]['id'] .'">'.$list[$i]['title'].'</a></div><div class="datetime">'.$list[$i]['time'].'</div></li>';
+				echo '<li><div class="link">'. '<input type="checkbox" name="selid[]" value="'. $list[$i]['id'] .'" />' .'<a href="../get.php?id='. $list[$i]['id'] .'">'.$list[$i]['title'].'</a></div><div class="datetime">'.$list[$i]['time'].'</div></li>';
 			}
 			?>
 		</ul>

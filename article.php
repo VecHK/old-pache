@@ -120,3 +120,45 @@ function createArticleProcess($POST){
 		return echoInfoJson(2, 'fail');
 	}
 }
+function deleteArticlesByIdProcess($selid){
+	if ( gettype($selid) === 'array' ){
+		if ( count($selid) ){
+			if ( deleteArticlesById($selid) ){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}else{
+		return false;
+	}
+
+}
+class outIndex{
+	public $display;
+	public $article;
+	public $page;
+	public $countPage;
+	public $articleCount;
+	public function __construct($page, $limit){
+		if ( count(func_get_args()) > 2 ){
+			$this->display = func_get_arg(2);
+		}
+		$pache = new pache;
+		$this->article = getArticles(((int)$page - 1) * $limit, $limit);
+		$this->countPage = ceil( articleCount('default')/$pache->pagelimit );
+		$this->page = $page;
+		$this->articleCount = articleCount('default');
+	}
+	public function __destruct(){
+		if ( $this->display == 'json' ){
+			echo json_encode($this);
+		}else if ( $this->display == 'html' ){
+			for ( $i=0; $i<count($this->article); ++$i){
+				echo '<li><div class="link"><a href="get.php?id='. $this->article[$i]['id'] .'">'.$this->article[$i]['title'].'</a></div><div class="datetime">'.$this->article[$i]['time'].'</div></li>';
+			}
+		}
+	}
+}

@@ -1,6 +1,8 @@
 var envir = {
 	/* mode: 'new'(create Articcle), 'update'(edit Article) */
-	'mode': null
+	'mode': null,
+	'page': 1,
+	'limit': 10
 };
 var mEvent = {
 	articleList: {
@@ -148,7 +150,7 @@ display.status('');
 
 var manager = {
 	getArticleById: function (id, ok, fail){
-		var url = '../'+'get.php?'+ $.stringifyPostRequest({'id': id, 'display':'json'});
+		var url = '../'+'get.php?'+ $.stringifyRequest({'id': id, 'display':'json'});
 		$.vjax( url, 'GET',
 			function (data){
 				try{
@@ -168,8 +170,8 @@ var manager = {
 				console.info(checkBox.checked);
 				if ( checkBox[i].checked === true ){
 					checkedArr.push(checkBox[i]);
-					!this[checkBox[i].name+'[]'] && (this[checkBox[i].name+'[]'] = Array());
-					this[checkBox[i].name+'[]'].push( checkBox[i].value );
+					!this[checkBox[i].name] && (this[checkBox[i].name] = Array());
+					this[checkBox[i].name].push( checkBox[i].value );
 				}
 			}
 			!checkedArr.length && empty && empty();
@@ -179,10 +181,45 @@ var manager = {
 			throw new Error(e);
 		}
 	},
-	getArticleList: function (){
+	getArticleList: function (ok, fail, page, limit){
+		var display = arguments.length > 4 ? arguments[5] : "json";
+		var tmp;
+		if ( typeof fail !== 'function' ){
+			tmp = page;
+			limit = page;
+			page = fail;
+		}
+		if ( limit === undefined ){
+			limit = envir.limit;
+		}
+		
 
+		var postObj = {};
+		(function (){
+			function isUndefined(obj){
+				return obj === undefined ? true : false;
+			}
+			this.pw = $.getRequest('pw');
+			this.type = 'getindex';
+			this.display = display;
+			isUndefined(page) || (this.page = page);
+			isUndefined(limit) || (this.limit = limit);
+		}).apply(postObj,[]);
+		var url = 'ad.php?'+$.stringifyRequest(postObj);
+		$.get(url,
+			function (data){
+				console.info(data);
+				var obj = $.json2obj(data);
+				console.log(obj);
+				if ( obj !== null ){
+					console.info(obj);
+				}else{
+					throw new Error('getArticleList/$.get/json2obj: json fail.');
+				}
+			},
+			function (){}
+		);
 	},
-
 };
 
 /* listing ArticleList links */
@@ -213,7 +250,7 @@ document.getElementById('editor').getElementsByTagName('form')[0].onsubmit = fun
 			console.error(err);
 		}
 	);
-//	console.info($.stringifyPostRequest(articleInfo));
+//	console.info($.stringifyRequest(articleInfo));
 	return false;
 
 };

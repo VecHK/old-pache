@@ -1,5 +1,5 @@
 <?php
-
+header('Content-type: text/html;charset=utf-8');
 require('../article.php');
 
 class outFail{
@@ -42,6 +42,26 @@ if ( !isset($_GET['type']) ){
 }
 
 switch($_GET['type']){
+	case 'getindex':
+		if ( isset($_GET['page']) && (int)$_GET['page'] > 0 ){
+			$page = (int) $_GET['page'];
+		}else{
+			$page = 1;
+		}
+		if ( isset($_GET['limit']) ){
+			$limit = (int) $_GET['limit'];
+		}else{
+			$limit = $pache->pagelimit;
+		}
+		if( isset($_GET['display']) ){
+			if ( $_GET['display'] == 'json' ){
+				new outIndex($page, $limit, 'json');
+				return 0;
+			}
+		}
+		new outIndex($page, $limit, 'html');
+
+		break;
 	case 'getclass':
 		if( isset($_GET['display']) ){
 			if ( $_GET['display'] == 'json' ){
@@ -75,14 +95,10 @@ switch($_GET['type']){
 		}
 		break;
 	case 'manage':
-	var_dump($_POST['selid']);
-	var_dump($_POST);
 		switch( $_GET['manage'] ){
 			case 'del':
 				if ( isset($_POST['selid']) ){
-					var_dump($_POST['selid']);
-					var_dump($_POST);
-					//deleteArticlesById();
+					return deleteArticlesByIdProcess($_POST['selid']) ? echoInfoJson(0, 'ok') : echoFailJson(2, 'inter fail');
 				}else{
 					return echoFailJson(1, 'selid no found');
 				}
