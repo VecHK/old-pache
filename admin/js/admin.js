@@ -1,4 +1,3 @@
-var articleIdList = document.getElementById('articlelist').getElementsByTagName('a');
 var envir = {
 	/* mode: 'new'(create Articcle), 'update'(edit Article) */
 	'mode': null
@@ -25,6 +24,29 @@ var mEvent = {
 			'article': '在这儿输入你的文章',
 			'type': 'text'
 		});
+	},
+	closeEditor: function (e){
+		display.animated.Editor.close.apply($('#editor')[0], []);
+	},
+	deleteArticles: function (e){
+		var selected = new manager.collectSelected(  $('#articlelist input'), function (){
+			alert('至少选一个啊baka');
+		});
+
+		console.log(selected);
+
+		var url = 'ad.php?'+$.stringifyRequest({
+			'pw': $.getRequest('pw'),
+			'type': 'manage',
+			'manage': 'del'
+		});
+		$.post(url,
+			selected,
+			function (data){console.info(data);},
+			function (err){throw new Error(err);}
+		);
+
+		return false;
 	}
 };
 var display = {
@@ -103,7 +125,7 @@ var display = {
 						if ( envir.mode !== 'new' )
 							if ( article.class.length !== 0 )
 								classListInput.value = article.class;
-						
+
 						display.displayEditorClass(obj);
 					},
 					function (err, json){
@@ -139,6 +161,24 @@ var manager = {
 			function (err){}
 		);
 	},
+	collectSelected: function (checkBox, empty){
+		var checkedArr = [];
+		try{
+			for ( var i = 0; i<checkBox.length; ++i ){
+				console.info(checkBox.checked);
+				if ( checkBox[i].checked === true ){
+					checkedArr.push(checkBox[i]);
+					!this[checkBox[i].name+'[]'] && (this[checkBox[i].name+'[]'] = Array());
+					this[checkBox[i].name+'[]'].push( checkBox[i].value );
+				}
+			}
+			!checkedArr.length && empty && empty();
+			this['checkedArr'] = checkedArr;
+		}catch(e){
+			alert(e);
+			throw new Error(e);
+		}
+	},
 	getArticleList: function (){
 
 	},
@@ -146,11 +186,12 @@ var manager = {
 };
 
 /* listing ArticleList links */
+var articleIdList = document.getElementById('articlelist').getElementsByTagName('a');
 for ( var i=0; i<articleIdList.length; ++i){
 	articleIdList[i].onclick = function (){
 		mEvent.articleList.click.apply(this, []);
 		return false;
-	}
+	};
 }
 
 document.getElementById('editor').getElementsByTagName('form')[0].onsubmit = function (e){
@@ -177,3 +218,5 @@ document.getElementById('editor').getElementsByTagName('form')[0].onsubmit = fun
 
 };
 document.getElementById('create').onclick = mEvent.create;
+document.getElementById('editor_close'). onclick = mEvent.closeEditor;
+$('#articlemanagelist')[0].onsubmit = mEvent.deleteArticles;

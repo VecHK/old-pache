@@ -28,17 +28,19 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 	<script type="text/javascript" src="../js/remilia.js"></script>
 </head>
 <body>
-	<ul id="articlelist">
-		<?php
+	<form id="articlemanagelist">
+		<ul id="articlelist">
+			<?php
 
-		$list = getArticles(((int)$page - 1) * $pache->pagelimit, $pache->pagelimit);
-		for ( $i=0; $i<count($list); ++$i){
-			echo '<li><div class="link"><a href="get.php?id='. $list[$i]['id'] .'">'.$list[$i]['title'].'</a></div><div class="datetime">'.$list[$i]['time'].'</div></li>';
-		}
-		?>
-	</ul>
+			$list = getArticles(((int)$page - 1) * $pache->pagelimit, $pache->pagelimit);
+			for ( $i=0; $i<count($list); ++$i){
+				echo '<li><div class="link">'. '<input type="checkbox" name="selid" value="'. $list[$i]['id'] .'" />' .'<a href="get.php?id='. $list[$i]['id'] .'">'.$list[$i]['title'].'</a></div><div class="datetime">'.$list[$i]['time'].'</div></li>';
+			}
+			?>
+		</ul>
+		<button type="submit" id="delete">删除</button>
+	</form>
 	<button id='create'>创建文章</button>
-	<button id="delete">删除</button>
 	<div id="editor">
 		<form method="post">
 			<input class="title" name="title" placeholder="标题" />
@@ -46,9 +48,7 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 
 			<input id="class_list_input" type="class" list="class_list" name="class" placeholder="class" />
 			<datalist id="class_list" >
-				<option label="9" value="http://www.w3school.com.cn" />
-				<option label="23" value="http://www.google.com" />
-				<option label="84" value="http://www.microsoft.com" />
+				<option label="N/A" value="" />
 			</datalist>
 
 			<select name="type" >
@@ -58,6 +58,7 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 			<button type="submit">post</button>
 			<div id="status">N/A</div>
 		</form>
+		<div id="editor_close">x</div>
 	</div>
 </body>
 <script type="text/javascript" src="js/admin.js"></script>

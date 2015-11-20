@@ -74,6 +74,25 @@ switch($_GET['type']){
 			return echoFailJson(1, 'new: id no found.');
 		}
 		break;
+	case 'manage':
+	var_dump($_POST['selid']);
+	var_dump($_POST);
+		switch( $_GET['manage'] ){
+			case 'del':
+				if ( isset($_POST['selid']) ){
+					var_dump($_POST['selid']);
+					var_dump($_POST);
+					//deleteArticlesById();
+				}else{
+					return echoFailJson(1, 'selid no found');
+				}
+				break;
+
+			default:
+				return echoFailJson(1, 'manage default');
+		}
+
+		break;
 	default:
 		return echoFailJson(1, 'type default.');
 }

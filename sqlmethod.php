@@ -295,4 +295,8 @@ function getClassIndex(){
 	return $list;
 };
 
+function deleteArticlesById( $idArr ){
+	
+}
+
 ?>

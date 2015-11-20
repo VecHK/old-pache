@@ -43,6 +43,11 @@
 	font-family: 微软雅黑;
 	background-color: black;
 }
+#editor_close{
+	position: absolute;
+	top: 0px;
+	cursor: pointer;
+}
 #editor form{
 	margin: auto;
 	padding-top: 32px;
