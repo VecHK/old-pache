@@ -188,6 +188,9 @@ var SS = (function (){
 		this.get = function (URLstr, ok, fail){
 			this.vjax(URLstr, 'GET', ok, fail);
 		};
+		this.encodeJson = function (jsonStr){
+			
+		};
 		this.json2obj = function (jsonStr, ok, fail){
 			try{
 				var obj = JSON.parse(jsonStr);
