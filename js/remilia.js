@@ -1,70 +1,6 @@
 var Remilia = function() {
-	console.info('永远鲜红的幼月 v0.11');
+	console.info('永远鲜红的幼月 v0.21');
 } ();
-
-var vjax = function(URL, method, pgdata, callback, fail) {
-	method = method.toLowerCase();
-
-	if (window.XMLHttpRequest) var vj = new XMLHttpRequest();
-
-	vj.onreadystatechange = function() {
-		if (vj.readyState == 4 && vj.status == 200) {
-			if (method === 'get') {
-				pgdata(vj.responseText, status);
-			} else if (method === 'post') {
-				callback(vj.responseText, status);
-			}
-		} else {
-			fail && fail(status);
-		}
-	};
-	if ( method.toLowerCase() === 'post' ) {
-		console.warn('!!');
-		vj.open("POST", URL, true);
-		vj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-
-		if ( new RegExp(/\?/).test(URL) ){
-			console.info('have ?');
-			console.info(stringifyPostRequest(pgdata, '?'));
-			console.info(Object.keys(pgdata));
-			if ( typeof pgdata === 'object' ){
-				console.info(stringifyPostRequest(pgdata, '?').length);
-				vj.send( stringifyPostRequest(pgdata, '?') );
-			}else{
-				console.info('no object');
-				console.error(pgdata);
-				vj.send( pgdata );
-			}
-		}else{
-			console.info('no ?');
-
-			vj.send(pgdata);
-		}
-		console.warn('POST');
-
-	} else if (method.toLowerCase() === 'get') {
-		vj.open("GET", URL, true);
-		vj.send();
-	} else {
-		console.error('Method is empty!')
-	}
-};
-
-var getRequest = function(name) {
-	/* thanks jiekk:  http://www.cnblogs.com/jiekk/archive/2011/06/28/2092444.html */
-	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-	var r = window.location.search.substr(1).match(reg);
-	if (r != null) return unescape(r[2]);
-	return null;
-}
-
-var getRequest = function(name) {
-	/* thanks jiekk:  http://www.cnblogs.com/jiekk/archive/2011/06/28/2092444.html */
-	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-	var r = window.location.search.substr(1).match(reg);
-	if (r != null) return unescape(r[2]);
-	return null;
-};
 
 var myTransition = function(ele, css, time, callback) {
 	var browserPrefix = ['-moz-', '-webkit-', ''];
@@ -167,60 +103,6 @@ var myImg = function (ele, action){
 
 var SS = (function (){
 	var myMethod = function (){
-		this.vjax = function(URL, method, pgdata, callback, fail) {
-			method = method.toLowerCase();
-
-			if (window.XMLHttpRequest)
-				var vj = new XMLHttpRequest();
-
-			vj.onreadystatechange = function() {
-				if (vj.readyState == 4 && vj.status == 200) {
-					if (method === 'get') {
-						pgdata(vj.responseText, status);
-					} else if (method === 'post') {
-						callback(vj.responseText, status);
-					}
-				} else {
-					fail && fail(status);
-				}
-			};
-			if ( method.toLowerCase() === 'post' ) {
-				console.warn('!!');
-				vj.open("POST", URL, true);
-				vj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-
-				if ( new RegExp(/\?/).test(URL) ){
-					console.info('have ?');
-					console.info(stringifyPostRequest(pgdata, '?'));
-					console.info(Object.keys(pgdata));
-					if ( typeof pgdata === 'object' ){
-						console.info(stringifyPostRequest(pgdata, '?').length);
-						vj.send( stringifyPostRequest(pgdata, '?') );
-					}else{
-						console.info('no object');
-						console.error(pgdata);
-						vj.send( pgdata );
-					}
-				}else{
-					console.info('no ?');
-
-					vj.send(pgdata);
-				}
-			} else if (method.toLowerCase() === 'get') {
-				vj.open("GET", URL, true);
-				vj.send();
-			} else {
-				console.error('Method is empty!')
-			}
-
-		};
-		this.sendJSON = function(URL, obj, callback) {
-			/*	console.warn(encodeURIComponent('json='+json));*/
-			this.vjax(URL, 'POST', 'json=' + obj,
-				function(d, s) {
-					callback(d, s);
-				});
-		};
 		this.getRequest = function() {
 			/* thanks jiekk:  http://www.cnblogs.com/jiekk/archive/2011/06/28/2092444.html */
 			function getStrRequest(str){
@@ -237,6 +119,93 @@ var SS = (function (){
 			if (r != null) return unescape(r[2]);
 			return null;
 		};
+		this.stringifyRequest = function (requestObj){
+			function isArray(Arr){
+				return Array.isArray(Arr);
+			}
+			function stringifyArray(key){
+				var arr = this[key];
+				var str = '' ;
+				for ( var i=0; i<arr.length; ++i ){
+					str += key + '[]=' + this[key][i] + '&';
+				}
+				return str;
+			}
+			function strSubLast(str){
+				return str.substr(0, str.length-1);
+			}
+			function stringify(obj, keys){
+				return isArray(obj[keys[0]]) ?
+				stringifyArray.apply(obj, [keys.shift()]) :
+				keys[0] + '=' + encodeURIComponent( obj[keys.shift()] ) + '&';
+			}
+			function objKeysMap(postObj, objKeys){
+					return objKeys.length ? stringify(postObj, objKeys) + arguments.callee(postObj, objKeys) : '';
+			}
+			return strSubLast( objKeysMap( requestObj, Object.keys(requestObj) ));
+		};
+		this.vjax = function(URL, method, pgdata, callback, fail) {
+			method = method.toLowerCase();
+
+			if (window.XMLHttpRequest)
+				var vj = new XMLHttpRequest();
+
+			vj.onreadystatechange = function() {
+				if (vj.readyState == 4 && vj.status == 200) {
+					if (method === 'get') {
+						pgdata(vj.responseText, status);
+					} else if (method === 'post') {
+						callback && callback(vj.responseText, status);
+					}
+				} else if ( vj.readyState === 500 && vj.status === 404 && vj.readyState === 403){
+					fail && fail(status);
+				}
+			};
+			if ( method.toLowerCase() === 'post' ) {
+				console.warn('!!');
+				vj.open("POST", URL, true);
+				vj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+
+				if ( typeof pgdata === 'object' ){
+					if ( new RegExp(/\?/).test(URL) ){
+						vj.send( this.stringifyRequest(pgdata) );
+					}else{
+						vj.send( this.stringifyRequest(pgdata) );
+					}
+				}else{
+					vj.send( pgdata );
+				}
+			} else if (method.toLowerCase() === 'get') {
+				vj.open("GET", URL, true);
+				vj.send();
+			} else {
+				throw new Error('Method is empty!')
+			}
+		};
+		this.post = function (URLstr, obj, ok, fail){
+			this.vjax(URLstr, 'POST', obj, ok, fail);
+		};
+		this.get = function (URLstr, ok, fail){
+			this.vjax(URLstr, 'GET', ok, fail);
+		};
+		this.json2obj = function (jsonStr, ok, fail){
+			try{
+				var obj = JSON.parse(jsonStr);
+			}catch(e){
+				fail && fail(e, jsonStr);
+				return null;
+			}
+			ok && ok(obj);
+			return obj;
+		};
+		this.sendJSON = function(URL, jsonStr, ok, fail) {
+			if ( typeof jsonStr !== 'string' ){
+					jsonStr = JSON.stringify(jsonStr);
+			}
+			console.info(jsonStr);
+			this.post(URL, 'json='+jsonStr, ok, fail);
+		};
+
 		this.listingStyleSheet = function(s, callback, end) {
 			for (var i = 0; i < document.styleSheets.length; ++i) {
 				var cssRules = document.styleSheets[i].rules;
@@ -255,24 +224,26 @@ var SS = (function (){
 			}
 			return end === undefined ? undefined : end();
 		};
-		this.stringifyPostRequest = function (){
-			return function (postObj){
-				return function (str){
-					return str.substr(0, str.length-1);
-				}( function (objKeys){
-					return objKeys.length ?
-						(function (){
-							return objKeys[0] + '=' + encodeURIComponent( (
-								function (obj, key){
-									return obj[key];
-								}
-								)(postObj, objKeys.shift())
-							) + '&';
-						})()
-						+ arguments.callee(objKeys)
-						: '';
-				}( Object.keys(postObj)) );
-			}(arguments[0]);
+		this.myCheckObj = function (){
+			Object.prototype.myCheckObj = function (){
+				var keys = Array.prototype.slice.apply(arguments);
+				/* obj */
+				if ( keys.length === 1 && typeof keys[0] === 'object' && !Array.isArray(keys[0]) ){
+					var obj = keys[0];
+					var keys = Object.keys(keys[0]);
+					for ( var i=0; i<keys.length; ++i ){
+						if ( typeof this[keys[i]] !== obj[keys[i]] ){
+							return false;
+						}
+					}
+				}
+				for ( var i=0; i<keys.length; ++i ){
+					if ( this[keys[i]] === undefined ){
+						return false;
+					}
+				}
+				return true;
+			};
 		};
 	};
 	var domMethod = function (ele){
@@ -341,17 +312,6 @@ function bechMark(testCount, count, func, canshu){
 		'average': he/testUnitArr.length
 	}
 }
-
-var stringifyPostRequest = function (obj, p){
-	var keys = Object.keys(obj);
-	var str = '';
-
-	for (var i=0; i<keys.length; ++i){
-		str += keys[i] + '=' + encodeURIComponent(obj[keys[i]]) + '&';
-	}
-
-	return str.substr(0,str.length- 1 );
-};
 
 var testArr = [];
 for ( var i=0; i<9999; ++i ) testArr[i] = i;
