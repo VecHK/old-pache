@@ -1,115 +1,120 @@
 var Remilia = function() {
-	console.info('永远鲜红的幼月 v0.21');
-} ();
+	console.info('永远鲜红的幼月 v0.25');
+}();
 
-var myTransition = function(ele, css, time, callback) {
-	var browserPrefix = ['-moz-', '-webkit-', ''];
-	var transitionEnd = ['webkitTransitionEnd', 'transitionend', 'TransitionEnd'];
-	var cssstr = '';
-	var callbackok = false;
-
-	Object.keys(css).forEach(function(d) {
-		cssstr += d + ' ' + time + 's,';
-	});
-	cssstr = cssstr.substr(0, cssstr.length - 1);
-
-/*	setTimeout(callback, time*1000);*/
-
-
-	transitionEnd.forEach(function (d){
-		ele.addEventListener(d, function (){
-			callbackok || callback(ele);
-			callbackok = true;
-		});
-	});
-
-	browserPrefix.forEach(function(b) {
-		ele.style[b + 'transition'] = cssstr;
-	});
-
-	Object.keys(css).forEach(function(d) {
-		ele.style[d] = css[d];
-	});
-
-	return ele;
-};
-var myTransitionEvent = function(ele, css, time, callback){
-	var browserPrefix = ['-moz-', '-webkit-', ''];
-	var transitionEnd = ['webkitTransitionEnd', 'transitionend', 'TransitionEnd'];
-	var cssstr = '';
-	var callbackok = false;
-
-	css.forEach(function(d) {
-		cssstr += d + ' ' + time + 's,';
-	});
-	cssstr = cssstr.substr(0, cssstr.length - 1);
-
-	function cb(){
-		callbackok || callback(ele);
-		callbackok = true;
-	}
-
-	setTimeout(cb, time*1000);
-
-	transitionEnd.forEach(function (d){
-		ele.addEventListener(d, function (){
-			cb();
-		});
-	});
-
-	browserPrefix.forEach(function(b) {
-		ele.style[b + 'transition'] = cssstr;
-	});
-
-	return ele;
-};
-
-var myImg = function (ele, action){
-	ele.style.display = 'block';
-	ele.myImgAction = action;
-	ele.changeSrc = function (src){
-		this.myAnimated = function (callback){
-			myTransitionEvent(
-				ele,
-				[
-					'opacity'
-				],
-				0.618,
-				callback
-			);
-		};
-
-		var _changeSrc = function (){
-
-			ele.src = src;
-
-			ele.onload = function (d){
-				this.myAnimated(function (){
-					action.ok && action.ok();
-				});
-				this['style'].opacity = 1;
-			};
-		};
-		this.myAnimated(_changeSrc);
-
-		ele['style'].opacity = 0;
-
-		ele.onerror = function (d){
-			action.fail && action.fail(d);
-		};
-	};
-
-};
-
-var SS = (function (){
+var SS = (function (win, doc){
 	var myMethod = function (){
+		this.localStorage = function (){
+			if ( !win.localStorage ){
+				console.warn('this Browser cannot support localStorage.');
+				return ;
+			}
+			var method = function (){
+				var my = this;
+				this.getlength = function (){
+					return localStorage.length
+				};
+				this.each = function (callback){
+					function createObj(key, value){
+						this[key] = value;
+					}
+					this.toKeyArray().forEach(function (d, i){
+						callback(
+							new createObj(d, my.get(d)),
+							d,
+							i
+						);
+					});
+				};
+				this.rm = function (key){
+					return localStorage.removeItem(key);
+				};
+				this.clear = function (){
+					return localStorage.clear();
+				};
+				this.key = function (i){
+					return localStorage.key(i);
+				};
+				this.set = function (key, value){
+					this.rm(key);
+					return localStorage.setItem(key, value);
+				};
+				this.get = function (key){
+					return localStorage.getItem(key);
+				};
+				this.listen = function (callback){
+					if(win.addEventListener){
+						win.addEventListener("storage",callback,false);
+					}else if(win.attachEvent){
+						win.attachEvent("onstorage",callback);
+					}
+				};
+				this.rmlisten = function (){};
+				this.toKeyArray = function (){
+					var arr = [];
+					var value;
+					for (var i=0; i<this.getlength(); ++i){
+						value = this.key(i);
+						value !== null && arr.push(value);
+					}
+					return arr;
+				};
+				this.toObj = function (){
+					if (!(this instanceof arguments.callee)) {
+						return new arguments.callee();
+					}
+					var keyArr = my.toKeyArray();
+					for ( var i=0; i<keyArr.length; i++ ){
+						this[keyArr[i]] = my.get(keyArr[i]);
+					}
+				};
+			};
+			var ls = function (){
+				function type(obj){
+					return typeof obj;
+				}
+				var lthis = this;
+				var my = arguments.callee;
+				var handle = {
+					'set': function (obj){
+						var keys = Object.keys(obj);
+						for ( var i=0; i<keys.length; i++ ){
+							my.set(keys[i], obj[keys[i]]);
+						}
+					},
+					'get': function (key){
+						win.localStorage.getItem(key);
+					}
+				};
+				var first = arguments[0];
+				switch(type(first)){
+					case 'object':
+						handle.set(first);
+						break;
+					case 'string':
+						if ( type(arguments[1]) !== 'undefined' ){
+							return my.set(first, arguments[1]);
+						}else{
+							return my.get(first);
+						}
+						break;
+					default:
+
+				}
+			};
+			method.apply(ls);
+			return ls;
+		}();
+		this.ls = this.localStorage;
+		this.cookie = function (){};
+
 		this.getRequest = function() {
 			/* thanks jiekk:  http://www.cnblogs.com/jiekk/archive/2011/06/28/2092444.html */
 			function getStrRequest(str){
 				return str.split('?')[1];
 			}
 			var name = arguments[0];
-			var request = window.location.search.substr(1);
+			var request = win.location.search.substr(1);
 			if ( arguments[1] !== undefined ){
 				request = getStrRequest(arguments[0]);
 				name = arguments[1];
@@ -189,7 +194,7 @@ var SS = (function (){
 			this.vjax(URLstr, 'GET', ok, fail);
 		};
 		this.encodeJson = function (jsonStr){
-			
+
 		};
 		this.json2obj = function (jsonStr, ok, fail){
 			try{
@@ -200,6 +205,18 @@ var SS = (function (){
 			}
 			ok && ok(obj);
 			return obj;
+		};
+		this.jsonp = function (url, jsonpCallback, callback){
+			var tmp = win[jsonpCallback];
+			win[jsonpCallback] = function (json){
+				callback && callback(json);
+			};
+			var script = document.createElement('script');
+			script.src = url;
+			script.addEventListener('load', function (){
+				win[jsonpCallback] = tmp;
+			});
+			$('head')[0].appendChild(script);
 		};
 		this.sendJSON = function(URL, jsonStr, ok, fail) {
 			if ( typeof jsonStr !== 'string' ){
@@ -276,13 +293,16 @@ var SS = (function (){
 		var dom = document.querySelectorAll(s);
 		domMethod.apply(dom,[dom]);
 		return dom;
-	};
+	}
+
 	myMethod.apply(f, []);
+
+	if ( !win.$ ){
+		win.$ = f;
+	}
+
 	return f;
-})();
-if ( $ === undefined ){
-	var $ = SS;
-}
+})(window, document);
 
 var o = {};for( var i=0; i<9999; ++i ){ o[i] = i; }
 

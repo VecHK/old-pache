@@ -30,14 +30,15 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 <body>
 	<form id="articlemanagelist">
 		<ul id="articlelist">
-			<?php
 
-			$list = getArticles(((int)$page - 1) * $pache->pagelimit, $pache->pagelimit);
-			for ( $i=0; $i<count($list); ++$i){
-				echo '<li><div class="link">'. '<input type="checkbox" name="selid[]" value="'. $list[$i]['id'] .'" />' .'<a href="../get.php?id='. $list[$i]['id'] .'">'.$list[$i]['title'].'</a></div><div class="datetime">'.$list[$i]['time'].'</div></li>';
-			}
-			?>
 		</ul>
+		<div id="pageselect">
+			<div class='pagebutton'>上一页</div>
+			<ul class="pagelink">
+				<a>1</a> <a>2</a> <a>3</a>
+			</ul>
+			<div class='pagebutton'>下一页</div>
+		</div>
 		<button type="submit" id="delete">删除</button>
 	</form>
 	<button id='create'>创建文章</button>
@@ -54,6 +55,7 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 			<select name="type" >
 				<option value="markdown">Markdown</option>
 				<option value="text">text</option>
+				<option value="html">HTML</option>
 			</select>
 			<button type="submit">post</button>
 			<div id="status">N/A</div>

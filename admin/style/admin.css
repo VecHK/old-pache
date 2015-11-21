@@ -126,6 +126,32 @@ select::-ms-expand { display: none; }
 	transition: opacity 0.618s;
 }
 
+#pageselect{
+	position: relative;
+	width: 320px;
+	height: 28px;
+}
+#pageselect div.pagebutton{
+	float: left;
+	cursor: pointer;
+}
+#pageselect .pagelink{
+	float:left;
+	width: 192px;
+}
+#pageselect .pagelink div{
+	display: initial;
+	margin-left: 5px;
+	margin-right: 5px;
+	cursor: pointer;
+}
+#pageselect .pagelink div.selected{
+	opacity: 0.25;
+}
+#pageselect .pagelink div.selectable{
+
+}
+
 ::-webkit-scrollbar {
 	width: 6px;
 	height: 8px;

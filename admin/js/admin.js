@@ -2,7 +2,8 @@ var envir = {
 	/* mode: 'new'(create Articcle), 'update'(edit Article) */
 	'mode': null,
 	'page': 1,
-	'limit': 10
+	'limit': 10,
+	'article': null
 };
 var mEvent = {
 	articleList: {
@@ -43,8 +44,15 @@ var mEvent = {
 			'manage': 'del'
 		});
 		$.post(url,
-			selected,
-			function (data){console.info(data);},
+			{'selid': selected['selid[]']},
+			function (data){
+				$.json2obj(data, function (d){
+					display.loadArticleList(envir.page, envir.limit);
+				},function (err){
+					alert('删除似乎失败了');
+					throw new Error(err);
+				});
+			},
 			function (err){throw new Error(err);}
 		);
 
@@ -143,6 +151,55 @@ var display = {
 		);
 		this.constructForm.apply( this.editorForm, [article] );
 		this.animated.Editor.open.apply( $('#editor')[0], [] );
+	},
+	RenderingArticleList: function (article){
+
+		var articleEle = $('#articlelist')[0];
+		articleEle.innerHTML = '';
+
+		article.article.forEach(function (item){
+			var li = document.createElement('li');
+
+			var divLink = document.createElement('div');
+			divLink.className = 'link';
+			var input = document.createElement('input');
+			input.type = 'checkbox';
+			input.name = 'selid[]';
+			input.value = item.id;
+			var a = document.createElement('a');
+			a.href = '../pache?id='+item.id;
+			a.innerText = item.title;
+
+			divLink.appendChild(input);
+			divLink.appendChild(a);
+
+			li.appendChild(divLink);
+
+			var datetime = document.createElement('div');
+			datetime.className = 'datetime';
+			datetime.innerText = item.time;
+
+			li.appendChild(datetime);
+
+			articleEle.appendChild(li);
+		});
+
+		listenArticleList();
+	},
+	loadArticleList: function (page, limit){
+		var my = this;
+		manager.getArticleList(
+			function (article){
+				envir.article = article;
+				my.RenderingArticleList(article);
+				manager.renderingPageSelect();
+			},
+			function (err){
+				alert('loadArticleList fail!');
+				throw new Error(err);
+			},
+			page, limit
+		);
 	}
 };
 display.animated.Editor.close.apply($('#editor')[0], []);
@@ -167,7 +224,6 @@ var manager = {
 		var checkedArr = [];
 		try{
 			for ( var i = 0; i<checkBox.length; ++i ){
-				console.info(checkBox.checked);
 				if ( checkBox[i].checked === true ){
 					checkedArr.push(checkBox[i]);
 					!this[checkBox[i].name] && (this[checkBox[i].name] = Array());
@@ -192,9 +248,8 @@ var manager = {
 		if ( limit === undefined ){
 			limit = envir.limit;
 		}
-		
 
-		var postObj = {};
+		var getObj = {};
 		(function (){
 			function isUndefined(obj){
 				return obj === undefined ? true : false;
@@ -204,31 +259,91 @@ var manager = {
 			this.display = display;
 			isUndefined(page) || (this.page = page);
 			isUndefined(limit) || (this.limit = limit);
-		}).apply(postObj,[]);
-		var url = 'ad.php?'+$.stringifyRequest(postObj);
+		}).apply(getObj,[]);
+		var url = 'ad.php?'+$.stringifyRequest(getObj);
 		$.get(url,
 			function (data){
-				console.info(data);
-				var obj = $.json2obj(data);
-				console.log(obj);
-				if ( obj !== null ){
-					console.info(obj);
+				if ( getObj.display === 'json' ){
+					var obj = $.json2obj(data);
+					if ( obj !== null ){
+						ok(obj);
+					}else{
+						throw new Error('getArticleList/$.get/json2obj: json fail.');
+					}
 				}else{
-					throw new Error('getArticleList/$.get/json2obj: json fail.');
+					ok(data);
 				}
+
 			},
-			function (){}
+			fail
 		);
 	},
+	renderingPageSelect: function (){
+		var pagelink = $("#pageselect .pagelink")[0];
+		var page = envir.article.page;
+		var countPage = envir.article.countPage;
+		var i = page;
+		var str = "";
+		if ( i-4 < 1 ){
+			$i = 5;
+		}
+		for ( i=i-4; i<page+5; ++i ){
+			if ( i>countPage ){
+				break;
+			}else if ( i < 1 ){
+				continue;
+			}else{
+				if ( i === page ){
+					str += '<div class="selected">'+i+'</div>';
+				}else{
+					str += '<div class="selectable">'+i+'</div>';
+				}
+			}
+		}
+		pagelink.innerHTML = str;
+		var lthis = this;
+		var div = $('#pageselect .pagelink div');
+		for (var i=0; i<div.length; ++i){
+			div[i].onclick = function (){
+				lthis.page( this.innerText );
+			};
+		}
+	},
+	'nextPage': function (){
+		++envir.page;
+		this.renderingPageSelect();
+		display.loadArticleList(envir.page, envir.limit);
+	},
+	'lastPage': function (){
+		if ( envir.page>1 ){
+			--envir.page;
+			this.renderingPageSelect();
+		}
+		display.loadArticleList(envir.page, envir.limit);
+	},
+	'page': function (page){
+		envir.page = Number.parseInt(page);
+		this.renderingPageSelect();
+		display.loadArticleList(envir.page, envir.limit);
+	}
+};
+var pageButton = $('#pageselect .pagebutton');
+pageButton[0].onclick = function (){
+	manager.lastPage();
+};
+pageButton[1].onclick = function (){
+	manager.nextPage();
 };
 
 /* listing ArticleList links */
-var articleIdList = document.getElementById('articlelist').getElementsByTagName('a');
-for ( var i=0; i<articleIdList.length; ++i){
-	articleIdList[i].onclick = function (){
-		mEvent.articleList.click.apply(this, []);
-		return false;
-	};
+function listenArticleList(){
+	var articleIdList = document.getElementById('articlelist').getElementsByTagName('a');
+	for ( var i=0; i<articleIdList.length; ++i){
+		articleIdList[i].onclick = function (){
+			mEvent.articleList.click.apply(this, []);
+			return false;
+		};
+	}
 }
 
 document.getElementById('editor').getElementsByTagName('form')[0].onsubmit = function (e){
@@ -257,3 +372,5 @@ document.getElementById('editor').getElementsByTagName('form')[0].onsubmit = fun
 document.getElementById('create').onclick = mEvent.create;
 document.getElementById('editor_close'). onclick = mEvent.closeEditor;
 $('#articlemanagelist')[0].onsubmit = mEvent.deleteArticles;
+
+display.loadArticleList(envir.page, envir.limit);

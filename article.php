@@ -148,7 +148,7 @@ class outIndex{
 		}
 		$pache = new pache;
 		$this->article = getArticles(((int)$page - 1) * $limit, $limit);
-		$this->countPage = ceil( articleCount('default')/$pache->pagelimit );
+		$this->countPage = ceil( articleCount('default')/$limit );
 		$this->page = $page;
 		$this->articleCount = articleCount('default');
 	}
@@ -156,8 +156,9 @@ class outIndex{
 		if ( $this->display == 'json' ){
 			echo json_encode($this);
 		}else if ( $this->display == 'html' ){
+			$pache = new pache;
 			for ( $i=0; $i<count($this->article); ++$i){
-				echo '<li><div class="link"><a href="get.php?id='. $this->article[$i]['id'] .'">'.$this->article[$i]['title'].'</a></div><div class="datetime">'.$this->article[$i]['time'].'</div></li>';
+				echo '<li><div class="link"><a href="'.$pache->root.'/get.php?id='. $this->article[$i]['id'] .'">'.$this->article[$i]['title'].'</a></div><div class="datetime">'.$this->article[$i]['time'].'</div></li>';
 			}
 		}
 	}

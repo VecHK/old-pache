@@ -56,7 +56,8 @@ if ( is_null($article->id) ){
 	<script type="text/javascript" src="js/Markdown.Sanitizer.min.js"></script>
 	<script type="text/javascript" src="js/Markdown.Extra.min.js"></script>
 -->
-	<script type="text/javascript" src="js\prettify.js"></script>
+	<script type="text/javascript" src="js/prettify.js"></script>
+	<script type="text/javascript" src="js/remilia.js"></script>
 
 	<!--<script type="text/javascript" src="js/prettify.min.js"></script>-->
 </head>
@@ -83,13 +84,17 @@ if ( is_null($article->id) ){
 		</header>
 		<article id="article" class="content">
 <?php
-	require_once '/Michelf/MarkdownExtra.inc.php';
-	use \Michelf\MarkdownExtra;
+require_once '/Michelf/MarkdownExtra.inc.php';
+use \Michelf\MarkdownExtra;
+	if ( $article->type === 'markdown' ){
+		$parser = new \Michelf\MarkdownExtra;
+		$parser->fn_id_prefix = "mmd-";//Michelf markdown
+		$my_html = $parser->transform($article->article);
+		echo $my_html;
+	}else if ( $article->type === 'html' ){
+		echo $article->article;
+	}
 
-	$parser = new \Michelf\MarkdownExtra;
-	$parser->fn_id_prefix = "mmd-";//Michelf markdown
-	$my_html = $parser->transform($article->article);
-	echo $my_html;
 ?>
 		</article>
 			tag: <?php
