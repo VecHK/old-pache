@@ -33,6 +33,7 @@ if ( isset($_GET['id']) ){
 if ( is_null($article->id) ){
 	$article->title = "出现了点问题";
 	$article->article = '<div id="float" style="position:relative;margin: auto;" ><img class="floatimg" src="articleNoFound.jpg" style="display:block; margin:auto;" /></div>当你看到这个页面的时候，说明文章因为不可抗力被删除了。或者你请求的id是一个未知数，Pache无法提供';
+	$article->type = 'html';
 	$nofound = false;
 }
 
@@ -84,21 +85,27 @@ if ( is_null($article->id) ){
 		</header>
 		<article id="article" class="content">
 <?php
-require_once '/Michelf/MarkdownExtra.inc.php';
-use \Michelf\MarkdownExtra;
-	if ( $article->type === 'markdown' ){
-		$parser = new \Michelf\MarkdownExtra;
+	if ( $article->type == 'markdown' ){
+/*
+		require('Michelf/MarkdownExtra.inc.php');
+		require_once 'Michelf/MarkdownExtra.inc.php';
+		$parser = new Michelf\MarkdownExtra;
 		$parser->fn_id_prefix = "mmd-";//Michelf markdown
 		$my_html = $parser->transform($article->article);
 		echo $my_html;
-	}else if ( $article->type === 'html' ){
+*/
+		echo $article->format;
+	}else if ( $article->type == 'html' ){
 		echo $article->article;
+	}else if ( $article->type == 'text' ){
+
+		echo $article->format;
 	}
 
 ?>
 		</article>
 			tag: <?php
-				echo outArticleTagListByIdHTML($_GET['id']);
+				new outTagById($_GET['id'], 'html');
 			?>
 	</div>
 <?php
