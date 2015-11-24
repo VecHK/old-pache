@@ -1,3 +1,5 @@
+tabOverride.set(document.getElementsByTagName('textarea'));
+$('textarea')[0].spellcheck = false;
 var envir = {
 	/* mode: 'new'(create Articcle), 'update'(edit Article) */
 	'mode': null,
@@ -70,10 +72,21 @@ var display = {
 			classList.appendChild(option);
 		});
 	},
+	'displayEditorTag': function (tag){
+		console.info(tag);
+		var tagListEle = document.getElementById('tag_list_input');
+		tagListEle.value = '';
+		var str = '';
+		tag.tagList.forEach(function (d){
+			str += d.tagname + ',';
+		});
+
+		tagListEle.value = str.substr(0, str.length-1);
+	},
 	'status': function (s){
 		var ele = document.getElementById('status');
 		if ( s.length ){
-			ele.innerText = s;
+			innerText(ele, s);
 			ele.style.opacity = '1';
 		}else{
 			ele.style.opacity = '0.01';
@@ -117,7 +130,6 @@ var display = {
 		console.log('constructForm ok.');
 	},
 	loadEditor: function (article){
-
 		var url = 'ad.php?' + $.stringifyRequest({
 			'type': 'getclass',
 			'pw':$.getRequest('pw'),
@@ -149,6 +161,29 @@ var display = {
 				throw new Error(err);
 			}
 		);
+
+		var url = 'ad.php?'+ $.stringifyRequest({
+			'pw': $.getRequest('pw'),
+			'type': 'gettag',
+			'id': article.id,
+			'display': 'json'
+		});
+		$.get(url,
+			function (d){
+				$.json2obj(d,
+					display.displayEditorTag,
+					function (err){
+						alert('tag读取失败');
+						throw new Error(err);
+					}
+				);
+			},
+			function (err){
+				alert('tag读取失败');
+				throw new Error(err);
+			}
+		);
+
 		this.constructForm.apply( this.editorForm, [article] );
 		this.animated.Editor.open.apply( $('#editor')[0], [] );
 	},
@@ -168,7 +203,8 @@ var display = {
 			input.value = item.id;
 			var a = document.createElement('a');
 			a.href = '../pache?id='+item.id;
-			a.innerText = item.title;
+
+			innerText(a, item.title);
 
 			divLink.appendChild(input);
 			divLink.appendChild(a);
@@ -177,7 +213,7 @@ var display = {
 
 			var datetime = document.createElement('div');
 			datetime.className = 'datetime';
-			datetime.innerText = item.time;
+			innerText(datetime, item.time);
 
 			li.appendChild(datetime);
 
@@ -305,7 +341,7 @@ var manager = {
 		var div = $('#pageselect .pagelink div');
 		for (var i=0; i<div.length; ++i){
 			div[i].onclick = function (){
-				lthis.page( this.innerText );
+				lthis.page( innerText(this) );
 			};
 		}
 	},
@@ -353,6 +389,7 @@ document.getElementById('editor').getElementsByTagName('form')[0].onsubmit = fun
 		'article': this['article'].value,
 		'type': this['type'].value,
 		'class': this['class'].value,
+		'tag': this['tag'].value.replace(/ /g, '').split(',')
 	};
 	var url = 'ad.php?pw='+ $.getRequest('pw') +'&type='+envir.mode;
 	display.status('saving');
@@ -360,6 +397,8 @@ document.getElementById('editor').getElementsByTagName('form')[0].onsubmit = fun
 		function (d){
 			console.info(d);
 			display.status('');
+
+			display.loadArticleList(envir.page, envir.limit);
 		},
 		function (err){
 			console.error(err);
