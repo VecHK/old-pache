@@ -26,6 +26,7 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 
 	<link href="style/admin.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="../js/remilia.js"></script>
+	<script type="text/javascript" src="../js/taboverride.min.js"></script>
 </head>
 <body>
 	<form id="articlemanagelist">
@@ -51,6 +52,8 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 			<datalist id="class_list" >
 				<option label="N/A" value="" />
 			</datalist>
+
+			<input id="tag_list_input" name="tag" placeholder="Tag" />
 
 			<select name="type" >
 				<option value="markdown">Markdown</option>
