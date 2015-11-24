@@ -9,13 +9,13 @@ class pache{
 		'title',
 		'article',
 		'type',
-		'class'
+		'class',
 	);
 	public $createAble = Array(
 		'title',
 		'article',
 		'type',
-		'class'
+		'class',
 	);
 }
 $pache = new pache;
@@ -73,25 +73,13 @@ function outClassIndexHTML(){
 	$clist = getClassIndex();
 
 	$str = $str.'<li>'.'<a href="'.$pache->root.'">'.'首页'.'</a>'.'</li>';
-	$str = $str.'<li><a href="about.html" target="_blank">关于</a></li>';
+	$str = $str.'<li><a href="get.php?id=33" target="_blank">关于</a></li>';
+	$str = $str.'<li>'.'<a href="'.$pache->root.'/get.php?id=30">'.'友情链接'.'</a>'.'</li>';
 
 	for ( $i=0; $i<count($clist); ++$i ){
 		$str = $str.'<li>'.'<a href="'.$pache->root.'?class='.$clist[$i].'">'.$clist[$i].'</a>'.'</li>';
 	}
 	$str = $str.'</nav>';
-	return $str;
-}
-function outArticleTagListByIdHTML($id){
-	$pache = new pache;
-	$tlist = getArticleTagListById($id);
-	//var_dump($tlist);
-
-	$str = '<ul id="taglist">';
-	for ( $i=0; $i<count($tlist); ++$i ){
-
-		$str = $str.'<li><a href="'.$pache->root.'?tag='.$tlist[$i]['tagname'].'">'.$tlist[$i]['tagname'].'</a></li>';
-	}
-	$str = $str.'</ul>';
 	return $str;
 }
 class updateAble{
@@ -108,10 +96,16 @@ class updateAble{
 function updateArticleByIdProcess($id, $op){
 	$up = new updateAble($op);
 	if ( updateArticleById($id, $up) ){
+		if ( isset($op['tag']) && gettype($op['tag']) == 'array' ){
+			if ( !insertTagsById($id, $op['tag']) ){
+				return echoInfoJson(101, 'ok, but tag fail');
+			}
+		}else{
+			return echoInfoJson(101, 'ok, but tag fail');
+		}
 		return echoInfoJson(0, 'ok');
-	}else{
-		return echoInfoJson(2, 'fail');
 	}
+	return echoInfoJson(2, 'fail');
 }
 function createArticleProcess($POST){
 	if ( createArticle($POST) ){
@@ -147,9 +141,9 @@ class outIndex{
 			$this->display = func_get_arg(2);
 		}
 		$pache = new pache;
-		$this->article = getArticles(((int)$page - 1) * $limit, $limit);
-		$this->countPage = ceil( articleCount('default')/$limit );
-		$this->page = $page;
+		$this->article = getArticles(((int)$page - 1) * (int)$limit, (int)$limit);
+		$this->countPage = ceil( articleCount('default')/(int)$limit );
+		$this->page = (int)$page;
 		$this->articleCount = articleCount('default');
 	}
 	public function __destruct(){
@@ -160,6 +154,29 @@ class outIndex{
 			for ( $i=0; $i<count($this->article); ++$i){
 				echo '<li><div class="link"><a href="'.$pache->root.'/get.php?id='. $this->article[$i]['id'] .'">'.$this->article[$i]['title'].'</a></div><div class="datetime">'.$this->article[$i]['time'].'</div></li>';
 			}
+		}
+	}
+}
+
+class outTagById{
+	public $articleId;
+	public $tagList;
+	function __construct($id, $display){
+		$this->tagList = getArticleTagListById($id);
+		$this->articleId = (int)$id;
+		$this->display = $display;
+	}
+	function __destruct(){
+		if ( $this->display == 'json' ){
+			echo json_encode($this);
+		}else if ( $this->display == 'html' ){
+			$pache = new pache;
+			$str = '<ul id="taglist">';
+			for ( $i=0; $i<count($this->tagList); ++$i ){
+				$str = $str.'<li><a href="'.$pache->root.'?tag='.$this->tagList[$i]['tagname'].'">'.$this->tagList[$i]['tagname'].'</a></li>';
+			}
+			$str = $str.'</ul>';
+			echo $str;
 		}
 	}
 }
