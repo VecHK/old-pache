@@ -66,9 +66,10 @@
 	background: black;
 	color: #F12828;
 	border: 0;
-	border-bottom-width: 2px;
-	border-bottom-color: #F12828;
+	width: 100%;
+	border-width: 1px;
 	border-bottom-style: groove;
+	border-color: rgba(241, 40, 40, 0.618);
 }
 #editor input.title:focus{
 	outline: none;
