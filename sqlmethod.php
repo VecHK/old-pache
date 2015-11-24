@@ -19,7 +19,7 @@ function connectSQL(){
 function createArticle($create){
 	$sql = connectSQL();
 
-	class escapeSQL{
+	class createArticleSQL{
 		function __construct($create){
 			$this->title = mysql_escape_string($create['title']);
 			$this->type = mysql_escape_string($create['type']);
@@ -38,11 +38,11 @@ function createArticle($create){
 
 
 			if ( strtolower($create['type']) === 'markdown' ){
-				require('/Michelf/MarkdownExtra.inc.php');
-				require_once '/Michelf/MarkdownExtra.inc.php';
+				require('Michelf/MarkdownExtra.inc.php');
+				require_once 'Michelf/MarkdownExtra.inc.php';
 				//use Michelf\MarkdownExtra;
 
-				$parser = new \Michelf\MarkdownExtra;
+				$parser = new Michelf\MarkdownExtra;
 				$parser->fn_id_prefix = "mmd-";//Michelf markdown
 				$my_html = $parser->transform($create['article']);
 				$this->format = mysql_escape_string($my_html);
@@ -51,7 +51,7 @@ function createArticle($create){
 			}
 		}
 	}
-	$insert = new escapeSQL($create);
+	$insert = new createArticleSQL($create);
 
 	$sqlstr = "INSERT INTO `pache_article` ( title, type, permission, article, format, class, time, ltime )
 	VALUES
@@ -103,7 +103,33 @@ function updateArticleById($id, $update){
 	$sqlstr = "UPDATE pache_article SET ";
 
 	foreach( $update as $key => $value ){
-		$sqlstr = $sqlstr . "".mysql_escape_string($key)."" . ' = ' . "'".mysql_escape_string($value). "'" . ', ';
+		if ( $key == 'type' ){
+			switch( strtolower($value) ){
+				case 'markdown':
+					require('Michelf/MarkdownExtra.inc.php');
+					require_once 'Michelf/MarkdownExtra.inc.php';
+					//use Michelf\MarkdownExtra;
+					$parser = new Michelf\MarkdownExtra;
+					$parser->fn_id_prefix = "mmd-";//Michelf markdown
+
+					$my_html = $parser->transform($update->article);
+
+					$sqlstr = $sqlstr . "".mysql_escape_string('format')."" . ' = ' . "'".mysql_escape_string($my_html). "'" . ', ';
+				break;
+
+				case 'text':
+					$ftext = nl2br($update->article);
+					$sqlstr = $sqlstr . "".mysql_escape_string('format')."" . ' = ' . "'".($ftext). "'" . ', ';
+				break;
+
+				default:
+			}
+		}
+		if ( $key == 'tag' ){
+
+		}else{
+			$sqlstr = $sqlstr . "".mysql_escape_string($key)."" . ' = ' . "'".mysql_escape_string($value). "'" . ', ';
+		}
 	}
 	$sqlstr = $sqlstr . ' ltime = now() ';
 	$sqlstr = $sqlstr . ' WHERE id = '. (int)$id;
@@ -117,15 +143,16 @@ function updateArticleById($id, $update){
 	}
 	return true;
 }
-function newResult($id, $title, $type, $class, $time, $ltime, $article){
+function newResult($id, $title, $type, $class, $time, $ltime, $article, $format){
 	$obj = new stdClass();
 	$obj->id = $id;
 	$obj->title = $title;
 	$obj->type = $type;
 	$obj->class = $class;
 	$obj->time = $time;
-	$obj->ltime = func_get_arg(5);
-	$obj->article = func_get_arg(6);
+	$obj->ltime = $ltime;
+	$obj->article = $article;
+	$obj->format = $format;
 	return $obj;
 }
 
@@ -149,7 +176,8 @@ function getArticleById($id){
 			$row['class'],
 			$row['time'],
 			$row['ltime'],
-			$row['article']
+			$row['article'],
+			$row['format']
 		);
 
 		/*
@@ -228,9 +256,32 @@ function getArticlesByTag($tag, $start, $limit){
 	mysql_close($sql->con);
 	return $list;
 }
-function insertTag($id, $tagname){
+function insertTagsById($id, $tagArr){
 	$sql = connectSQL();
+
+	$sqlstr = "DELETE  FROM `pache_tag` WHERE articleid = ".(int)$id;
+	$sqlresult = mysql_query($sqlstr, $sql->con);
+
+	if ( !$sqlresult ){
+		mysql_close($sql->con);
+		die(mysql_error($sql->con));
+	}
+	$sqlstr = "INSERT INTO `pache_tag` (tagname, articleid)
+	VALUES ";
+	for ( $i=0; $i<count($tagArr); ++$i ){
+		$sqlstr = $sqlstr. "(". "'".mysql_escape_string($tagArr[$i])."', ". (int)$id ."),";
+	}
+
+	$sqlstr = substr($sqlstr, 0, -count($sqlstr));
+
+	$sqlresult = mysql_query($sqlstr, $sql->con);
+	if ( !$sqlresult ){
+		mysql_close($sql->con);
+		die(mysql_error($sql->con));
+	}
+
 	mysql_close($sql->con);
+	return true;
 }
 function updateTag($id, $tag){
 	$sql = connectSQL();
@@ -314,5 +365,8 @@ function getClassIndex(){
 	mysql_close($sql->con);
 	return $list;
 }
+
+
+
 
 ?>
