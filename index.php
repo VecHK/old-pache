@@ -74,9 +74,9 @@ else if ( isset($_GET['tag']) ){
 	<script type="text/javascript" src="js/Markdown.Sanitizer.min.js"></script>
 	<script type="text/javascript" src="js/prettify.min.js"></script>
 	<script type="text/javascript" src="js/Markdown.Extra.min.js"></script>
--->
-	<script type="text/javascript" src="js/remilia.js"></script>
 
+	<script type="text/javascript" src="js/remilia.js"></script>
+-->
 </head>
 <body>
 		<?php
@@ -121,8 +121,10 @@ else if ( isset($_GET['tag']) ){
 
 	</div>
 	<footer>
-		Power by pache demo2
+		Power by pache demo3
 	</footer>
 </body>
+<!--
 	<script type="text/javascript" src="js/home.js"></script>
+-->
 </html>
