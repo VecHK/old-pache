@@ -13,6 +13,8 @@ body, html {
 footer{
 	margin-top: 64px;
 	width: 100%;
+	color: grey;
+	font-size: small;
 }
 
 ins {
@@ -28,6 +30,7 @@ ins {
 	font-size: 24px;
 	font-weight: 200;
 	color: #1f0f1f;
+	margin-top: 96px;
 }
 #article pre{
 	padding: 1em;
@@ -52,6 +55,16 @@ ins {
 }
 
 /*  Markdown 相关 */
+
+#article sup{
+	vertical-align: sub;
+}
+
+#article li{
+	margin-top: 8px;
+	margin-bottom: 8px;
+	list-style: disc;
+}
 
 #article .footnotes{
 	font-family: sans-serif, "宋体";
@@ -126,8 +139,9 @@ p{
 	/*
 	margin-top: 1.7em;
 	margin-bottom: 0.0em;
-	*/
+
 	text-align: justify;
+	*/
 	text-justify: inter-ideographic;
 }
 h1,h2,h3,h4,h5,h6{
@@ -269,13 +283,8 @@ h6{
 	margin: 48px auto;
 }
 #main header {
-	/*
-	font-size: 48px;
-	text-align: center;
-	border-bottom-style: dotted;
-	border-width: thin;
-	border-bottom-color: rgba(0, 153, 153, 0.5);
-	*/
+	margin-top: 64px;
+	margin-bottom: 96px;
 }
 #main header h1{
 	width: 100%; */
@@ -305,15 +314,16 @@ h6{
 	border-top-right-radius: 38.2px;
 }
 #time{
-	text-align: right;
+	text-align: center;
 	font-size: xx-small;
+	margin-top: 32px;
 }
 #time ins{
 	opacity: 0.618;
 	color: grey;
 }
 #time time{
-	text-align: right;
+	text-align: center;
 	font-size: small;
 	color: rgba(200, 156, 128, 1);
 	display: block;
