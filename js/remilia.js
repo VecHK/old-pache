@@ -2,6 +2,14 @@ var Remilia = function() {
 	console.info('永远鲜红的幼月 v0.25');
 }();
 
+var innerText = function (ele, str){
+	if (str===undefined){
+		return ele.textContent || ele.innerText;
+	}else{
+		ele.textContent ? (ele.innerText = str) : ( ele.textContent = str );
+	}
+};
+
 var SS = (function (win, doc){
 	var myMethod = function (){
 		this.localStorage = function (){
@@ -284,6 +292,18 @@ var SS = (function (win, doc){
 
 					return ff;
 				}();
+		};
+		this.text = function (str){
+			var ele = this[0];
+			if ( typeof str !== 'string' ){
+				ele = str;
+				str = arguments[1];
+			}
+			if (str===undefined){
+				return ele.textContent || ele.innerText;
+			}else{
+				ele.textContent ? (ele.innerText = str) : ( ele.textContent = str );
+			}
 		};
 
 		this.SS = f;
