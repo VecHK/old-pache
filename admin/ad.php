@@ -42,6 +42,18 @@ if ( !isset($_GET['type']) ){
 }
 
 switch($_GET['type']){
+	case 'gettag':
+		if ( isset($_GET['id']) ){
+			if ( isset($_GET['display']) ){
+				if ( $_GET['display'] == 'json' ){
+					return new outTagById( $_GET['id'], 'json');
+				}
+			}
+			return new outTagById($_GET['id'], 'html');
+		}else{
+			return echoFailJson(1, 'id no found.');
+		}
+		break;
 	case 'getindex':
 		if ( isset($_GET['page']) && (int)$_GET['page'] > 0 ){
 			$page = (int) $_GET['page'];
