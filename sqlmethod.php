@@ -36,7 +36,6 @@ function createArticle($create){
 				$this->class = '';
 			}
 
-
 			if ( strtolower($create['type']) === 'markdown' ){
 				require('Michelf/MarkdownExtra.inc.php');
 				require_once 'Michelf/MarkdownExtra.inc.php';
@@ -215,6 +214,18 @@ function getArticles($start, $limit){
 	mysql_close($sql->con);
 	return $list;
 }
+function getArticleTop(){
+	$sql = connectSQL();
+	$sqlstr = "SELECT  * FROM  `pache_article` ORDER BY id DESC LIMIT 1";
+	$sqlresult = mysql_query($sqlstr, $sql->con);
+	if ( !$sqlresult ){
+		die('SQLfail: '+mysql_error($sqlresult));
+		return NULL;
+	}
+	$row=mysql_fetch_array($sqlresult);
+	mysql_close($sql->con);
+	return $row;
+}
 
 function getArticlesById($ids){
 	$sql = connectSQL();
@@ -365,8 +376,5 @@ function getClassIndex(){
 	mysql_close($sql->con);
 	return $list;
 }
-
-
-
 
 ?>
