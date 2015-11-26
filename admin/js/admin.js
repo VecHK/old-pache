@@ -10,7 +10,7 @@ var envir = {
 var mEvent = {
 	articleList: {
 		click: function (){
-			var id = $.getRequest(this.href, 'id');
+			var id = $.getRequest('id', this.href );
 			envir.mode = 'update';
 			manager.getArticleById( id,
 				function (){
@@ -41,7 +41,7 @@ var mEvent = {
 		console.log(selected);
 
 		var url = 'ad.php?'+$.stringifyRequest({
-			'pw': $.getRequest('pw'),
+			'pw': $.cookie('pw'),
 			'type': 'manage',
 			'manage': 'del'
 		});
@@ -132,7 +132,7 @@ var display = {
 	loadEditor: function (article){
 		var url = 'ad.php?' + $.stringifyRequest({
 			'type': 'getclass',
-			'pw':$.getRequest('pw'),
+			'pw':$.cookie('pw'),
 			'display': 'json'
 		});
 		var classListInput = $('#class_list_input')[0];
@@ -163,7 +163,7 @@ var display = {
 		);
 
 		var url = 'ad.php?'+ $.stringifyRequest({
-			'pw': $.getRequest('pw'),
+			'pw': $.cookie('pw'),
 			'type': 'gettag',
 			'id': article.id,
 			'display': 'json'
@@ -290,7 +290,7 @@ var manager = {
 			function isUndefined(obj){
 				return obj === undefined ? true : false;
 			}
-			this.pw = $.getRequest('pw');
+			this.pw = $.cookie('pw');
 			this.type = 'getindex';
 			this.display = display;
 			isUndefined(page) || (this.page = page);
@@ -391,11 +391,18 @@ document.getElementById('editor').getElementsByTagName('form')[0].onsubmit = fun
 		'class': this['class'].value,
 		'tag': this['tag'].value.replace(/ /g, '').split(',')
 	};
-	var url = 'ad.php?pw='+ $.getRequest('pw') +'&type='+envir.mode;
+	var url = 'ad.php?pw='+ $.cookie('pw') +'&type='+envir.mode;
 	display.status('saving');
 	$.vjax(url, 'POST', articleInfo,
 		function (d){
-			console.info(d);
+			$.json2obj(d,
+				function (obj){
+					console.info(obj);
+				},
+				function (){
+
+				}
+			);
 			display.status('');
 
 			display.loadArticleList(envir.page, envir.limit);
