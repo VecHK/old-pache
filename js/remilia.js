@@ -12,12 +12,13 @@ var innerText = function (ele, str){
 
 var SS = (function (win, doc){
 	var myMethod = function (){
+		var my = this;
 		this.localStorage = function (){
 			if ( !win.localStorage ){
 				console.warn('this Browser cannot support localStorage.');
 				return ;
 			}
-			var method = function (){
+			var localStorageMethod = function (){
 				var my = this;
 				this.getlength = function (){
 					return localStorage.length
@@ -110,22 +111,70 @@ var SS = (function (win, doc){
 
 				}
 			};
-			method.apply(ls);
+			localStorageMethod.apply(ls);
 			return ls;
 		}();
 		this.ls = this.localStorage;
-		this.cookie = function (){};
+		this.cookie = function (){
+			var my = this;
+			var cookieMethod = function (){
+				this.parse = function (){
+					if (!(this instanceof arguments.callee)) {
+						return new arguments.callee();
+					}
+					var obj = this;
+					var rawArr = cookieF.arguments.callee().replace(/ /g, '').split(';');
+					function pRaw(item){
+						var keyObjArr = item.split('=');
+						obj[keyObjArr[0]] = decodeURIComponent(keyObjArr[1]);
+					}
+					rawArr.forEach(pRaw);
+					return obj;
+				};
+				this.stringify = function(){
+					var obj = this.parse();
+					var str = '';
+					for (var key in obj){
+						str += key + '=' + encodeURIComponent(obj[key]) + '; ';
+					}
+					return str.substr(0, str.length-2);
+				};
+				this.set = function (key, value, time){
+					var set = new Date();
+					set.setDate( set.getDate() + time );
+					doc.cookie = key + ' = ' + escape(value) + ((time !== undefined) ? ';expires='+exdate.toGMTString() : '');
+				};
+				this.empty = function (key){
+					this.setCookie(key, '');
+				};
+				this.remove = function (){};
+
+			};
+			var cookieF = function(){
+				if ( arguments.length === 0 ){
+					return document.cookie;
+				}
+				if ( typeof arguments[0] === 'string' ){
+					var key = arguments[0];
+					return arguments[1] == undefined ? this.cookie.parse()[key] : this.cookie.set(key, arguments[1]);
+				}else if (typeof arguments[0] === 'object'){
+
+				}
+			};
+			cookieMethod.apply(cookieF);
+			return cookieF;
+		}();
 
 		this.getRequest = function() {
 			/* thanks jiekk:  http://www.cnblogs.com/jiekk/archive/2011/06/28/2092444.html */
 			function getStrRequest(str){
-				return str.split('?')[1];
+				return new RegExp(/\?/g).test(str) ? str.split(/\?/)[1] : str;
 			}
 			var name = arguments[0];
 			var request = win.location.search.substr(1);
 			if ( arguments[1] !== undefined ){
-				request = getStrRequest(arguments[0]);
-				name = arguments[1];
+				name = arguments[0];
+				request = getStrRequest(arguments[1]);
 			}
 			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
 			var r = request.match(reg);
@@ -208,6 +257,7 @@ var SS = (function (win, doc){
 			try{
 				var obj = JSON.parse(jsonStr);
 			}catch(e){
+				console.warn(jsonStr);
 				fail && fail(e, jsonStr);
 				return null;
 			}
@@ -227,10 +277,7 @@ var SS = (function (win, doc){
 			$('head')[0].appendChild(script);
 		};
 		this.sendJSON = function(URL, jsonStr, ok, fail) {
-			if ( typeof jsonStr !== 'string' ){
-					jsonStr = JSON.stringify(jsonStr);
-			}
-			console.info(jsonStr);
+			jsonStr = typeof jsonStr !== 'string' ? JSON.stringify(jsonStr) : jsonStr;
 			this.post(URL, 'json='+jsonStr, ok, fail);
 		};
 
@@ -255,18 +302,15 @@ var SS = (function (win, doc){
 		this.myCheckObj = function (){
 			Object.prototype.myCheckObj = function (){
 				var keys = Array.prototype.slice.apply(arguments);
-				/* obj */
-				if ( keys.length === 1 && typeof keys[0] === 'object' && !Array.isArray(keys[0]) ){
-					var obj = keys[0];
-					var keys = Object.keys(keys[0]);
-					for ( var i=0; i<keys.length; ++i ){
-						if ( typeof this[keys[i]] !== obj[keys[i]] ){
-							return false;
-						}
+				function check(compared){
+					for ( var key in this ){
+						if ( key === compared )
+							return true;
 					}
+					return false;
 				}
-				for ( var i=0; i<keys.length; ++i ){
-					if ( this[keys[i]] === undefined ){
+				for ( var i=0; i<keys.length; i++ ){
+					if ( !check.apply(this,[keys[i]]) ){
 						return false;
 					}
 				}
