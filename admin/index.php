@@ -1,10 +1,32 @@
 <?php
 require('../article.php');
 
-if ( !( isset($_GET['pw']) && $_GET['pw'] == 'pache' ) ){
-	echo 'pw';
-	return 0;
+function comparedValue($value, $com){
+	return $value == $com;
 }
+function checkArrayKeys($arr, $key){
+	return isset($arr[$key]);
+}
+
+function checkArrayKeysAndComparedValue($arr, $key, $com){
+	return checkArrayKeys($arr, $key) && comparedValue($arr[$key], $com);
+}
+
+function checkAdminPwCookie(){
+	return checkArrayKeysAndComparedValue($_COOKIE, 'pw', 'pache');
+}
+function checkAdminPwPost(){
+	return checkArrayKeysAndComparedValue($_POST, 'pw', 'pache');
+}
+
+if ( !checkAdminPwCookie() ){
+	if ( !checkAdminPwPost() ){
+		return require('pwinput.html');
+	}
+	setcookie('pw', 'pache', time()+604800);
+}
+setcookie('vechkabc', '\=hallo', time()+604800);
+
 if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 	if ( isset($_GET['display']) ){
 		$display = strtoupper($_GET['display']);
