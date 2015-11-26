@@ -101,6 +101,7 @@ var myDateFormat = function (d){
 		function unit(arr){
 			function light(item){
 				if ( item.className !== '' ){
+					console.warn(item);
 					item.innerHTML = prettyPrintOne(item.innerHTML);
 					item.parentElement.className = 'prettyprint';
 				}

@@ -109,13 +109,20 @@ function updateArticleByIdProcess($id, $op){
 }
 function createArticleProcess($POST){
 	if ( createArticle($POST) ){
+		$topArticle = getArticleTop();
 		if ( isset($POST['tag']) && gettype($POST['tag']) == 'array' ){
-			$topArticle = getArticleTop();
 			if ( !insertTagsById($topArticle['id'], $POST['tag']) ){
 				return echoInfoJson(101, 'ok, but tag fail');
 			}
 		}
-		return echoInfoJson(0, 'ok');
+		class backTop{
+			public $code = 0;
+			public $info;
+			function __construct($top){
+				$this->info = $top;
+			}
+		}
+		echo json_encode(new backTop($topArticle));
 	}else{
 		return echoInfoJson(2, 'fail');
 	}
