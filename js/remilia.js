@@ -206,6 +206,43 @@ var SS = (function (win, doc){
 			}
 			return strSubLast( objKeysMap( requestObj, Object.keys(requestObj) ));
 		};
+		this.checkObj = function (obj, compared){
+			"use strict";
+			var keys = Object.keys(obj);
+			var comparedObjs = [];
+			var comparedArr = Array.prototype.slice.apply(arguments, [1]).filter(function (item){
+				return !(typeof item == 'object' && comparedObjs.push(item));
+			});
+			function comparedValueInArr(Arr, value){
+				for ( let key of Arr )
+					if ( key === value)
+						return true;
+			}
+			function eachKey(comparedArr){
+				for ( let com of comparedArr )
+					if ( !comparedValueInArr(keys, com) )
+						return false;
+				return true;
+			}
+			function eachObj(comparedObjs){
+				for (let comparedObj of comparedObjs){	//解对象组
+					for ( let comKey of Object.keys(comparedObj) ){	//解对象
+						if ( comparedValueInArr(keys, comKey) ){
+							if ( comparedObj[comKey] !== obj[comKey] ){
+								return false;
+							}
+						}else{
+							return false;
+						}
+					}
+				}
+				return true;
+			}
+			return !(eachKey(comparedArr) && eachObj(comparedObjs));
+		};
+		this.vjax2 = function (controlObj){
+
+		};
 		this.vjax = function(URL, method, pgdata, callback, fail) {
 			method = method.toLowerCase();
 
@@ -224,7 +261,6 @@ var SS = (function (win, doc){
 				}
 			};
 			if ( method.toLowerCase() === 'post' ) {
-				console.warn('!!');
 				vj.open("POST", URL, true);
 				vj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
@@ -299,22 +335,58 @@ var SS = (function (win, doc){
 			}
 			return end === undefined ? undefined : end();
 		};
-		this.myCheckObj = function (){
-			Object.prototype.myCheckObj = function (){
-				var keys = Array.prototype.slice.apply(arguments);
-				function check(compared){
-					for ( var key in this ){
-						if ( key === compared )
+		this.vecExtent = function (){
+			Array.prototype.allEach =
+			typeof Array.prototype.allEach !== 'undefined' ?
+			Array.prototype.allEach :
+			function (callback, total){
+				"use strict";
+				let i = 0;
+				total = Number.isFinite(total) ? total : 0;
+				for ( let item of this ){
+					if ( Array.isArray(item) )
+						total = item.allEach(callback, total);
+					else
+						++i && callback(item, this, i, total);
+					++total;
+				}
+				return --total;
+			};
+
+			Object.prototype.myCheck = function (compared){
+				"use strict";
+				var obj = this;
+				var keys = Object.keys(this);
+				var comparedObjs = [];
+				var comparedArr = Array.prototype.slice.apply(arguments, [0]).filter(function (item){
+					return !(typeof item == 'object' && comparedObjs.push(item));
+				});
+				function comparedValueInArr(Arr, value){
+					for ( let key of Arr )
+						if ( key === value)
 							return true;
-					}
-					return false;
 				}
-				for ( var i=0; i<keys.length; i++ ){
-					if ( !check.apply(this,[keys[i]]) ){
-						return false;
-					}
+				function eachKey(comparedArr){
+					for ( let com of comparedArr )
+						if ( !comparedValueInArr(keys, com) )
+							return false;
+					return true;
 				}
-				return true;
+				function eachObj(comparedObjs){
+					for (let comparedObj of comparedObjs){	//解对象组
+						for ( let comKey of Object.keys(comparedObj) ){	//解对象
+							if ( comparedValueInArr(keys, comKey) ){
+								if ( comparedObj[comKey] !== obj[comKey] ){
+									return false;
+								}
+							}else{
+								return false;
+							}
+						}
+					}
+					return true;
+				}
+				return !(eachKey(comparedArr) && eachObj(comparedObjs));
 			};
 		};
 	};
@@ -370,21 +442,21 @@ var SS = (function (win, doc){
 
 var o = {};for( var i=0; i<9999; ++i ){ o[i] = i; }
 
-function bechMark(testCount, count, func, canshu){
+function bechMark(testCount, count, func, arg){
 	var testUnitArr = [];
 	var start = performance.now();
-	function testUnit(count, func, canshu){
+	function testUnit(count, func, arg){
 		this.start = performance.now();
 
 		for ( var i=0; i<count; ++i )
-			func.apply(null, canshu);
+			func.apply(null, arg);
 
 		this.end = performance.now();
 		this.interval = this.end - this.start;
 	}
 
 	for ( var i=0; i<testCount; ++i )
-		testUnitArr.push( new testUnit(count, func, canshu) );
+		testUnitArr.push( new testUnit(count, func, arg) );
 
 	var end = performance.now();
 	var totalTime = end - start;
