@@ -1,16 +1,12 @@
-var Remilia = function() {
-	console.info('永远鲜红的幼月 v0.25');
-}();
-
-var innerText = function (ele, str){
-	if (str===undefined){
-		return ele.textContent || ele.innerText;
-	}else{
-		ele.textContent ? (ele.innerText = str) : ( ele.textContent = str );
-	}
-};
-
-var SS = (function (win, doc){
+(function (win, doc){
+	var ver = 0.3;
+	console.info(
+		'永远鲜红的',
+		'幼月',
+		'与',
+		'bug',
+		'\n\nver:'+ver
+	);
 	var myMethod = function (){
 		var my = this;
 		this.localStorage = function (){
@@ -117,13 +113,24 @@ var SS = (function (win, doc){
 		this.ls = this.localStorage;
 		this.cookie = function (){
 			var my = this;
+			var cookieF = function(){
+				if ( arguments.length === 0 ){
+					return document.cookie;
+				}
+				if ( typeof arguments[0] === 'string' ){
+					var key = arguments[0];
+					return arguments[1] == undefined ? this.cookie.parse()[key] : this.cookie.set(key, arguments[1]);
+				}else if (typeof arguments[0] === 'object'){
+
+				}
+			};
 			var cookieMethod = function (){
 				this.parse = function (){
 					if (!(this instanceof arguments.callee)) {
 						return new arguments.callee();
 					}
 					var obj = this;
-					var rawArr = cookieF.arguments.callee().replace(/ /g, '').split(';');
+					var rawArr = cookieF().replace(/ /g, '').split(';');
 					function pRaw(item){
 						var keyObjArr = item.split('=');
 						obj[keyObjArr[0]] = decodeURIComponent(keyObjArr[1]);
@@ -150,18 +157,8 @@ var SS = (function (win, doc){
 				this.remove = function (){};
 
 			};
-			var cookieF = function(){
-				if ( arguments.length === 0 ){
-					return document.cookie;
-				}
-				if ( typeof arguments[0] === 'string' ){
-					var key = arguments[0];
-					return arguments[1] == undefined ? this.cookie.parse()[key] : this.cookie.set(key, arguments[1]);
-				}else if (typeof arguments[0] === 'object'){
 
-				}
-			};
-			cookieMethod.apply(cookieF);
+			cookieF.__proto__ = new cookieMethod;
 			return cookieF;
 		}();
 
@@ -214,19 +211,22 @@ var SS = (function (win, doc){
 				return !(typeof item == 'object' && comparedObjs.push(item));
 			});
 			function comparedValueInArr(Arr, value){
-				for ( let key of Arr )
+				"use strict";
+				for ( var key of Arr )
 					if ( key === value)
 						return true;
 			}
 			function eachKey(comparedArr){
-				for ( let com of comparedArr )
+				"use strict";
+				for ( var com of comparedArr )
 					if ( !comparedValueInArr(keys, com) )
 						return false;
 				return true;
 			}
 			function eachObj(comparedObjs){
-				for (let comparedObj of comparedObjs){	//解对象组
-					for ( let comKey of Object.keys(comparedObj) ){	//解对象
+				"use strict";
+				for (var comparedObj of comparedObjs){	//解对象组
+					for ( var comKey of Object.keys(comparedObj) ){	//解对象
 						if ( comparedValueInArr(keys, comKey) ){
 							if ( comparedObj[comKey] !== obj[comKey] ){
 								return false;
@@ -335,15 +335,26 @@ var SS = (function (win, doc){
 			}
 			return end === undefined ? undefined : end();
 		};
-		this.vecExtent = function (){
+		this.stradd = function (){
+			var str='';
+			for ( var i of arguments)
+				str += String(i);
+			return str;
+		};
+		this.straddFunctional = function (){
+			return function (a){
+				return a.length ? String(a.shift()) + arguments.callee(a) : '';
+			}(Array.prototype.slice.call(arguments));
+		};
+		this.vecExtend = function (){
 			Array.prototype.allEach =
 			typeof Array.prototype.allEach !== 'undefined' ?
 			Array.prototype.allEach :
 			function (callback, total){
 				"use strict";
-				let i = 0;
+				var i = 0;
 				total = Number.isFinite(total) ? total : 0;
-				for ( let item of this ){
+				for ( var item of this ){
 					if ( Array.isArray(item) )
 						total = item.allEach(callback, total);
 					else
@@ -362,19 +373,22 @@ var SS = (function (win, doc){
 					return !(typeof item == 'object' && comparedObjs.push(item));
 				});
 				function comparedValueInArr(Arr, value){
-					for ( let key of Arr )
+					"use strict";
+					for ( var key of Arr )
 						if ( key === value)
 							return true;
 				}
 				function eachKey(comparedArr){
-					for ( let com of comparedArr )
+					"use strict";
+					for ( var com of comparedArr )
 						if ( !comparedValueInArr(keys, com) )
 							return false;
 					return true;
 				}
 				function eachObj(comparedObjs){
-					for (let comparedObj of comparedObjs){	//解对象组
-						for ( let comKey of Object.keys(comparedObj) ){	//解对象
+					"use strict";
+					for (var comparedObj of comparedObjs){	//解对象组
+						for ( var comKey of Object.keys(comparedObj) ){	//解对象
 							if ( comparedValueInArr(keys, comKey) ){
 								if ( comparedObj[comKey] !== obj[comKey] ){
 									return false;
@@ -391,53 +405,55 @@ var SS = (function (win, doc){
 		};
 	};
 	var domMethod = function (ele){
-		var interArguments = arguments;
-
-		var domArguments = arguments;
-		var lthis = this;
-		this.toHTML= function (str){
-			var ff = f;
-			domArguments.callee.apply(ff,[]);
+		var my = this;
+		this.css = function (){};
+		this.html = function (str){
 			if ( str === undefined )
-				return lthis[0].innerHTML;
+				return my[0].innerHTML;
 			else
-				return function (){
-					lthis[0].innerHTML = str;
-					console.warn(lthis[0].innerHTML );
-					var iHTML = lthis[0].innerHTML;
-
-					return ff;
-				}();
+				return ( my[0].innerHTML = str );
 		};
 		this.text = function (str){
-			var ele = this[0];
-			if ( typeof str !== 'string' ){
-				ele = str;
-				str = arguments[1];
-			}
-			if (str===undefined){
-				return ele.textContent || ele.innerText;
-			}else{
-				ele.textContent ? (ele.innerText = str) : ( ele.textContent = str );
+			var resultArr = [];
+			for ( var ele of my ){
+				if (str===undefined){
+					return ele.textContent || ele.innerText;
+				}else{
+					ele.textContent ? (ele.innerText = str) : ( ele.textContent = str );
+				}
 			}
 		};
 
-		this.SS = f;
-		this.$ = f;
+		return this;
 	};
-	function f(s){
-		var dom = document.querySelectorAll(s);
-		domMethod.apply(dom,[dom]);
-		return dom;
-	}
+	var f = function (str){
+		if ( typeof str !== 'string' ){
+			var domArr = Array(str);
+		}else if ( Array.isArray(str) ){
+			var domArr = str;
+		}else{
+			var domArr = Array.prototype.slice.apply(doc.querySelectorAll(str));
+		}
 
-	myMethod.apply(f, []);
+		return domMethod.apply(domArr);
+	};
+	var f_All = function (s){
+		var dom = doc.querySelectorAll(s);
+		return dom;
+	};
+
+	f.__proto__ = new myMethod;
+	f_All.__proto__ = new myMethod;
 
 	if ( !win.$ ){
 		win.$ = f;
 	}
+	if ( !win.$$ ){
+		win.$$ = f_All;
+	}
 
-	return f;
+	win.Remilia = f;
+	win.Remilia_f = f;
 })(window, document);
 
 var o = {};for( var i=0; i<9999; ++i ){ o[i] = i; }
@@ -471,33 +487,3 @@ function bechMark(testCount, count, func, arg){
 		'average': he/testUnitArr.length
 	}
 }
-
-var testArr = [];
-for ( var i=0; i<9999; ++i ) testArr[i] = i;
-
-
-var straddFunctional = function (){
-	return function (a){
-		return a.length ? String(a.shift()) + arguments.callee(a) : '';
-	}(Array.prototype.slice.call(arguments));
-};
-var stradd = function (){
-	var str = '';
-	for(var i=0; i<arguments.length; i++){
-		str += String(arguments[i]);
-	}
-	return str;
-};
-
-var straddFunctionalArray = function (a){
-	return function (a){
-		return a.length ? String(a.shift()) + arguments.callee(a) : '';
-	}(a);
-};
-var straddArray = function (a){
-	var str = '';
-	for(var i=0; i<a.length; i++){
-		str += String(a[i]);
-	}
-	return str;
-};
