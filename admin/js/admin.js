@@ -86,7 +86,7 @@ var display = {
 	'status': function (s){
 		var ele = document.getElementById('status');
 		if ( s.length ){
-			innerText(ele, s);
+			$(ele).text(s);
 			ele.style.opacity = '1';
 		}else{
 			ele.style.opacity = '0.01';
@@ -204,7 +204,7 @@ var display = {
 			var a = document.createElement('a');
 			a.href = '../pache?id='+item.id;
 
-			innerText(a, item.title);
+			$(a).text(item.title);
 
 			divLink.appendChild(input);
 			divLink.appendChild(a);
@@ -213,7 +213,7 @@ var display = {
 
 			var datetime = document.createElement('div');
 			datetime.className = 'datetime';
-			innerText(datetime, item.time);
+			$(datetime).text(item.time);
 
 			li.appendChild(datetime);
 
@@ -341,7 +341,7 @@ var manager = {
 		var div = $('#pageselect .pagelink div');
 		for (var i=0; i<div.length; ++i){
 			div[i].onclick = function (){
-				lthis.page( innerText(this) );
+				lthis.page( $(this).text() );
 			};
 		}
 	},
