@@ -45,7 +45,11 @@ function createArticle($create){
 				$parser->fn_id_prefix = "mmd-";//Michelf markdown
 				$my_html = $parser->transform($create['article']);
 				$this->format = mysql_escape_string($my_html);
-			}else{
+			}
+			else if ( strtolower($create['type']) === 'html' ){
+				$this->format = $create['article'];
+			}
+			else{
 				$this->format = ' ';
 			}
 		}
@@ -119,6 +123,10 @@ function updateArticleById($id, $update){
 				case 'text':
 					$ftext = nl2br($update->article);
 					$sqlstr = $sqlstr . "".mysql_escape_string('format')."" . ' = ' . "'".($ftext). "'" . ', ';
+				break;
+
+				case 'html':
+					$sqlstr = $sqlstr . "".mysql_escape_string('format')."" . ' = ' . "'".mysql_escape_string($update->article). "'" . ', ';
 				break;
 
 				default:
@@ -251,8 +259,8 @@ function getArticlesByTag($tag, $start, $limit){
 	$sqlstr = $sqlstr.") ";
 	$sqlstr = $sqlstr."WHERE articleid = id ";
 
-	$sqlstr = $sqlstr."GROUP BY id HAVING counts = ".count($tag)." ORDER BY time ";
-	$sqlstr = $sqlstr."LIMIT ". (int)$start .",". (int)$limit;
+	$sqlstr = $sqlstr." GROUP BY id HAVING counts = ".count($tag)." ORDER BY time DESC ";
+	$sqlstr = $sqlstr." LIMIT ". (int)$start .",". (int)$limit;
 /*	echo $sqlstr;*/
 	$sqlresult = mysql_query($sqlstr);
 	if ( !$sqlresult ){
@@ -316,7 +324,7 @@ function getArticleTagListById($id){
 function getArticlesByClass($class, $start, $limit){
 	$sql = connectSQL();
 
-	$sqlstr = "SELECT * FROM pache_article WHERE class = '".mysql_escape_string($class)."' ORDER BY ltime DESC LIMIT ". (int)$start .",". (int)$limit;
+	$sqlstr = "SELECT * FROM pache_article WHERE class = '".mysql_escape_string($class)."' ORDER BY time DESC LIMIT ". (int)$start .",". (int)$limit;
 
 	$sqlresult = mysql_query($sqlstr, $sql->con);
 	if ( !$sqlresult ){
