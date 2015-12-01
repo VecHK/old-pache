@@ -67,6 +67,19 @@ else if ( isset($_GET['tag']) ){
 	<link rel="stylesheet" href="style/global.css" type="text/css" />
 	<link rel="stylesheet" href="style/normal.css" type="text/css" media="screen and (min-width: 851px)" />
 	<link rel="stylesheet" href="style/min.css" type="text/css" media="screen and (max-width: 850px)" />
+
+	<script src="js/remilia.js"></script>
+	<script src="js/myLoader.js"></script>
+	<script>
+/*
+		mL.css( 'style/global.css', 'get', function (d){
+			console.log(d);
+		},
+		function (){
+
+		}, true);
+*/
+	</script>
 <!--
 	<link rel="stylesheet" href="style/myprettify.css" type="text/css" />
 
@@ -85,7 +98,20 @@ else if ( isset($_GET['tag']) ){
 
 	<ul id="list">
 		<?php
+		function cutstr_html($string, $sublen){
+			$string = strip_tags($string);
+			$string = preg_replace ('/\n/is', '', $string);
+			$string = preg_replace ('/ |　/is', '', $string);
+			$string = preg_replace ('/&nbsp;/is', '', $string);
+
+			preg_match_all("/[\x01-\x7f]|[\xc2-\xdf][\x80-\xbf]|\xe0[\xa0-\xbf][\x80-\xbf]|[\xe1-\xef][\x80-\xbf][\x80-\xbf]|\xf0[\x90-\xbf][\x80-\xbf][\x80-\xbf]|[\xf1-\xf7][\x80-\xbf][\x80-\xbf][\x80-\xbf]/", $string, $t_string);
+			if(count($t_string[0]) - 0 > $sublen) $string = join('', array_slice($t_string[0], 0, $sublen))."…";
+				else $string = join('', array_slice($t_string[0], 0, $sublen));
+
+			return $string;
+		}
 			for ( $i=0; $i<count($list); ++$i){
+				//echo '<li><div class="link"><a href="get.php?id='. $list[$i]['id'] .'">'.$list[$i]['title'].'</a></div><div class="datetime">'.$list[$i]['time'].'</div><div class="summary">'.cutstr_html($list[$i]['format'], 100).'</div></li>';
 				echo '<li><div class="link"><a href="get.php?id='. $list[$i]['id'] .'">'.$list[$i]['title'].'</a></div><div class="datetime">'.$list[$i]['time'].'</div></li>';
 			}
 		?>
@@ -104,9 +130,9 @@ else if ( isset($_GET['tag']) ){
 					break;
 				}
 				if ( $page == $i ){
-					echo $i.' ';
+					echo '<a class="current_page" title="这是当前页">'.$i.'</a>';
 				}else{
-					echo '<a href="?page='.$i.'">'.$i.'</a> ';
+					echo '<a class="no_current" href="?page='.$i.'">'.$i.'</a> ';
 				}
 			}
 		/*
@@ -120,8 +146,8 @@ else if ( isset($_GET['tag']) ){
 		</form>
 
 	</div>
-	<footer>
-		Power by pache demo3
+	<footer id="pachefooter">
+		Hello, Pache
 	</footer>
 </body>
 <!--
