@@ -7,7 +7,7 @@ var innerText = function (ele, str){
 };
 
 var noFound = function (ele){
-	var f =  document.getElementById('article').getElementsByTagName('div')[0];
+	var f =  document.getElementById('float');
 	console.info(f);
 
 		if ( f === undefined ){
@@ -92,7 +92,12 @@ var myDateFormat = function (d){
 	document.getElementById('article').onload = prettyPrint();
 
 */
-	noFound();
+	try{
+		noFound();
+	}catch(e){
+
+	}
+
 	function escape2Html(str) {
 		var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
 		return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
@@ -123,6 +128,7 @@ try{
 
 		if ( articleLtime > articleTime ){
 			document.getElementById('time').innerHTML = '<ins><time datetime="'+myDateFormat(articleTime)+'">'+myDateFormat(articleTime)+'</time></ins>'+'<time>'+myDateFormat(articleLtime)+'</time>';
+			document.getElementById('time').title = "创建于 "+myDateFormat(articleTime);
 		}else{
 			document.getElementById('time').innerHTML = '<time datetime="'+myDateFormat(articleTime)+'">'+ myDateFormat(articleTime) +'</time>'
 		}
