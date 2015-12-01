@@ -4,33 +4,30 @@ body, html {
 	font-family: "思源黑体 CN Light", "Hiragino Sans GB", "microsoft yahei", "WenQuanYi Microhei", "黑体";
 	margin: 0;
 	padding: 0;
-	/*
-	background-image: url(../bg.png);
-	background-repeat: no-repeat;
-	background-position: right bottom;
-	*/
 }
-footer{
-	margin-top: 64px;
+footer#pachefooter{
+	margin-top: 48px;
 	width: 100%;
 	color: grey;
 	font-size: small;
+	text-align: center;
 }
 
 ins {
 	text-decoration: line-through;
 	opacity: 0.5;
 }
-#list a {
-	color: #009999;
-	text-decoration: blink;
-}
 #article {
-	font-family: "Calibri", "华文仿宋", "microsoft yahei", "WenQuanYi Microhei", "黑体";
-	font-size: 24px;
+	/*font-family: "DengXian","Hiragino Sans GB", "microsoft yahei","WenQuanYi Microhei","黑体", "Calibri"; */
+	font-family: "WenQuanYi Microhei","黑体","DengXian", "Calibri", "Hiragino Sans GB", "microsoft yahei";
+	font-size: 16px;
 	font-weight: 200;
-	color: #1f0f1f;
-	margin-top: 96px;
+	color: rgb(27, 29, 82);
+	width: 640px;
+	margin: auto;
+	text-align: justify;
+	/*font-family: "Hiragino Sans GB", DengXian, "WenQuanYi Microhei", "Microsoft yahei light", "黑体";*/
+	text-shadow: 0px 0px 1px rgba(27, 29, 82, 0.182);
 }
 #article pre{
 	padding: 1em;
@@ -38,17 +35,17 @@ ins {
 	background-color: #101010;
 	color: #CCC;
 	overflow: auto;
-	max-height: 500px;
+	max-height: 480px;
 	font-family: Consolas;
 	/*font-size: small;*/
-	font-size: 16px;
+	font-size: 14px;
 }
 #article pre::selection {
 	background: rgba(200, 255, 255, 0.15);
 	transition: background 2s;
-	-moz-transition: background 2s;	/* Firefox 4 */
-	-webkit-transition: background 2s;	/* Safari 和 Chrome */
-	-o-transition: background 2s;	/* Opera */
+	-moz-transition: background 2s;
+	-webkit-transition: background 2s;
+	-o-transition: background 2s;
 }
 #article pre::selection:window-inactive {
 	background: rgba(255, 255, 255, 0.15);
@@ -65,12 +62,22 @@ ins {
 	margin-bottom: 8px;
 	list-style: disc;
 }
+#article ol li{
+	list-style-type: inherit;
+}
 
 #article .footnotes{
 	font-family: sans-serif, "宋体";
 	font-size: small;
 	color:rgba(31, 15, 31, 0.618);
 }
+#article a.footnote{
+	vertical-align: super;
+	font-size: 14px;
+	font-family: Arial;
+}
+#article a.footnote:link,#article a.footnote:visited{color:#999;text-decoration:none;}
+
 #article .footnotes ol{
 	margin: 0;
 }
@@ -86,10 +93,41 @@ ins {
 a.footnote-ref{vertical-align: super; font-family: serif;}
 a.footnote-ref:link,a.footnote-ref:visited{color:#999;text-decoration:none;}
 
+a, a:link, a:visited{
+	color: #5943CE;
+}
+a{
+	border-bottom-width: 1px;
+	border-bottom-style: dashed;
+	border-bottom-color: transparent;
+	transition: border-bottom-color 0.618s;
+}
+a:link{
+	text-decoration: none;
+}
+a:hover{
+	border-bottom-color: #6789AB;
+}
+
+
 ul{
 	list-style-position: inside;
 	margin-top: 0.5em;
-	color: #1f0f1f;
+	margin-bottom: 2.5em;
+}
+li p{
+	margin: auto;
+}
+
+#article img{
+	max-width: 100%;
+	box-shadow: 0px 0px 4px;
+}
+#article #float img{
+	box-shadow: 0px 0px 0px;
+}
+#fail{
+	margin-top: -192px;
 }
 
 code {
@@ -107,7 +145,10 @@ code {
 	border-radius: 2px;
 }
 
-
+#article hr{
+	border-color: #6789AB;
+	border-style: dashed;
+}
 #article pre code {
 	/* border-bottom-width: 0; */
 	/* border-bottom-color: transparent; */
@@ -115,13 +156,18 @@ code {
 	padding: 0;
 	border-width: 0;
 }
-#article.content blockquote {
+
+#article blockquote p{
+	margin: 0;
+}
+#article blockquote {
 	border-left-color: #1f0f1f; */
 	/* border-left-style: solid; */
 	/* border-left-width: 8px; */
+
+
 	margin-left: 0px;
 	padding-left: 2em;
-	font-family: Gabriola, 华文仿宋;
 	font-style: italic;
 	border-bottom-left-radius: calc( 100% * 0.382 );
 	border-color: rgba(31, 15, 31, 0.24);
@@ -131,34 +177,39 @@ code {
 	/* border-bottom-width: 8px; */
 	/* border-bottom-style: inset; */
 	/* border-bottom-right-radius: 450px; */
+
+	margin-top: 3em;
+
+	margin-bottom: 3em;
 }
+
 
 p{
 	font-size: 1em;
 	line-height: 1.7em;
-	/*
-	margin-top: 1.7em;
-	margin-bottom: 0.0em;
-
-	text-align: justify;
-	*/
 	text-justify: inter-ideographic;
+	margin-bottom: 2.5em;
 }
+
+p + ul, p + ol{
+	margin-top: -1.5em;
+}
+
 h1,h2,h3,h4,h5,h6{
-	font-family: "方正姚体";
-	font-weight: lighter;
+	font-family: "黑体", "DengXian";
+	/* font-weight: lighter; */
 	line-height: 1em;
 	margin-top: 1em;
 	margin-bottom: 0.5em;
 }
 h1{
-	font-size: 1.8em;
+	font-size: 2em;
 }
 h2{
-	font-size: 1.6em;
+	font-size: 1.8em;
 }
 h3{
-	font-size: 1.5em;
+	font-size: 1.6em;
 }
 h4{
 	font-size:1.4em;
@@ -167,7 +218,7 @@ h5{
 	font-size:1.3em;
 }
 h6{
-	font-size:1.30em;
+	font-size:1.20em;
 }
 
 
@@ -204,9 +255,9 @@ h6{
 ::selection {
 	background: rgba(200, 2, 255, 0.15);
 	transition: background 2s;
-	-moz-transition: background 2s;	/* Firefox 4 */
-	-webkit-transition: background 2s;	/* Safari 和 Chrome */
-	-o-transition: background 2s;	/* Opera */
+	-moz-transition: background 2s;
+	-webkit-transition: background 2s;
+	-o-transition: background 2s;
 }
 ::selection:window-inactive {
 	background: rgba(50, 0, 105, 0.15);
@@ -243,38 +294,48 @@ h6{
 	text-decoration: underline;
 }
 
+ul#list{
+	list-style-position: inside;
+	margin-top: 0.5em;
+	margin-bottom: 2.5em;
+	margin: 0;
+	padding: 0;
+	width: 640px;
+	margin: 64px auto;
+}
 #list li{
 	list-style-type: none;
 	font-size: 3em;	/*xx-large;*/
 	font-weight: lighter;
 	position: relative;
-	margin-top: 0.5em;
-	margin-left: 0px;
+	margin: 0px;
+	margin-top: 0px;
+	margin-bottom: 48px;
+	text-align: center;
 }
 #list li:hover{
 
 }
 #list li div.link{
-	transition:			list-style-type 0.382s, opacity 0.382s, margin-left 0.382s, margin-right 0.382s;
-	-moz-transition:	list-style-type 0.382s, opacity 0.382s, margin-left 0.382s, margin-right 0.382s;
-	-webkit-transition:	list-style-type 0.382s, opacity 0.382s, margin-left 0.382s, margin-right 0.382s;
-	-o-transition:		list-style-type 0.382s, opacity 0.382s, margin-left 0.382s, margin-right 0.382s;
+	transition:			list-style-type 0.382s, opacity 0.382s, margin-top 0.382s, margin-bottom 0.382s;
+	-moz-transition:	list-style-type 0.382s, opacity 0.382s, margin-top 0.382s, margin-bottom 0.382s;
+	-webkit-transition:	list-style-type 0.382s, opacity 0.382s, margin-top 0.382s, margin-bottom 0.382s;
+	-o-transition:		list-style-type 0.382s, opacity 0.382s, margin-top 0.382s, margin-bottom 0.382s;
 }
 #list li div.link:hover{
-	margin-left: -9px;
-	margin-right: 9px;
 }
-
 #list a {
-	color: darkred;
+	color: rgb(27, 29, 82);
+	text-decoration: blink;
+	text-shadow: 0px 0px 1px rgba(27,29,82,0.38);
 }
 #list .datetime{
-	font-size: xx-small;
-	display: block;
-	position: absolute;
-	/* top: 0px; */
-	left: 480px;
-	bottom: 0px;
+	font-size: small;
+    display: block;
+    font-family: Arial;
+}
+#list .summary{
+	font-size: medium;
 }
 
 #main{
@@ -283,20 +344,21 @@ h6{
 	margin: 48px auto;
 }
 #main header {
-	margin-top: 64px;
-	margin-bottom: 96px;
+	margin-top: 96px;
+	margin-bottom: 256px;
 }
 #main header h1{
-	width: 100%; */
+	font-family: "Hiragino Sans GB", DengXian, "WenQuanYi Microhei", "Microsoft yahei light", "黑体";
+	text-shadow: 0px 0px 1px rgba(27, 29, 82, 0.382);
 	font-size: 48px;
+	font-weight: 100;
 	text-align: center;
+	color: rgb(27, 29, 82);
+	/* width: 61.8%; */
 	/* border-bottom-style: inset; */
 	border-width: 5;
 	/* border-color: rgba(139, 0, 0, 0.5); */
 	margin-bottom: 0px;
-	font-family: "方正姚体", "黑体";
-	font-size: 64px;
-	color: darkred;
 	padding-bottom: 0;
 	display: table;
 	margin: auto auto auto auto;
@@ -308,6 +370,8 @@ h6{
 	border-top-right-radius: 20px;
 	border-color: rgba(139, 0, 0, 0.5);
 	transition: border-bottom-left-radius 0.618s, border-top-right-radius 0.618s;
+
+	/* text-align-last: auto; */
 }
 #main header h1:hover{
 	border-bottom-left-radius: 38.2px;
@@ -316,22 +380,47 @@ h6{
 #time{
 	text-align: center;
 	font-size: xx-small;
-	margin-top: 32px;
+	margin-top: 64px;
 }
 #time ins{
 	opacity: 0.618;
 	color: grey;
 }
+#time ins time{
+	opacity: 0.382;
+	/* position: absolute; */
+	/* margin: auto; */
+	/* left: 50%; */
+	/* right: 50%; */
+	/* left: 50%; */
+	/* width: 100%; */
+	/* text-align: center; */
+	filter: blur(10px);
+	-webkit-filter: blur(1px);
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
 #time time{
 	text-align: center;
 	font-size: small;
-	color: rgba(200, 156, 128, 1);
+	color: rgb(27, 29, 82);
 	display: block;
+	position: absolute;
+	width: 100%;
+}
+ul#taglist:before {
+	content: 'tag: ';
+	font-style: normal;
 }
 #taglist {
-	display: inline-block;
-	margin-top: 48px;
 	font-style: italic;
+	padding: 0;
+	margin: 0;
+	width: 640px;
+	margin: auto;
+	margin-top: 72px;
 }
 #taglist li{
 	/* display: inline-block; */
@@ -354,8 +443,44 @@ h6{
 	content: "";
 }
 
-#sidebar{
+#selectpage{
+	text-align: center;
+}
+#selectpage form input{
+	display: none;
+}
+#selectpage a{
+	background-color: rgb(27, 29, 82);
+	color: #fff;
+	border-radius: 1000px;
+	width: 16px;
+/*	padding: 11px 15px 11px 15px;*/
+	padding: 14px 16.5px 14px 16.5px;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+	box-shadow: 0px 0px 1px;
+	display: inline-block;
+}
+#selectpage a:visited, #selectpage a:link {
+	color: #fff;
+}
 
+#selectpage a.no_current{
+	transition: transform 0.382s;
+}
+
+#selectpage a.no_current:hover{
+	transform: scale(1.2);
+}
+
+#selectpage a.current_page{
+	background-color: rgba(128, 128, 128, 0.54);
+	/*opacity: 0.382;*/
+}
+
+
+#selectpage a.current_page:visited, #selectpage a.current_page:link{
+	color: #fff;
 }
 
 
