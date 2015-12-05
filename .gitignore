@@ -1,3 +1,21 @@
 # extend
 
 /extend/*
+
+#忽略扩展的库
+js/home.js
+js/Markdown.Converter.min.js
+js/Markdown.Extra.min.js
+js/Markdown.Sanitizer.min.js
+js/prettify.js
+js/prettify.min.js
+js/remilia - Copy.js
+js/remilia-0.21-min.js
+js/taboverride.min.js
+js/TweenMax.min.js
+
+# 自写的库，但是已经废弃的
+js/iii-fail.js
+js/iii.js
+js/ppp.js
+js/myLoader.js
