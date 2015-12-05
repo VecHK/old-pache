@@ -50,7 +50,7 @@ function createArticle($create){
 				$this->format = $create['article'];
 			}
 			else{
-				$this->format = ' ';
+				$this->format = nl2br($create['article']);
 			}
 		}
 	}
