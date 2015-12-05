@@ -24,6 +24,7 @@ if ( isset($_GET['class']) ){
 			$list = getArticlesByClass($_GET['class'], ((int)$page - 1) * $pache->pagelimit, $pache->pagelimit);
 
 	}
+	$listingType = 'class';
 }
 else if ( isset($_GET['tag']) ){
 	$tag = Array();
@@ -40,6 +41,7 @@ else if ( isset($_GET['tag']) ){
 //	echo var_dump($tag);
 
 	$list = getArticlesByTag($tag, ((int)$page - 1) * $pache->pagelimit, $pache->pagelimit);
+	$listingType = 'tag';
 
 }else{
 	switch($display){
@@ -52,6 +54,7 @@ else if ( isset($_GET['tag']) ){
 		default:
 			$list = getArticles(((int)$page - 1) * $pache->pagelimit, $pache->pagelimit);
 	}
+	$listingType = 'id';
 }
 
 ?>
@@ -67,9 +70,10 @@ else if ( isset($_GET['tag']) ){
 	<link rel="stylesheet" href="style/global.css" type="text/css" />
 	<link rel="stylesheet" href="style/normal.css" type="text/css" media="screen and (min-width: 851px)" />
 	<link rel="stylesheet" href="style/min.css" type="text/css" media="screen and (max-width: 850px)" />
-
+<!--
 	<script src="js/remilia.js"></script>
 	<script src="js/myLoader.js"></script>
+-->
 	<script>
 /*
 		mL.css( 'style/global.css', 'get', function (d){
@@ -119,7 +123,15 @@ else if ( isset($_GET['tag']) ){
 	<div id="selectpage">
 		<form method="get">
 		<?php
-			$countPage = ceil( articleCount('default')/$pache->pagelimit );
+//			$articleCountObj = new ArticleCount();
+			if ( !isset($_GET[$listingType]) ){
+				$listingType = 'default';
+				$listingTypeValue = 'default';
+			}else{
+				$listingTypeValue = $_GET[$listingType];
+			}
+
+			$countPage = ceil( articleCount($listingType, $listingTypeValue) / $pache->pagelimit );
 
 			$i=$page;
 			if ( ($i-4)<1 ){
