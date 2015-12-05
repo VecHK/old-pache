@@ -37,7 +37,9 @@ var mEvent = {
 		var selected = new manager.collectSelected(  $('#articlelist input'), function (){
 			alert('至少选一个啊baka');
 		});
-
+		if ( !confirm('你确定你要删除选中项吗？') ){
+			return false;
+		}
 		console.log(selected);
 
 		var url = 'ad.php?'+$.stringifyRequest({

@@ -5,33 +5,55 @@
   font: normal 12px/175% Georgia, "Times New Roman", Times, serif, "Hiragino Kaku Gothic Pro", "STXihei", Hei, SimSun;
 */
 }
+#articlemanagelist {
+	margin: auto;
+	width: 640px;
+}
+#articlemanagelist li{
+	list-style: none;
+}
+#articlemanagelist li:nth-last-child(2n){
+	background-color: rgba(27, 29, 82, 0.05);
+}
+
+#articlelist div.link a {
+	font-family: "Hiragino Sans GB", DengXian, "WenQuanYi Microhei", "Microsoft yahei light", "黑体";
+	font-weight: 100;
+	font-size: x-large;
+
+	text-decoration: none;
+
+	margin-left: 10px;
+	transition: color 0.618s text-shadow 0.618s;
+}
+#articlelist div.link a:link, #articlelist div.link a:active {
+	color: rgb(27, 29, 82);
+	text-shadow: 0px 0px 1px rgba(27, 29, 82, 0.382);
+}
+#articlelist div.link a:hover {
+	color: #521B1B;
+	text-shadow: 0px 0px 1px rgba(82, 27, 27, 0.382);
+}
+
+#articlelist li .datetime{
+	color: grey;
+	font-family: Arial;
+	font-size: small;
+}
+
 #editor {
 
 	font-family: Microsoft YaHei, Helvetica;
 	font-size: 12px;
 	word-wrap: break-word;
 	word-break: normal;
-	color: #FFF;
+	color: rgb(27, 29, 82);
 
-	background-color: #000;
-
-	background-image: url( ../iamBG.png );
-
-	background-repeat: no-repeat;
-	background-attachment:fixed;
-
-/*	background-position: center center;*/
-/*	background-size:100% 100%;*/
-
-
-	background-position:center center;
-	background-size:cover;
-
+	background-color: transparent;
 	overflow: hidden;
 /*
 	min-width: 1024px;
 */
-
 
 }
 #editor {
@@ -41,9 +63,11 @@
 	top: 0;
 	left: 0;
 	font-family: 微软雅黑;
-	background-color: black;
+	background-color: white;
 }
 #editor_close{
+	color: #BBB;
+	font-size: 32px;
 	position: absolute;
 	top: 0px;
 	cursor: pointer;
@@ -53,70 +77,101 @@
 	padding-top: 32px;
 	width: 700px;
 	height: 100%;
-	background-color: black;
-	opacity: 0.75;
+	background-color: transparent;
 	font-family: "思源黑体 CN Light", "Hiragino Sans GB", "microsoft yahei", "WenQuanYi Microhei", "黑体";
 }
 #editor input.title{
 	font-size: 3em;
-	font-family: "方正姚体";
+	font-family: "Hiragino Sans GB", DengXian, "WenQuanYi Microhei", "Microsoft yahei light", "黑体";
 	margin: auto;
 	display: block;
 	text-align: center;
-	background: black;
-	color: #F12828;
+	background: transparent;
+	color: rgb(27, 29, 82);
 	border: 0;
 	width: 100%;
 	border-width: 1px;
 	border-bottom-style: groove;
-	border-color: rgba(241, 40, 40, 0.618);
+	border-color: rgba(226, 222, 222, 0.618);
+	text-shadow: 0px 0px 1px rgba(27, 29, 82, 0.382);
 }
 #editor input.title:focus{
 	outline: none;
 }
 #editor textarea{
 	display: block;
+	background: transparent;
+	height: 480px;
+	width: calc( 100% - 40px );
 	margin: 64px 0px 0px 0px;
 	padding-left: 20px;
 	padding-right: 20px;
-	width: calc( 100% - 40px );
-	height: 480px;
-
-	font-size: 17px;
-	display: block;
-	background: #000;
-	color: #59A2FF;
-	font-family: "思源黑体 CN Light", "Hiragino Sans GB", "microsoft yahei", "WenQuanYi Microhei", "黑体";
-	font-weight: 100;
 	border-top-width: 0px;
 	border-left-width: 0px;
 	border-right-width: 0px;
+
+	font-family: "思源黑体 CN Light", "Hiragino Sans GB", "microsoft yahei", "WenQuanYi Microhei", "黑体";
+	font-weight: 100;
+	font-size: 17px;
+	color: grey;
+	text-shadow: 0px 0px 1px rgba(27, 29, 82, 0.382);
+
+	transition: color 0.618s;
 }
 #editor textarea:focus{
 	outline: none;
 	border: 0px;/*solid #FF7720 1px;*/
 	border-left-width: 0px;
 	border-right-width: 0px;
+	color: rgb(27, 29, 82);
+}
+/* 设置滚动条的样式 */
+#editor textarea::-webkit-scrollbar {
+	width: 2px;
+}
+
+#editor textarea::-webkit-scrollbar:horizontal {
+	height: 8px;
+}
+/* 滚动槽 */
+#editor textarea::-webkit-scrollbar-track {
+	border-radius: 10px;
+}
+
+/* 滚动条滑块 */
+#editor textarea::-webkit-scrollbar-thumb {
+	border-radius: 0px;
+	background-color: rgba(128, 128, 128, 0.43);
+}
+#editor textarea::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(255,0,0,0.4);
+}
+
+#editor textarea::-webkit-scrollbar-thumb:window-inactive {
+	background-color: rgba(255,0,0,0.4);
+	background-color: rgba(128, 128, 128, 0.2);
 }
 
 #editor select{
-	background-color: black;
-	color: #59A2FF;
+	background-color: transparent;
+	color: grey;
+	/*
 	border: 0;
 	appearance: none;
 	-moz-appearance: none;
 	-webkit-appearance: none;
 	padding-right: 14px;
 	background: url("http://ourjs.github.io/static/2015/arrow.png") no-repeat scroll right center transparent;
+	*/
 }
 select::-ms-expand { display: none; }
 
 #editor button{
-	background-color: black;
-	color: #59A2FF;
+	background-color: transparent;
+	color: grey;
 	border: 0;
 	border-width: 1px;
-	border-color: #59A2FF;
+	border-color: grey;
 	border-style: double;
 	padding-left: 4px;
 	padding-right: 4px;
