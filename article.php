@@ -1,23 +1,7 @@
 <?php
 
 require('sqlmethod.php');
-class pache{
-	public $pagelimit = 10;
-	public $title = "myBlog";
-	public $root = "/pache";
-	public $updateAble = Array(
-		'title',
-		'article',
-		'type',
-		'class',
-	);
-	public $createAble = Array(
-		'title',
-		'article',
-		'type',
-		'class',
-	);
-}
+require('config.php');
 $pache = new pache;
 date_default_timezone_set("Asia/Shanghai");
 
