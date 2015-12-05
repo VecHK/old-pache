@@ -37,8 +37,8 @@ function createArticle($create){
 			}
 
 			if ( strtolower($create['type']) === 'markdown' ){
-				require('Michelf/MarkdownExtra.inc.php');
-				require_once 'Michelf/MarkdownExtra.inc.php';
+				require('extend/Michelf/MarkdownExtra.inc.php');
+				require_once 'extend/Michelf/MarkdownExtra.inc.php';
 				//use Michelf\MarkdownExtra;
 
 				$parser = new Michelf\MarkdownExtra;
@@ -109,8 +109,8 @@ function updateArticleById($id, $update){
 		if ( $key == 'type' ){
 			switch( strtolower($value) ){
 				case 'markdown':
-					require('Michelf/MarkdownExtra.inc.php');
-					require_once 'Michelf/MarkdownExtra.inc.php';
+					require('extend/Michelf/MarkdownExtra.inc.php');
+					require_once 'extend/Michelf/MarkdownExtra.inc.php';
 					//use Michelf\MarkdownExtra;
 					$parser = new Michelf\MarkdownExtra;
 					$parser->fn_id_prefix = "mmd-";//Michelf markdown
@@ -343,9 +343,10 @@ function articleCount($by){
 	$sql = connectSQL();
 	switch($by){
 		case 'tag':
-			$sqlstr = "SELECT COUNT(*) FROM pache_tag WHERE tagname = "."'". func_get_arg(1) ."'";
+			$sqlstr = "SELECT COUNT(*) FROM pache_tag WHERE tagname = "."'". mysql_escape_string(func_get_arg(1)) ."'";
 			break;
 		case 'class':
+			$sqlstr = "SELECT COUNT(*) FROM pache_article WHERE class = "."'". mysql_escape_string(func_get_arg(1)) ."'";
 			break;
 
 		default:
@@ -362,6 +363,33 @@ function articleCount($by){
 	$row = mysql_fetch_array($sqlresult);
 	mysql_close($sql->con);
 	return $row[0];
+}
+class ArticleCount{
+	public $result;
+	function __construct(){
+		switch(func_get_art(0)){
+			case 'tag':
+				$sqlstr = "SELECT COUNT(*) FROM pache_tag WHERE tagname = "."'". mysql_escape_string(func_get_arg(1)) ."'";
+				break;
+			case 'class':
+				$sqlstr = "SELECT COUNT(*) FROM pache_article WHERE class = "."'". mysql_escape_string(func_get_arg(1)) ."'";
+				break;
+
+			default:
+			case 'id':
+				$sqlstr = "SELECT COUNT(*) FROM pache_article";
+				break;
+		}
+		$sql = connectSQL();
+		$sqlresult = mysql_query($sqlstr, $sql->con);
+		if ( !$sqlresult ){
+			die('SQLfail: '+mysql_error($sqlresult));
+			return NULL;
+		}
+		$row = mysql_fetch_array($sqlresult);
+		mysql_close($sql->con);
+		$this->result = $row[0];
+	}
 }
 
 function pacheInfo(){
