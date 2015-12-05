@@ -185,10 +185,12 @@ class outTagById{
 		}else if ( $this->display == 'html' ){
 			$pache = new pache;
 			$str = '<ul id="taglist">';
+			//$str = $str.'<ul>';
 			for ( $i=0; $i<count($this->tagList); ++$i ){
 				$str = $str.'<li><a href="'.$pache->root.'?tag='.$this->tagList[$i]['tagname'].'">'.$this->tagList[$i]['tagname'].'</a></li>';
 			}
 			$str = $str.'</ul>';
+			//$str = $str.'</div>';
 			echo $str;
 		}
 	}
