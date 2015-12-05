@@ -145,6 +145,7 @@ class outIndex{
 	}
 	public function __destruct(){
 		if ( $this->display == 'json' ){
+			header('Content-type: text/plain;charset=utf-8');
 			echo json_encode($this);
 		}else if ( $this->display == 'html' ){
 			$pache = new pache;
