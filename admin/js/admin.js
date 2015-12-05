@@ -34,9 +34,12 @@ var mEvent = {
 		display.animated.Editor.close.apply($('#editor')[0], []);
 	},
 	deleteArticles: function (e){
-		var selected = new manager.collectSelected(  $('#articlelist input'), function (){
-			alert('至少选一个啊baka');
-		});
+		var selected = new manager.collectSelected(  $('#articlelist input') );
+
+		if ( !selected.checkedArr.length ){
+			alert('至少选一个啊Baka');
+			return false;
+		}
 		if ( !confirm('你确定你要删除选中项吗？') ){
 			return false;
 		}
@@ -89,7 +92,7 @@ var display = {
 		var ele = document.getElementById('status');
 		if ( s.length ){
 			$(ele).text(s);
-			ele.style.opacity = '1';
+				ele.style.opacity = '1';
 		}else{
 			ele.style.opacity = '0.01';
 		}

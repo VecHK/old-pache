@@ -13,19 +13,20 @@ function checkArrayKeysAndComparedValue($arr, $key, $com){
 }
 
 function checkAdminPwCookie(){
-	return checkArrayKeysAndComparedValue($_COOKIE, 'pw', 'pache');
+	$pache = new pache;
+	return checkArrayKeysAndComparedValue($_COOKIE, 'pw', $pache->admin);
 }
 function checkAdminPwPost(){
-	return checkArrayKeysAndComparedValue($_POST, 'pw', 'pache');
+	$pache = new pache;
+	return checkArrayKeysAndComparedValue($_POST, 'pw', $pache->admin);
 }
 
 if ( !checkAdminPwCookie() ){
 	if ( !checkAdminPwPost() ){
 		return require('pwinput.html');
 	}
-	setcookie('pw', 'pache', time()+604800);
+	setcookie('pw', $pache->admin, time()+604800);
 }
-setcookie('vechkabc', '\=hallo', time()+604800);
 
 if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 	if ( isset($_GET['display']) ){

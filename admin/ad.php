@@ -30,7 +30,7 @@ function echoInfoJson($code, $str){
 	echo json_encode(new outFail($code, $str));
 }
 if ( isset($_GET['pw']) ){
-	if ( $_GET['pw'] !== 'pache' ){
+	if ( $_GET['pw'] !== $pache->admin ){
 		return echoFailJson(1, 'pw');
 	}
 }else{
