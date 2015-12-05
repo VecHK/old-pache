@@ -17,6 +17,9 @@ ins {
 	text-decoration: line-through;
 	opacity: 0.5;
 }
+#article .text{
+	line-height: 180%;
+}
 #article {
 	/*font-family: "DengXian","Hiragino Sans GB", "microsoft yahei","WenQuanYi Microhei","黑体", "Calibri"; */
 	font-family: "WenQuanYi Microhei","黑体","DengXian", "Calibri", "Hiragino Sans GB", "microsoft yahei";
@@ -39,6 +42,7 @@ ins {
 	font-family: Consolas;
 	/*font-size: small;*/
 	font-size: 14px;
+	line-height: 130%;
 }
 #article pre::selection {
 	background: rgba(200, 255, 255, 0.15);

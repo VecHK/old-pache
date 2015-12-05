@@ -100,7 +100,7 @@ if ( is_null($article->id) ){
 		echo $article->article;
 	}else if ( $article->type == 'text' ){
 
-		echo $article->format;
+		echo '<div class="text">'.$article->format.'</div>';
 	}
 
 ?>
