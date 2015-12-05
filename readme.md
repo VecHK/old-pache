@@ -3,9 +3,10 @@
 
 ## How to do?
 首先你需要准备好一些东西……
- [Michelf Markdown](https://github.com/michelf/php-markdown)
 
- [Google Prettify](https://github.com/google/code-prettify)
+-	[Michelf Markdown](https://github.com/michelf/php-markdown)
+
+-	[Google Prettify](https://github.com/google/code-prettify)
 
 
 #### Google Prettify

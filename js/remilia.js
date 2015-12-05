@@ -2,7 +2,7 @@
 	var ver = 0.3;
 	console.info(
 		'永远鲜红的',
-		'幼月',
+		'幼月☾',
 		'与',
 		'bug',
 		'\n\nver:'+ver

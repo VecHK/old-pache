@@ -8,7 +8,6 @@ var innerText = function (ele, str){
 
 var noFound = function (ele){
 	var f =  document.getElementById('float');
-	console.info(f);
 
 		if ( f === undefined ){
 			return 0;
@@ -70,7 +69,7 @@ var myDateFormat = function (d){
 	};
 	var str = '';
 	str +=zeros( (1900 + d.getYear()) ) + '/'
-		+ zeros(d.getMonth()) + '/'
+		+ zeros((d.getMonth())+1) + '/'
 		+ zeros(d.getDate()) + ' '
 		+ zeros(d.getHours()) + ':'
 		+ zeros(d.getMinutes()) + ':'

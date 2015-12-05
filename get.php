@@ -39,7 +39,7 @@ if ( is_null($article->id) ){
 }
 
 ?>
-<!doctype HTML>
+<!DOCTYPE HTML>
 <html>
 <head>
 	<title><?php echo $article->title; ?></title>
@@ -135,4 +135,8 @@ EOT;
  ?>
 </body>
 	<script type="text/javascript" src="pache.js"></script>
+<!--
+	<script type="text/javascript" src="js/iii.js"></script>
+	<script type="text/javascript" src="js/ppp.js"></script>
+-->
 </html>
