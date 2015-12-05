@@ -33,7 +33,7 @@ ul#list{
 }
 #main header{
 	margin-top: 96px;
-    margin-bottom: 128px;
+	margin-bottom: 128px;
 }
 #main header h1{
 	font-size: x-large;
@@ -61,5 +61,7 @@ article#article{
 }
 #selectpage a{
 	width: 8px;
-	padding: 3px 11px 3px 11px;
+	padding: 5.5px 12px 5.5px 12px;
+	/* padding: 14px 16.5px 14px 16.5px; */
+	text-align: center;
 }
