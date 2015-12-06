@@ -261,7 +261,7 @@ function getArticlesByTag($tag, $start, $limit){
 
 	$sqlstr = $sqlstr." GROUP BY id HAVING counts = ".count($tag)." ORDER BY time DESC ";
 	$sqlstr = $sqlstr." LIMIT ". (int)$start .",". (int)$limit;
-/*	echo $sqlstr;*/
+
 	$sqlresult = mysql_query($sqlstr);
 	if ( !$sqlresult ){
 		die(mysql_error($sqlresult));
@@ -270,7 +270,6 @@ function getArticlesByTag($tag, $start, $limit){
 	while ( $row=mysql_fetch_array($sqlresult) ){
 		array_push($list, $row);
 	}
-/*	echo var_dump($list);*/
 
 	mysql_close($sql->con);
 	return $list;
