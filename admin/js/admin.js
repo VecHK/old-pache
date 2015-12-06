@@ -8,6 +8,7 @@ var envir = {
 	'article': null
 };
 var mEvent = new function(){
+	var my = this;
 	this.articleList = {
 		click: function (){
 			var id = $.getRequest('id', this.href );
@@ -78,7 +79,7 @@ var mEvent = new function(){
 	$('#editor form')[0].onsubmit = this.updateArticle;
 	$('#create')[0].onclick = this.create;
 	$('#editor_close')[0].onclick = this.closeEditor;
-	$('#articlemanagelist')[0].onsubmit = this.deleteArticles;
+	$('#delete')[0].onclick = this.deleteArticles;
 };
 var display = new function (){
 	this.editorForm = {};

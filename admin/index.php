@@ -56,19 +56,19 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 		<ul id="articlelist">
 
 		</ul>
-		<div id="control">
-			<div id="pageselect">
-				<div class='pagebutton'>上一页</div>
-				<ul class="pagelink">
-					<a>1</a> <a>2</a> <a>3</a>
-				</ul>
-				<div class='pagebutton'>下一页</div>
-			</div>
-			<button type="submit" id="delete">删除</button>
-		</div>
-
 	</form>
-	<button id='create'>创建文章</button>
+	<div id="control">
+		<div id="pageselect">
+			<div class='pagebutton'>上一页</div>
+			<ul class="pagelink">
+				<a>1</a> <a>2</a> <a>3</a>
+			</ul>
+			<div class='pagebutton'>下一页</div>
+		</div>
+		<button id="delete">删除</button>
+		<button id='create'>创建文章</button>
+	</div>
+
 	<div id="editor">
 		<form method="post">
 			<input class="title" name="title" placeholder="标题" />

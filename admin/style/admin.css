@@ -40,6 +40,10 @@
 	font-family: Arial;
 	font-size: small;
 }
+#control{
+	width: 640px;
+	margin: auto;
+}
 
 #editor {
 
