@@ -19,6 +19,9 @@ ul#list{
 	padding-right: 0.5em;
 	width: calc( 100% - 1em );
 }
+#list a{
+	text-shadow: 0px 0px 0px;
+}
 #list .summary{
 	word-wrap: break-word;
 	text-align: justify;
