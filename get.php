@@ -58,7 +58,7 @@ if ( is_null($article->id) ){
 	<script type="text/javascript" src="js/Markdown.Sanitizer.min.js"></script>
 	<script type="text/javascript" src="js/Markdown.Extra.min.js"></script>
 -->
-	<script type="text/javascript" src="js/prettify.js"></script>
+	<script type="text/javascript" src="js/prettify.min.js"></script>
 	<script type="text/javascript" src="js/remilia.js"></script>
 
 	<!--<script type="text/javascript" src="js/prettify.min.js"></script>-->
