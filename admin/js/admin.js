@@ -1,4 +1,4 @@
-tabOverride.set(document.getElementsByTagName('textarea'));
+tabOverride.set($('textarea'));
 $('textarea')[0].spellcheck = false;
 var envir = {
 	/* mode: 'new'(create Articcle), 'update'(edit Article) */
@@ -7,8 +7,8 @@ var envir = {
 	'limit': 10,
 	'article': null
 };
-var mEvent = {
-	articleList: {
+var mEvent = new function(){
+	this.articleList = {
 		click: function (){
 			var id = $.getRequest('id', this.href );
 			envir.mode = 'update';
@@ -21,19 +21,21 @@ var mEvent = {
 				}
 			);
 		}
-	},
-	create: function (e){
+	};
+
+	this.create = function (e){
 		envir.mode = 'new';
 		display.loadEditor({
 			'title': 'Hello, World',
 			'article': '在这儿输入你的文章',
 			'type': 'text'
 		});
-	},
-	closeEditor: function (e){
+	};
+
+	this.closeEditor = function (e){
 		display.animated.Editor.close.apply($('#editor')[0], []);
-	},
-	deleteArticles: function (e){
+	};
+	this.deleteArticles = function (e){
 		var selected = new manager.collectSelected(  $('#articlelist input') );
 
 		if ( !selected.checkedArr.length ){
@@ -64,11 +66,23 @@ var mEvent = {
 		);
 
 		return false;
-	}
+	};
+	this.updateArticle = function (e){
+		try{
+			manager.updateArticle(new manager.collectEditorInfo(this));
+		}catch(e){
+			console.error(e);
+		}
+		return false;
+	};
+	$('#editor form')[0].onsubmit = this.updateArticle;
+	$('#create')[0].onclick = this.create;
+	$('#editor_close')[0].onclick = this.closeEditor;
+	$('#articlemanagelist')[0].onsubmit = this.deleteArticles;
 };
-var display = {
-	'editorForm': {},
-	'displayEditorClass': function (classArr){
+var display = new function (){
+	this.editorForm = {};
+	this.displayEditorClass = function (classArr){
 		var classList = document.getElementById('class_list');
 		classList.innerHTML = '';
 		classArr.forEach(function (classItem){
@@ -76,8 +90,8 @@ var display = {
 			option.value = classItem;
 			classList.appendChild(option);
 		});
-	},
-	'displayEditorTag': function (tag){
+	};
+	this.displayEditorTag = function (tag){
 		console.info(tag);
 		var tagListEle = document.getElementById('tag_list_input');
 		tagListEle.value = '';
@@ -87,8 +101,8 @@ var display = {
 		});
 
 		tagListEle.value = str.substr(0, str.length-1);
-	},
-	'status': function (s){
+	};
+	this.status = function (s){
 		var ele = document.getElementById('status');
 		if ( s.length ){
 			$(ele).text(s);
@@ -96,8 +110,8 @@ var display = {
 		}else{
 			ele.style.opacity = '0.01';
 		}
-	},
-	animated: {
+	};
+	this.animated = {
 		'Editor':{
 			'status': false,
 			'open': function (){
@@ -115,8 +129,8 @@ var display = {
 				}
 			}
 		}
-	},
-	'constructForm': function (article){
+	};
+	this.constructForm = function (article){
 		var editor = $('#editor')[0];
 		var form = editor.getElementsByTagName('form');
 		this.articleObj = article;
@@ -133,8 +147,8 @@ var display = {
 		this['class'] = document.getElementsByName('class')[0];
 
 		console.log('constructForm ok.');
-	},
-	loadEditor: function (article){
+	};
+	this.loadEditor = function (article){
 		var url = 'ad.php?' + $.stringifyRequest({
 			'type': 'getclass',
 			'pw':$.cookie('pw'),
@@ -191,9 +205,19 @@ var display = {
 
 		this.constructForm.apply( this.editorForm, [article] );
 		this.animated.Editor.open.apply( $('#editor')[0], [] );
-	},
-	RenderingArticleList: function (article){
+	};
 
+	/* listing ArticleList links */
+	function listenArticleList(){
+		var articleIdList = document.getElementById('articlelist').getElementsByTagName('a');
+		for ( var i=0; i<articleIdList.length; ++i){
+			articleIdList[i].onclick = function (){
+				mEvent.articleList.click.apply(this, []);
+				return false;
+			};
+		}
+	}
+	this.RenderingArticleList = function (article){
 		var articleEle = $('#articlelist')[0];
 		articleEle.innerHTML = '';
 
@@ -226,8 +250,9 @@ var display = {
 		});
 
 		listenArticleList();
-	},
-	loadArticleList: function (page, limit){
+	};
+
+	this.loadArticleList = function (page, limit){
 		var my = this;
 		manager.getArticleList(
 			function (article){
@@ -241,13 +266,14 @@ var display = {
 			},
 			page, limit
 		);
-	}
+	};
 };
 display.animated.Editor.close.apply($('#editor')[0], []);
 display.status('');
 
-var manager = {
-	getArticleById: function (id, ok, fail){
+var manager = new function(){
+	var my = this;
+	this.getArticleById = function (id, ok, fail){
 		var url = '../'+'get.php?'+ $.stringifyRequest({'id': id, 'display':'json'});
 		$.vjax( url, 'GET',
 			function (data){
@@ -260,8 +286,8 @@ var manager = {
 			},
 			function (err){}
 		);
-	},
-	collectSelected: function (checkBox, empty){
+	};
+	this.collectSelected = function (checkBox, empty){
 		var checkedArr = [];
 		try{
 			for ( var i = 0; i<checkBox.length; ++i ){
@@ -277,8 +303,8 @@ var manager = {
 			alert(e);
 			throw new Error(e);
 		}
-	},
-	getArticleList: function (ok, fail, page, limit){
+	};
+	this.getArticleList = function (ok, fail, page, limit){
 		var display = arguments.length > 4 ? arguments[5] : "json";
 		var tmp;
 		if ( typeof fail !== 'function' ){
@@ -318,8 +344,47 @@ var manager = {
 			},
 			fail
 		);
-	},
-	renderingPageSelect: function (){
+	};
+	this.updateArticle = function (articleInfo){
+		var url = 'ad.php?pw='+ $.cookie('pw') +'&type='+envir.mode;
+		display.status('saving');
+		$.vjax(url, 'POST', articleInfo,
+			function (d){
+				$.json2obj(d,
+					function (obj){
+						console.info(obj);
+					},
+					function (){
+
+					}
+				);
+				display.status('');
+
+				display.loadArticleList(envir.page, envir.limit);
+			},
+			function (err){
+				console.error(err);
+			}
+		);
+
+	};
+	this.collectEditorInfo = function (editorForm){
+		if ( !(this instanceof arguments.callee) ){
+			console.warn('collectEditorInfo: This is constructor Function.');
+			return new arguments.callee(editorForm);
+		}
+		this.id = display.editorForm.articleObj.id;
+		this.title = editorForm['title'].value;
+		this.article = editorForm['article'].value;
+		this.type = editorForm['type'].value;
+		this.class = editorForm['class'].value;
+		this.tag = editorForm['tag'].value.replace(/ /g, '').split(',');
+		return false;
+	};
+
+	/* 换页 */
+	var pageButton = $('#pageselect .pagebutton');
+	this.renderingPageSelect = function (){
 		var pagelink = $("#pageselect .pagelink")[0];
 		var page = envir.article.page;
 		var countPage = envir.article.countPage;
@@ -349,79 +414,28 @@ var manager = {
 				lthis.page( $(this).text() );
 			};
 		}
-	},
-	'nextPage': function (){
+	};
+	this.nextPage = function (){
 		++envir.page;
-		this.renderingPageSelect();
+		my.renderingPageSelect();
 		display.loadArticleList(envir.page, envir.limit);
-	},
-	'lastPage': function (){
+	};
+	pageButton[1].onclick = this.nextPage;
+
+	this.lastPage = function (){
 		if ( envir.page>1 ){
 			--envir.page;
-			this.renderingPageSelect();
+			my.renderingPageSelect();
 		}
 		display.loadArticleList(envir.page, envir.limit);
-	},
-	'page': function (page){
+	};
+	pageButton[0].onclick = this.lastPage;
+
+	this.page = function (page){
 		envir.page = Number.parseInt(page);
 		this.renderingPageSelect();
 		display.loadArticleList(envir.page, envir.limit);
-	}
-};
-var pageButton = $('#pageselect .pagebutton');
-pageButton[0].onclick = function (){
-	manager.lastPage();
-};
-pageButton[1].onclick = function (){
-	manager.nextPage();
-};
-
-/* listing ArticleList links */
-function listenArticleList(){
-	var articleIdList = document.getElementById('articlelist').getElementsByTagName('a');
-	for ( var i=0; i<articleIdList.length; ++i){
-		articleIdList[i].onclick = function (){
-			mEvent.articleList.click.apply(this, []);
-			return false;
-		};
-	}
-}
-
-document.getElementById('editor').getElementsByTagName('form')[0].onsubmit = function (e){
-	var articleInfo = {
-		'id': display.editorForm.articleObj.id,
-		'title': this['title'].value,
-		'article': this['article'].value,
-		'type': this['type'].value,
-		'class': this['class'].value,
-		'tag': this['tag'].value.replace(/ /g, '').split(',')
 	};
-	var url = 'ad.php?pw='+ $.cookie('pw') +'&type='+envir.mode;
-	display.status('saving');
-	$.vjax(url, 'POST', articleInfo,
-		function (d){
-			$.json2obj(d,
-				function (obj){
-					console.info(obj);
-				},
-				function (){
-
-				}
-			);
-			display.status('');
-
-			display.loadArticleList(envir.page, envir.limit);
-		},
-		function (err){
-			console.error(err);
-		}
-	);
-//	console.info($.stringifyRequest(articleInfo));
-	return false;
 
 };
-document.getElementById('create').onclick = mEvent.create;
-document.getElementById('editor_close'). onclick = mEvent.closeEditor;
-$('#articlemanagelist')[0].onsubmit = mEvent.deleteArticles;
-
 display.loadArticleList(envir.page, envir.limit);
