@@ -439,4 +439,5 @@ var manager = new function(){
 	};
 
 };
+
 display.loadArticleList(envir.page, envir.limit);

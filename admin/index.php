@@ -92,5 +92,6 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 		<div id="editor_close">x</div>
 	</div>
 </body>
+<script type="text/javascript" src="js/myTable.js"></script>
 <script type="text/javascript" src="js/admin.js"></script>
 </html>
