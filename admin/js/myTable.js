@@ -3,8 +3,20 @@ var myTable = function (table){
 	var my = this;
 	function createElementAndAddContent(eleName, str, h){
 		var ele = document.createElement(eleName);
-		typeof str === 'function' ? ele.appendChild(str(ele)) :
-			h ? (ele.innerHTML = str) : (ele.textContent ? (ele.innerText = str) : ( ele.textContent = str ));
+		({
+			'object': function (){
+				ele.appendChild(str);
+			},
+			'function': function (){
+				ele.appendChild(str(ele));
+			},
+			'string': function (){
+				if ( h )
+					ele.innerHTML = str;
+				else
+					ele[ ele.textContent ? 'textContent' : 'innerText' ] = str;
+			},
+		})[typeof str]();
 		return ele;
 	};
 	this.insert = function (){
