@@ -50,7 +50,7 @@ var myTable = function (table){
 		table.slice( Number(Boolean(conObj.thead)) ).forEach(function (tr){
 			var tableTrEle = document.createElement('tr');
 			rowEach(tr, function (td){
-				tableTrEle.appendChild(createElementAndAddContent('td', td === '' ? '' : (td || conObj.default) ));
+				tableTrEle.appendChild(createElementAndAddContent('td', td === '' ? '' : (td !== undefined ? td : conObj.default) ));
 			});
 			tableEle.appendChild(tableTrEle);
 		});
