@@ -222,6 +222,24 @@ var display = new function (){
 		var articleEle = $('#articlelist')[0];
 		articleEle.innerHTML = '';
 
+		var tableList = {
+			'标题': [],
+			'分类': [],
+			'创建时间': [],
+			'修改时间': []
+		};
+		function formatTime(da){
+			function fillZero(str){
+				if ( str.__proto__ !== String.prototype ){
+					str = String(str);
+				}
+				return (str.length === 1 ? '0' : '') + str;
+			}
+			da = new Date(da);
+			return 	da.getFullYear() +'/'+ fillZero(da.getMonth()+1) +'/'+ fillZero(da.getDate()) +' '+
+					fillZero(da.getHours()) +':'+
+					fillZero(da.getMinutes());
+		}
 		article.article.forEach(function (item){
 			var li = document.createElement('li');
 
@@ -232,7 +250,7 @@ var display = new function (){
 			input.name = 'selid[]';
 			input.value = item.id;
 			var a = document.createElement('a');
-			a.href = '../pache?id='+item.id;
+			a.href = '../get.php?id='+item.id;
 
 			$(a).text(item.title);
 
@@ -241,14 +259,28 @@ var display = new function (){
 
 			li.appendChild(divLink);
 
-			var datetime = document.createElement('div');
-			datetime.className = 'datetime';
-			$(datetime).text(item.time);
+			var tag = document.createElement('div');
+			tag.className = 'tag';
+			$(tag).text(function (){//构建tag，demo
+				var text = '';
+				if ( Array.isArray(article.articlesTagList[item.id]) )
+					article.articlesTagList[item.id].map(function (d){
+						text += d +',';
+					});
+				return text.substr(0, text.length-1);
+			}());
 
-			li.appendChild(datetime);
+			li.appendChild(tag);
+			tableList['标题'].push(li);
+			tableList['分类'].push(item.class);
+			tableList['创建时间'].push( formatTime(item.time) );
+			tableList['修改时间'].push( formatTime(item.ltime) );
 
-			articleEle.appendChild(li);
+			//articleEle.appendChild(li);
 		});
+		var table = new myTable(tableList);
+		articleEle.appendChild(table.create({'default': 'N/A'}));
+
 
 		listenArticleList();
 	};
