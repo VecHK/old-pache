@@ -305,6 +305,34 @@ function updateTag($id, $tag){
 	$sql = connectSQL();
 	mysql_close($sql->con);
 }
+function getArticlesTagListById($arr){
+	$sql = connectSQL();
+	$sqlstr = 'SELECT * FROM `pache_tag` WHERE articleid IN ';
+
+	$sqlin = '';
+	for ( $i=0, $limit=count($arr); $i<$limit; ++$i){
+		$sqlin = $sqlin.(int)$arr[$i].',';
+	}
+	$sqlstr = $sqlstr ."(".substr($sqlin, 0, -count($sqlin)).")";
+
+	$sqlresult = mysql_query($sqlstr, $sql->con);
+	if ( !$sqlresult ){
+		die(mysql_error($sqlresult));
+	}
+	$lst = new stdClass;
+	while ( $row=mysql_fetch_array($sqlresult) ){
+		foreach( $arr as $key=> $value ){
+			if ( $value === $row['articleid'] ){
+				if ( !isset($lst->$value) ){
+					$lst->$value = Array();
+				}
+				array_push($lst->$value, $row['tagname']);
+			}
+		}
+	}
+	mysql_close($sql->con);
+	return $lst;
+};
 function getArticleTagListById($id){
 	$sql = connectSQL();
 	$sqlstr = "SELECT * FROM `pache_tag` WHERE articleid = ".(int)$id;
