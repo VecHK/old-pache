@@ -145,13 +145,19 @@ class outIndex{
 	}
 	public function __destruct(){
 		if ( $this->display == 'json' ){
-			# 清除数字键
-			foreach( $this->article as $articleKey => $articleValue ){
+
+			$idArr = Array();
+			foreach( $this->article as $articleKey => $articleValue ){# 清除数字键
+//				$tag = new outTagById($articleKey, 'default');
+//				$this->article[$articleKey]['tag'] = getArticleTagListById($articleKey);
+				array_push($idArr, $this->article[$articleKey]['id']);
 				unset($this->article[$articleKey]['article'], $this->article[$articleKey]['format']);
 				foreach( $this->article[$articleKey] as $key => $value )
 					if ( is_numeric($key) )
 						unset($this->article[$articleKey][$key]);
 			}
+			$this->articlesTagList = getArticlesTagListById($idArr);
+//			var_dump($articlesTagList);
 
 			header('Content-type: text/plain; charset=utf-8');
 			echo json_encode($this);
