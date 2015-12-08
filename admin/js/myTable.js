@@ -1,9 +1,9 @@
 var myTable = function (table){
 	this.table = table;
 	var my = this;
-	function createElementAndWriteText(eleName, text){
+	function writeCreateElement(eleName, str, h){
 		var ele = document.createElement(eleName);
-		ele.textContent ? (ele.innerText = text) : ( ele.textContent = text );
+		h ? (ele.innerHTML = str) : (ele.textContent ? (ele.innerText = str) : ( ele.textContent = str ));
 		return ele;
 	};
 	this.insert = function (){
@@ -27,7 +27,7 @@ var myTable = function (table){
 
 			if ( conObj !== undefined && conObj.thead ){
 				table[0].forEach(function (th){
-					tableHeadEle.appendChild(createElementAndWriteText('th', th));
+					tableHeadEle.appendChild(writeCreateElement('th', th));
 				});
 				tableEle.appendChild(tableHeadEle);
 			}
@@ -36,7 +36,8 @@ var myTable = function (table){
 			table.slice( Number(Boolean(conObj.thead)) ).forEach(function (tr){
 				var tableTrEle = document.createElement('tr');
 				rowEach(tr, function (td){
-					tableTrEle.appendChild(createElementAndWriteText('td', td || conObj.default));
+
+					tableTrEle.appendChild(writeCreateElement('td', typeof td === 'function' ? td(td) : (td || conObj.default) ));
 				});
 				tableEle.appendChild(tableTrEle);
 			});
