@@ -28,6 +28,7 @@ var myTable = function (table){
 	this.insert = function (){
 
 	};
+	this.toObj = function (){};
 	this.render = function (conObj){
 		function rowEach(arr, callback){
 			for ( var i=0; i<my.column; ++i )
@@ -49,7 +50,7 @@ var myTable = function (table){
 		table.slice( Number(Boolean(conObj.thead)) ).forEach(function (tr){
 			var tableTrEle = document.createElement('tr');
 			rowEach(tr, function (td){
-				tableTrEle.appendChild(createElementAndAddContent('td', td || conObj.default ));
+				tableTrEle.appendChild(createElementAndAddContent('td', td === '' ? '' : (td || conObj.default) ));
 			});
 			tableEle.appendChild(tableTrEle);
 		});
@@ -81,11 +82,16 @@ var myTable = function (table){
 			var keys = [];
 			this.table = [];
 			var rowCursor = 0;
-			if ( conObj.extendEach )
-				for ( var key in table )
-					keys.push(key);
-			else
-				keys = Object.keys(table);
+			function collectObjectKeys(extend){
+				if ( extend )
+					for ( var key in table )
+						keys.push(key);
+				else
+					keys = Object.keys(table);
+				return keys;
+			}
+			keys = collectObjectKeys( conObj.extendEach || false );
+
 			this.table.push(keys);
 
 			function collectMaxColumn(){
