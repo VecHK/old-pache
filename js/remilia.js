@@ -311,6 +311,28 @@
 			}
 			return this;
 		};
+		var myRequestAnimationFrame = function (f){
+			var com = ['requestAnimationFrame', 'msRequestAnimationFrame','webkitRequestAnimationFrame','mozRequestAnimationFrame'];
+			for ( var i in com ){
+				if ( win[com[i]] ){
+					return win[com[i]](f);
+				}
+			}
+		};
+		var setTransition = function (ele, set){
+			var com = ['transition', 'webkitTransition','msTransition','mozTransition'];
+			for ( var i in com ){
+				if ( ele.style[ com[i] ] !== undefined ){
+					return ele.style[ com[i] ] = set;
+				}
+			}
+		};
+		var removeTransition = function (ele){
+			var com = ['transition', 'webkitTransition','msTransition','mozTransition'];
+			for ( var i in com ){
+				ele.style.removeProperty( com[i] );
+			}
+		}
 		this.fadeIn = function (timeStr, callback){
 			if ( typeof timeStr === 'function' ){
 				callback = timeStr;
@@ -321,11 +343,12 @@
 			timeStr = Number(timeStr);
 			for ( var key in Object.keys(ele) ){
 				for ( var key in Object.keys(ele) ){
-					ele[key].style.webkitTransition = 'opacity '+ timeStr +'s';
+					setTransition(ele[key], 'opacity '+ timeStr +'s');
+//					ele[key].style.transition = 'opacity '+ timeStr +'s';
 					ele[key].style.opacity = '0';
 					ele[key].style.removeProperty('display');
 
-					requestAnimationFrame(function (){
+					myRequestAnimationFrame(function (){
 						ele[key].__proto__.RMfade && clearTimeout(ele[key].__proto__.RMfade.timeEvent);
 						ele[key].__proto__.RMfade = {
 							timeEvent: setTimeout(function (ele){/*暂时的解决方法*/
@@ -333,7 +356,8 @@
 									ele.style.opacity = '1';
 									setTimeout(function (){
 										//ele.style.opacity = '';
-										ele.style.webkitTransition = '';
+										removeTransition(ele);
+//										ele.style.webkitTransition = '';
 										delete ele.__proto__.RMfade;
 										callback && callback(ele);
 									}, timeStr*1000);
@@ -356,16 +380,18 @@
 			timeStr = Number(timeStr);
 			for ( var key in Object.keys(ele) ){
 				ele[key].style.opacity = '0';
-				ele[key].style.webkitTransition = 'opacity '+ timeStr +'s';
-
+//				ele[key].style.transition = 'opacity '+ timeStr +'s';
+				setTransition( ele[key], 'opacity '+ timeStr +'s' );
 				ele[key].__proto__.RMfade && clearTimeout(ele[key].__proto__.RMfade.timeEvent);
-				requestAnimationFrame(function (){
+				myRequestAnimationFrame(function (){
+
 					ele[key].__proto__.RMfade = {
 						timeEvent: setTimeout(function (ele){
 							return function (){
 								ele.style.display = 'none';
 								//ele.style.webkitTransition = '';
 								callback && callback(ele);
+
 							}
 						}(ele[key]), timeStr*1000)
 					};
@@ -521,8 +547,6 @@
 	win.Remilia = f;
 	win.Remilia_f = f;
 })(window, document);
-
-var o = {};for( var i=0; i<9999; ++i ){ o[i] = i; }
 
 function bechMark(testCount, count, func, arg){
 	var testUnitArr = [];
