@@ -421,6 +421,15 @@
 	var domMethod = function (ele){
 		var my = this;
 		this.css = function (){};
+		this.fadeIn = function (){
+
+		};
+		this.fadeOut = function (){
+			console.log(this);
+			for ( var key in Object.keys(ele) ){
+				console.log( Object.keys(ele)[key] );
+			}
+		};
 		this.html = function (str){
 			if ( str === undefined )
 				return my[0].innerHTML;
@@ -429,11 +438,11 @@
 		};
 		this.text = function (str){
 			var resultArr = [];
-			for ( var key in my ){
+			for ( var key in ele ){
 				if ( str === undefined ){
-					return my[key].textContent || my[key].innerText;
+					return ele[key].textContent || ele[key].innerText;
 				}else{
-					my[key].textContent ? (my[key].innerText = str) : ( my[key].textContent = str );
+					ele[key].textContent ? (ele[key].innerText = str) : ( ele[key].textContent = str );
 				}
 			}
 		};
@@ -448,8 +457,8 @@
 		}else{
 			var domArr = Array.prototype.slice.apply(doc.querySelectorAll(str));
 		}
-
-		return domMethod.apply(domArr);
+		domArr.__proto__ = new domMethod(domArr);
+		return domArr;
 	};
 	var f_All = function (s){
 		var dom = doc.querySelectorAll(s);
