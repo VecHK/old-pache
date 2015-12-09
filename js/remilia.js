@@ -203,55 +203,6 @@
 			}
 			return strSubLast( objKeysMap( requestObj, Object.keys(requestObj) ));
 		};
-		this.checkObj = function (obj, compared){
-			var keys = Object.keys(obj);
-			var comparedObjs = [];
-			var comparedArr = Array.prototype.slice.apply(arguments, [1]).filter(function (item){
-				return !(typeof item == 'object' && comparedObjs.push(item));
-			});
-			function comparedValueInArr (Arr, value){
-				for ( var key in Arr )
-					if ( Arr[key] === value )
-						return true;
-			}
-			function eachKey (comparedArr){
-				for ( var comKey in comparedArr )
-					if ( !comparedValueInArr(keys, comparedArr[comKey]) )
-						return false;
-				return true;
-			}
-			function eachObj(comparedObjs){
-				/*兼容不支持 for(of) 的浏览器*/
-				for ( var comparedObjKey in comparedObjs ){
-					var comObjKeys = Object.keys(comparedObj);
-					for ( var comObjKey in comObjKeys ){
-						if ( comparedValueInArr( keys, comObjKeys[comObjKey] ) ){
-							if ( comparedObj[comObjKeys[comObjKey]] !== obj[comObjKeys[comObjKey]] ){
-								return false;
-							}
-						}else{
-							return false
-						}
-					}
-					return true;
-				}
-				/*
-				for (var comparedObj of comparedObjs){	//解对象组
-					for ( var comKey of Object.keys(comparedObj) ){	//解对象
-						if ( comparedValueInArr(keys, comKey) ){
-							if ( comparedObj[comKey] !== obj[comKey] ){
-								return false;
-							}
-						}else{
-							return false;
-						}
-					}
-				}
-				*/
-				return true;
-			}
-			return !(eachKey(comparedArr) && eachObj(comparedObjs));
-		};
 		this.vjax2 = function (controlObj){
 
 		};
@@ -347,80 +298,19 @@
 			}
 			return end === undefined ? undefined : end();
 		};
-		this.stradd = function (){
-			var str='';
-			for ( var k in arguments)
-				str += String( arguments[k] );
-			return str;
-		};
-		this.straddFunctional = function (){
-			return function (a){
-				return a.length ? String(a.shift()) + arguments.callee(a) : '';
-			}(Array.prototype.slice.call(arguments));
-		};
-		this.vecExtend = function (){
-			Array.prototype.allEach =
-			typeof Array.prototype.allEach !== 'undefined' ?
-			Array.prototype.allEach :
-			function (callback, total){
-				var i = 0;
-				total = Number.isFinite(total) ? total : 0;
-
-				for ( var thisKey in this ){
-					if ( Array.isArray( this[thisKey] ) )
-						total = this[thisKey].allEach(callback, total);
-					else
-						++i && callback(this[thisKey], this, i, total);
-					++total;
-				}
-				return --total;
-			};
-
-			Object.prototype.myCheck = function (compared){
-				/*暂时弃用，IE11不兼容 for (of)
-				"use strict";
-				var obj = this;
-				var keys = Object.keys(this);
-				var comparedObjs = [];
-				var comparedArr = Array.prototype.slice.apply(arguments, [0]).filter(function (item){
-					return !(typeof item == 'object' && comparedObjs.push(item));
-				});
-				function comparedValueInArr(Arr, value){
-					"use strict";
-					for ( var key of Arr )
-						if ( key === value)
-							return true;
-				}
-				function eachKey(comparedArr){
-					"use strict";
-					for ( var com of comparedArr )
-						if ( !comparedValueInArr(keys, com) )
-							return false;
-					return true;
-				}
-				function eachObj(comparedObjs){
-					"use strict";
-					for (var comparedObj of comparedObjs){	//解对象组
-						for ( var comKey of Object.keys(comparedObj) ){	//解对象
-							if ( comparedValueInArr(keys, comKey) ){
-								if ( comparedObj[comKey] !== obj[comKey] ){
-									return false;
-								}
-							}else{
-								return false;
-							}
-						}
-					}
-					return true;
-				}
-				return !(eachKey(comparedArr) && eachObj(comparedObjs));
-				*/
-			};
-		};
 	};
 	var domMethod = function (ele){
 		var my = this;
-		this.css = function (){};
+		this.addEvent;
+		this.rmEvent;
+		this.css = function (cssobj){
+			for ( var i in Object.keys(ele) ){
+				for ( var key in cssobj ){
+					ele[i].style[ key ] = cssobj[key];
+				}
+			}
+			return this;
+		};
 		this.fadeIn = function (timeStr, callback){
 			if ( typeof timeStr === 'function' ){
 				callback = timeStr;
@@ -483,10 +373,7 @@
 			}
 		};
 		this.html = function (str){
-			if ( str === undefined )
-				return my[0].innerHTML;
-			else
-				return ( my[0].innerHTML = str );
+			return str === undefined ? ele[0].innerHTML : ( ele[0].innerHTML = str );
 		};
 		this.text = function (str){
 			var resultArr = [];
@@ -499,9 +386,108 @@
 			}
 		};
 
+		this.each = function (callback){
+			for ( var i in ele )
+				callback(ele[i]);
+		};
+
 		return this;
 	};
-	var publicMethod = function (){};
+	var publicMethod = function (){
+		this.createEle = function (eleName){
+			return doc.createElement(eleName);
+		};
+		this.extend = function(){
+			Array.prototype.allEach =
+			typeof Array.prototype.allEach !== 'undefined' ?
+			Array.prototype.allEach :
+			this.allEach;
+
+			Object.prototype.checkObj =
+			Object.prototype.checkObj !== undefined ?
+			Array.prototype.checkObj :
+			this.checkObj;
+		};
+		this.checkObj = function (obj, compared){
+			var keys = Object.keys(obj);
+			var comparedObjs = [];
+			var comparedArr = Array.prototype.slice.apply(arguments, [1]).filter(function (item){
+				return !(typeof item == 'object' && comparedObjs.push(item));
+			});
+			function comparedValueInArr (Arr, value){
+				for ( var key in Arr )
+					if ( Arr[key] === value )
+						return true;
+			}
+			function eachKey (comparedArr){
+				for ( var comKey in comparedArr )
+					if ( !comparedValueInArr(keys, comparedArr[comKey]) )
+						return false;
+				return true;
+			}
+			function eachObj(comparedObjs){
+				/*兼容不支持 for(of) 的浏览器*/
+				for ( var comparedObjKey in comparedObjs ){
+					var comObjKeys = Object.keys( comparedObjs[comparedObjKey] );
+					for ( var comObjKey in comObjKeys ){
+						if ( comparedValueInArr( keys, comObjKeys[comObjKey] ) ){
+							if ( comparedObjs[comparedObjKey][comObjKeys[comObjKey]] !== obj[comObjKeys[comObjKey]] ){
+								return false;
+							}
+						}else{
+							return false
+						}
+					}
+					return true;
+				}
+				/*
+				for (var comparedObj of comparedObjs){	//解对象组
+					for ( var comKey of Object.keys(comparedObj) ){	//解对象
+						if ( comparedValueInArr(keys, comKey) ){
+							if ( comparedObj[comKey] !== obj[comKey] ){
+								return false;
+							}
+						}else{
+							return false;
+						}
+					}
+				}
+				*/
+				return true;
+			}
+			return !(eachKey(comparedArr) && eachObj(comparedObjs));
+		};
+		this.allEach = function (callback, total){
+			var i = 0;
+			total = Number.isFinite(total) ? total : 0;
+
+			for ( var thisKey in this ){
+				if ( Array.isArray( this[thisKey] ) )
+					total = this[thisKey].allEach(callback, total);
+				else
+					++i && callback(this[thisKey], this, i, total);
+				++total;
+			}
+			return --total;
+		};
+		this.wait = function (callback, timeStr){
+			var my = this;
+			return setTimeout(function (){
+				callback && callback.apply(my instanceof domMethod ? my : f, [] );
+			}, timeStr);
+		};
+		this.stradd = function (){
+			var str='';
+			for ( var k in arguments)
+				str += String( arguments[k] );
+			return str;
+		};
+		this.straddFunctional = function (){
+			return function (a){
+				return a.length ? String(a.shift()) + arguments.callee(a) : '';
+			}(Array.prototype.slice.call(arguments));
+		};
+	};
 	var f = function (str){
 		if ( typeof str !== 'string' ){
 			var domArr = Array(str);
@@ -517,12 +503,16 @@
 		var dom = doc.querySelectorAll(s);
 		return dom;
 	};
-
+	myMethod.prototype = new publicMethod;
+	domMethod.prototype = new publicMethod;
 	f.__proto__ = new myMethod;
 	f_All.__proto__ = new myMethod;
 
 	if ( !win.$ ){
 		win.$ = f;
+	}
+	if ( !win.$c ){
+		win.$c = f.createEle;
 	}
 	if ( !win.$$ ){
 		win.$$ = f_All;
