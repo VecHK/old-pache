@@ -11,11 +11,12 @@ var mEvent = new function(){
 	var my = this;
 	this.articleList = {
 		click: function (){
+			display.setWait();
 			var id = $.getRequest('id', this.href );
 			envir.mode = 'update';
 			manager.getArticleById( id,
-				function (){
-
+				function (article){
+					display.loadEditor(article);
 				},
 				function (){
 
@@ -82,6 +83,19 @@ var mEvent = new function(){
 	$('#delete')[0].onclick = this.deleteArticles;
 };
 var display = new function (){
+	var my = this;
+	function setCursor(str){
+		$('body')[0].style.cursor = str;
+	}
+	this.setWait = function (){
+		setCursor('wait');
+	}
+	this.setProcess = function (){
+		setCursor('progress');
+	}
+	this.removeProcess = function (){
+		setCursor('')
+	}
 	this.editorForm = {};
 	this.displayEditorClass = function (classArr){
 		var classList = document.getElementById('class_list');
@@ -116,10 +130,17 @@ var display = new function (){
 		'Editor':{
 			'status': false,
 			'open': function (){
-				this.style.display = '';
+//				this.style.display = '';
+				$('#first').fadeOut(function (){
+					$('#editor').fadeIn();
+				});
 			},
 			'close': function (){
-				this.style.display = 'none';
+//				this.style.display = 'none';
+				$('#editor').fadeOut(function (){
+					$('#first').fadeIn();
+				});
+
 			},
 			'Toggle': function (){
 				console.info(this);
@@ -131,6 +152,9 @@ var display = new function (){
 			}
 		}
 	};
+	$('#editor').fadeOut();
+	//this.animated.Editor.close.apply($('#editor')[0], []);
+//	display.status('');
 	this.constructForm = function (article){
 		var editor = $('#editor')[0];
 		var form = editor.getElementsByTagName('form');
@@ -158,7 +182,7 @@ var display = new function (){
 		var classListInput = $('#class_list_input')[0];
 		var placeholderTemp = classListInput.placeholder;
 		classListInput.placeholder = 'loading';
-
+		my.setProcess();
 		$.vjax(url, 'GET',
 			function (d){
 				$.json2obj(d,
@@ -169,6 +193,7 @@ var display = new function (){
 								classListInput.value = article.class;
 
 						display.displayEditorClass(obj);
+						my.removeProcess();
 					},
 					function (err, json){
 						console.error('get class fail.');
@@ -235,7 +260,7 @@ var display = new function (){
 				}
 				return (str.length === 1 ? '0' : '') + str;
 			}
-			da = new Date(da);
+			da = new Date(da.replace(/-/g, '/'));//IE
 			return 	da.getFullYear() +'/'+ fillZero(da.getMonth()+1) +'/'+ fillZero(da.getDate()) +' '+
 					fillZero(da.getHours()) +':'+
 					fillZero(da.getMinutes());
@@ -301,8 +326,7 @@ var display = new function (){
 		);
 	};
 };
-display.animated.Editor.close.apply($('#editor')[0], []);
-display.status('');
+
 
 var manager = new function(){
 	var my = this;
@@ -312,12 +336,15 @@ var manager = new function(){
 			function (data){
 				try{
 					var article = JSON.parse(data);
+					ok && ok(article);
 				}catch(e){
 					throw new Error(e);
 				}
-				display.loadEditor(article);
 			},
-			function (err){}
+			function (err){
+				console.error(err);
+				fail && fail(err);
+			}
 		);
 	};
 	this.collectSelected = function (checkBox, empty){

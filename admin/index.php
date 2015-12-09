@@ -38,7 +38,7 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 }
 
 ?>
-<!doctype HTML>
+<!DOCTYPE HTML>
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html" charset="utf-8" />
@@ -49,24 +49,27 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 
 	<link href="style/admin.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="../js/remilia.js"></script>
+	<script type="text/javascript" src="js/myTable.js"></script>
 	<script type="text/javascript" src="../js/taboverride.min.js"></script>
 </head>
 <body>
-	<form id="articlemanagelist">
-		<ul id="articlelist">
+	<div id="first">
+		<form id="articlemanagelist">
+			<ul id="articlelist">
 
-		</ul>
-	</form>
-	<div id="control">
-		<div id="pageselect">
-			<div class='pagebutton'>上一页</div>
-			<ul class="pagelink">
-				<a>1</a> <a>2</a> <a>3</a>
 			</ul>
-			<div class='pagebutton'>下一页</div>
+		</form>
+		<div id="control">
+			<div id="pageselect">
+				<div class='pagebutton'>上一页</div>
+				<ul class="pagelink">
+					<a>1</a> <a>2</a> <a>3</a>
+				</ul>
+				<div class='pagebutton'>下一页</div>
+			</div>
+			<button id="delete">删除</button>
+			<button id='create'>创建文章</button>
 		</div>
-		<button id="delete">删除</button>
-		<button id='create'>创建文章</button>
 	</div>
 
 	<div id="editor">
@@ -76,7 +79,7 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 
 			<input id="class_list_input" type="class" list="class_list" name="class" placeholder="class" />
 			<datalist id="class_list" >
-				<option label="N/A" value="" />
+				<option label="N/A" value="" ></option>
 			</datalist>
 
 			<input id="tag_list_input" name="tag" placeholder="Tag" />
@@ -91,7 +94,7 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 		</form>
 		<div id="editor_close">x</div>
 	</div>
+
 </body>
-<script type="text/javascript" src="js/myTable.js"></script>
 <script type="text/javascript" src="js/admin.js"></script>
 </html>

@@ -1,13 +1,18 @@
 * {
-  margin: 0;
-  padding: 0;
-  /*
-  font: normal 12px/175% Georgia, "Times New Roman", Times, serif, "Hiragino Kaku Gothic Pro", "STXihei", Hei, SimSun;
-*/
+	margin: 0;
+	padding: 0;
+}
+body{
+	background: #05090E;
+}
+#first{
+	transition: opacity 0.618s;
 }
 #articlemanagelist {
 	margin: auto;
 	width: 800px;
+	color: #f5f5f5;
+	transition: margin 0.618s;
 }
 #articlemanagelist table{
 	width: 100%;
@@ -30,15 +35,22 @@
 	text-decoration: none;
 
 	margin-left: 10px;
-	transition: color 0.618s text-shadow 0.618s;
+	transition: color 0.618s, text-shadow 0.618s;
 }
-#articlelist div.link a:link, #articlelist div.link a:active {
-	color: rgb(27, 29, 82);
+#articlelist div.link a:visited{
+	/*color: rgb(151, 90, 245);*/
+	color: rgb(188, 158, 234);
+}
+#articlelist div.link a:link{
+	color: rgb(188, 158, 234);
+}
+#articlelist div.link a:active {
+	color: rgb(151, 90, 245);
 	text-shadow: 0px 0px 1px rgba(27, 29, 82, 0.382);
 }
 #articlelist div.link a:hover {
-	color: #521B1B;
-	text-shadow: 0px 0px 1px rgba(82, 27, 27, 0.382);
+	color: rgb(90, 244, 245);
+	text-shadow: 0px 0px 10px rgb(151, 90, 245);;
 }
 
 #articlelist .tag{
@@ -49,6 +61,7 @@
 #control{
 	width: 640px;
 	margin: auto;
+	color: thistle
 }
 
 #editor {
@@ -73,7 +86,7 @@
 	top: 0;
 	left: 0;
 	font-family: 微软雅黑;
-	background-color: white;
+	background-color: transparent;
 }
 #editor_close{
 	color: #BBB;
@@ -90,32 +103,38 @@
 	background-color: transparent;
 	font-family: "思源黑体 CN Light", "Hiragino Sans GB", "microsoft yahei", "WenQuanYi Microhei", "黑体";
 }
-#editor input.title{
-	font-size: 3em;
-	font-family: "Hiragino Sans GB", DengXian, "WenQuanYi Microhei", "Microsoft yahei light", "黑体";
-	margin: auto;
-	display: block;
-	text-align: center;
-	background: transparent;
-	color: rgb(27, 29, 82);
-	border: 0;
-	width: 100%;
-	border-width: 1px;
-	border-bottom-style: groove;
-	border-color: rgba(226, 222, 222, 0.618);
-	text-shadow: 0px 0px 1px rgba(27, 29, 82, 0.382);
-}
 #editor input.title:focus{
 	outline: none;
 }
+#editor input.title{
+	display: block;
+	width: 100%;
+	margin: auto;
+	background: transparent;
+
+	font-family: "Hiragino Sans GB", DengXian, "WenQuanYi Microhei", "Microsoft yahei light", "黑体";
+	font-size: 3em;
+	/*color: rgb(27, 29, 82);*/
+	color: rgb(192, 214, 243);
+
+	text-align: center;
+	text-shadow: 0px 0px 1px rgba(27, 29, 82, 0.382);
+
+	border: 0;
+	border-width: 1px;
+	border-bottom-style: groove;
+	border-color: rgba(226, 222, 222, 0.618);
+}
 #editor textarea{
 	display: block;
-	background: transparent;
 	height: 480px;
 	width: calc( 100% - 40px );
 	margin: 64px 0px 0px 0px;
 	padding-left: 20px;
 	padding-right: 20px;
+
+	background: transparent;
+
 	border-top-width: 0px;
 	border-left-width: 0px;
 	border-right-width: 0px;
@@ -133,7 +152,8 @@
 	border: 0px;/*solid #FF7720 1px;*/
 	border-left-width: 0px;
 	border-right-width: 0px;
-	color: rgb(27, 29, 82);
+	/*color: rgb(27, 29, 82);*/
+	color: rgb(192, 214, 243);
 }
 /* 设置滚动条的样式 */
 #editor textarea::-webkit-scrollbar {
