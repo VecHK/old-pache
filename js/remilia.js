@@ -204,27 +204,38 @@
 			return strSubLast( objKeysMap( requestObj, Object.keys(requestObj) ));
 		};
 		this.checkObj = function (obj, compared){
-			"use strict";
 			var keys = Object.keys(obj);
 			var comparedObjs = [];
 			var comparedArr = Array.prototype.slice.apply(arguments, [1]).filter(function (item){
 				return !(typeof item == 'object' && comparedObjs.push(item));
 			});
-			function comparedValueInArr(Arr, value){
-				"use strict";
-				for ( var key of Arr )
-					if ( key === value)
+			function comparedValueInArr (Arr, value){
+				for ( var key in Arr )
+					if ( Arr[key] === value )
 						return true;
 			}
-			function eachKey(comparedArr){
-				"use strict";
-				for ( var com of comparedArr )
-					if ( !comparedValueInArr(keys, com) )
+			function eachKey (comparedArr){
+				for ( var comKey in comparedArr )
+					if ( !comparedValueInArr(keys, comparedArr[comKey]) )
 						return false;
 				return true;
 			}
 			function eachObj(comparedObjs){
-				"use strict";
+				/*兼容不支持 for(of) 的浏览器*/
+				for ( var comparedObjKey in comparedObjs ){
+					var comObjKeys = Object.keys(comparedObj);
+					for ( var comObjKey in comObjKeys ){
+						if ( comparedValueInArr( keys, comObjKeys[comObjKey] ) ){
+							if ( comparedObj[comObjKeys[comObjKey]] !== obj[comObjKeys[comObjKey]] ){
+								return false;
+							}
+						}else{
+							return false
+						}
+					}
+					return true;
+				}
+				/*
 				for (var comparedObj of comparedObjs){	//解对象组
 					for ( var comKey of Object.keys(comparedObj) ){	//解对象
 						if ( comparedValueInArr(keys, comKey) ){
@@ -236,6 +247,7 @@
 						}
 					}
 				}
+				*/
 				return true;
 			}
 			return !(eachKey(comparedArr) && eachObj(comparedObjs));
@@ -337,8 +349,8 @@
 		};
 		this.stradd = function (){
 			var str='';
-			for ( var i of arguments)
-				str += String(i);
+			for ( var k in arguments)
+				str += String( arguments[k] );
 			return str;
 		};
 		this.straddFunctional = function (){
@@ -351,20 +363,21 @@
 			typeof Array.prototype.allEach !== 'undefined' ?
 			Array.prototype.allEach :
 			function (callback, total){
-				"use strict";
 				var i = 0;
 				total = Number.isFinite(total) ? total : 0;
-				for ( var item of this ){
-					if ( Array.isArray(item) )
-						total = item.allEach(callback, total);
+
+				for ( var thisKey in this ){
+					if ( Array.isArray( this[thisKey] ) )
+						total = this[thisKey].allEach(callback, total);
 					else
-						++i && callback(item, this, i, total);
+						++i && callback(this[thisKey], this, i, total);
 					++total;
 				}
 				return --total;
 			};
 
 			Object.prototype.myCheck = function (compared){
+				/*暂时弃用，IE11不兼容 for (of)
 				"use strict";
 				var obj = this;
 				var keys = Object.keys(this);
@@ -401,6 +414,7 @@
 					return true;
 				}
 				return !(eachKey(comparedArr) && eachObj(comparedObjs));
+				*/
 			};
 		};
 	};
@@ -415,11 +429,11 @@
 		};
 		this.text = function (str){
 			var resultArr = [];
-			for ( var ele of my ){
-				if (str===undefined){
-					return ele.textContent || ele.innerText;
+			for ( var key in my ){
+				if ( str === undefined ){
+					return my[key].textContent || my[key].innerText;
 				}else{
-					ele.textContent ? (ele.innerText = str) : ( ele.textContent = str );
+					my[key].textContent ? (my[key].innerText = str) : ( my[key].textContent = str );
 				}
 			}
 		};
