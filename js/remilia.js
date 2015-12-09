@@ -1,5 +1,5 @@
 (function (win, doc){
-	var ver = 0.3;
+	var ver = 0.35;
 	console.info(
 		'永远鲜红的',
 		'幼月☾',
@@ -421,13 +421,65 @@
 	var domMethod = function (ele){
 		var my = this;
 		this.css = function (){};
-		this.fadeIn = function (){
+		this.fadeIn = function (timeStr, callback){
+			if ( typeof timeStr === 'function' ){
+				callback = timeStr;
+				timeStr = 0.618;
+			}else if ( timeStr === undefined ){
+				timeStr = 0.618;
+			}
+			timeStr = Number(timeStr);
+			for ( var key in Object.keys(ele) ){
+				for ( var key in Object.keys(ele) ){
+					ele[key].style.webkitTransition = 'opacity '+ timeStr +'s';
+					ele[key].style.opacity = '0';
+					ele[key].style.removeProperty('display');
+
+					requestAnimationFrame(function (){
+						ele[key].__proto__.RMfade && clearTimeout(ele[key].__proto__.RMfade.timeEvent);
+						ele[key].__proto__.RMfade = {
+							timeEvent: setTimeout(function (ele){/*暂时的解决方法*/
+								return function (){
+									ele.style.opacity = '1';
+									setTimeout(function (){
+										//ele.style.opacity = '';
+										ele.style.webkitTransition = '';
+										delete ele.__proto__.RMfade;
+										callback && callback(ele);
+									}, timeStr*1000);
+								}
+							}(ele[key]),0)
+						};
+					});
+
+				}
+			}
 
 		};
-		this.fadeOut = function (){
-			console.log(this);
+		this.fadeOut = function (timeStr, callback){
+			if ( typeof timeStr === 'function' ){
+				callback = timeStr;
+				timeStr = 0.618;
+			}else if ( timeStr === undefined ){
+				timeStr = 0.618;
+			}
+			timeStr = Number(timeStr);
 			for ( var key in Object.keys(ele) ){
-				console.log( Object.keys(ele)[key] );
+				ele[key].style.opacity = '0';
+				ele[key].style.webkitTransition = 'opacity '+ timeStr +'s';
+
+				ele[key].__proto__.RMfade && clearTimeout(ele[key].__proto__.RMfade.timeEvent);
+				requestAnimationFrame(function (){
+					ele[key].__proto__.RMfade = {
+						timeEvent: setTimeout(function (ele){
+							return function (){
+								ele.style.display = 'none';
+								//ele.style.webkitTransition = '';
+								callback && callback(ele);
+							}
+						}(ele[key]), timeStr*1000)
+					};
+				});
 			}
 		};
 		this.html = function (str){
@@ -449,6 +501,7 @@
 
 		return this;
 	};
+	var publicMethod = function (){};
 	var f = function (str){
 		if ( typeof str !== 'string' ){
 			var domArr = Array(str);
