@@ -319,7 +319,32 @@
 		win.t = this;
 		this.regTransition;
 		this.preEle = function (){
-			
+
+		};
+		this.append = function (appendEle, createFunc){
+			if ( typeof appendEle === 'string' ){
+				ele[0].appendChild(this.createEle(appendEle, createFunc));
+			}else{
+				ele[0].appendChild(appendEle);
+			}
+			return ele;
+		};
+		this.cssLine = function (){
+			var keys = Object.keys(ele[0].style);
+			var obj = new function (){
+				var cssObj = this;
+				this.lineEnd = function (){
+					return ele;
+				};
+				for ( var i in keys )
+					this[ keys[i] ] = function (key){
+						return function (set){
+							ele[0].style[key] = set;
+							return cssObj;
+						}
+					}(keys[i]);
+			};
+			return obj;
 		};
 		this.css = function (cssobj){
 			for ( var i in Object.keys(ele) ){
