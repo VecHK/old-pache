@@ -96,6 +96,7 @@ body{
 	cursor: pointer;
 }
 #editor form{
+	position: relative;
 	margin: auto;
 	padding-top: 32px;
 	width: 700px;

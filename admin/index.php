@@ -83,6 +83,7 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 			</datalist>
 
 			<input id="tag_list_input" name="tag" placeholder="Tag" />
+			<div id="tag-selector" ></div>
 
 			<select name="type" >
 				<option value="markdown">Markdown</option>
@@ -96,5 +97,6 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 	</div>
 
 </body>
+<script type="text/javascript" src="js/myWidgets.js"></script>
 <script type="text/javascript" src="js/admin.js"></script>
 </html>

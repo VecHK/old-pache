@@ -152,7 +152,9 @@ var display = new function (){
 			}
 		}
 	};
-	$('#editor').fadeOut();
+	$('#editor').fadeOut(function (){
+		//my.animated.Editor.open();
+	});
 	//this.animated.Editor.close.apply($('#editor')[0], []);
 //	display.status('');
 	this.constructForm = function (article){
