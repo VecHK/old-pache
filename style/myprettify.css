@@ -1,3 +1,28 @@
+pre.prettyprint{
+	position: relative;
+}
+pre.prettyprint:hover > button{
+	opacity: 1;
+}
+pre.prettyprint button{
+	font-size: x-large;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	border: none;
+	background: transparent;
+	color: rgb(192, 214, 243);
+	opacity: 0;
+	transition: opacity 0.618s, text-shadow 0.618s;
+}
+pre.prettyprint button:hover{
+	text-shadow: 0px 0px 10px rgb(192, 214, 243);
+	cursor: pointer;
+}
+pre.prettyprint button:focus{
+	outline: none;
+}
+
 pre.prettyprint code{
 	font-family: Consolas, "宋体";
 	border: 0px;
