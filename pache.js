@@ -28,11 +28,13 @@ var htmlConsole = function (ele){
 	console.log(ele.parentNode);
 	ele.parentNode.insertBefore( this.conEle, ele );
 	function inspect(){
+/*
 		this.logg = this.log;
 		this.log = function (){
-			//my.log.apply(this, arguments);
-			return this.logg.apply(this, arguments);
+			this.logg.apply(this, arguments);
+			//console.logg.apply(console, arguments);
 		};
+*/
 	}
 	inspect.apply(console);
 }
@@ -90,24 +92,6 @@ var noFound = function (ele){
 
 };
 
-var myDateFormat = function (d){
-	var zeros = function (s){
-		var s = s.toString();
-		if ( s.length === 1 ){
-			s = '0' + s;
-		}
-		return s;
-	};
-	var str = '';
-	str +=zeros( (1900 + d.getYear()) ) + '/'
-		+ zeros((d.getMonth())+1) + '/'
-		+ zeros(d.getDate()) + ' '
-		+ zeros(d.getHours()) + ':'
-		+ zeros(d.getMinutes()) + ':'
-		+ zeros(d.getSeconds())
-	;
-	return str;
-};
 	var articleContent = document.getElementById('article').innerHTML;
 
 	console.info(articleContent);
@@ -158,10 +142,28 @@ var myDateFormat = function (d){
 	}
 	codeLight.apply(null, document.getElementById('article').getElementsByTagName('code'));
 
-try{
+	var myDateFormat = function (d){
+		var zeros = function (s){
+			var s = s.toString();
+			if ( s.length === 1 ){
+				s = '0' + s;
+			}
+			return s;
+		};
+		var str = '';
+		str +=zeros( (1900 + d.getYear()) ) + '/'
+			+ zeros((d.getMonth())+1) + '/'
+			+ zeros(d.getDate()) + ' '
+			+ zeros(d.getHours()) + ':'
+			+ zeros(d.getMinutes()) + ':'
+			+ zeros(d.getSeconds())
+		;
+		return str;
+	};
+
 	var articleTime = $( $('#time time')[0] ).text();
 	var articleLtime = $( $('#time time')[1] ).text();
-	-function (){
+	(function (){
 		console.log(articleTime);
 		articleTime = new Date(articleTime);
 		articleLtime = new Date(articleLtime);
@@ -172,17 +174,4 @@ try{
 		}else{
 			document.getElementById('time').innerHTML = '<time datetime="'+myDateFormat(articleTime)+'">'+ myDateFormat(articleTime) +'</time>'
 		}
-	}();
-}catch(e){
-	console.error(e);
-}
-
-var obj = new function (){
-	var stradd = function (){
-		return function (a){
-			return a.length ? String(a.shift()) + arguments.callee(a) : '';
-		}(Array.prototype.slice.call(arguments));
-	};
-	this.pache = stradd('hey, ', 'i am Pache.');
-	this.vec = stradd('hey, ', 'i am vec^ ^');
-};
+	})();
