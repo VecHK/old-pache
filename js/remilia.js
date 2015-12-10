@@ -1,9 +1,9 @@
 (function (win, doc){
-	var ver = 0.35;
-	console.info(
+	var ver = 0.36;
+	console.log(
 		'永远鲜红的',
-		'幼月☾',
-		'与',
+		'☾',
+		'&',
 		'bug',
 		'\n\nver:'+ver
 	);
@@ -299,10 +299,28 @@
 			return end === undefined ? undefined : end();
 		};
 	};
+	var eventMethod = function (){
+		this.click = function (){};
+		this.dClick = function (){};
+		this.rClick = function (){};
+		this.focus = function (){};
+		this.blur = function (){};
+	};
 	var domMethod = function (ele){
 		var my = this;
-		this.addEvent;
-		this.rmEvent;
+		this.addEvent = function (eventName, callback, t){
+			for ( var i in Object.keys(ele) )
+				return ele[i].addEventListener(eventName, callback, t);
+		};
+		this.rmEvent = function (eventName, callback, t){
+			for ( var i in Object.keys(ele) )
+				ele[i].removeEventListener(eventName, callback, t);
+		};
+		win.t = this;
+		this.regTransition;
+		this.preEle = function (){
+			
+		};
 		this.css = function (cssobj){
 			for ( var i in Object.keys(ele) ){
 				for ( var key in cssobj ){
@@ -344,7 +362,6 @@
 			for ( var key in Object.keys(ele) ){
 				for ( var key in Object.keys(ele) ){
 					setTransition(ele[key], 'opacity '+ timeStr +'s');
-//					ele[key].style.transition = 'opacity '+ timeStr +'s';
 					ele[key].style.opacity = '0';
 					ele[key].style.removeProperty('display');
 
@@ -355,9 +372,7 @@
 								return function (){
 									ele.style.opacity = '1';
 									setTimeout(function (){
-										//ele.style.opacity = '';
 										removeTransition(ele);
-//										ele.style.webkitTransition = '';
 										delete ele.__proto__.RMfade;
 										callback && callback(ele);
 									}, timeStr*1000);
@@ -380,7 +395,6 @@
 			timeStr = Number(timeStr);
 			for ( var key in Object.keys(ele) ){
 				ele[key].style.opacity = '0';
-//				ele[key].style.transition = 'opacity '+ timeStr +'s';
 				setTransition( ele[key], 'opacity '+ timeStr +'s' );
 				ele[key].__proto__.RMfade && clearTimeout(ele[key].__proto__.RMfade.timeEvent);
 				myRequestAnimationFrame(function (){
@@ -389,7 +403,6 @@
 						timeEvent: setTimeout(function (ele){
 							return function (){
 								ele.style.display = 'none';
-								//ele.style.webkitTransition = '';
 								callback && callback(ele);
 
 							}
@@ -420,9 +433,6 @@
 		return this;
 	};
 	var publicMethod = function (){
-		this.createEle = function (eleName){
-			return doc.createElement(eleName);
-		};
 		this.extend = function(){
 			Array.prototype.allEach =
 			typeof Array.prototype.allEach !== 'undefined' ?
@@ -513,6 +523,40 @@
 				return a.length ? String(a.shift()) + arguments.callee(a) : '';
 			}(Array.prototype.slice.call(arguments));
 		};
+		function bechMark(testCount, count, func, arg){
+			var testUnitArr = [];
+			var start = performance.now();
+			function testUnit(count, func, arg){
+				this.start = performance.now();
+
+				for ( var i=0; i<count; ++i )
+					func.apply(null, arg);
+
+				this.end = performance.now();
+				this.interval = this.end - this.start;
+			}
+
+			for ( var i=0; i<testCount; ++i )
+				testUnitArr.push( new testUnit(count, func, arg) );
+
+			var end = performance.now();
+			var totalTime = end - start;
+
+			var he = 0;
+			testUnitArr.forEach(function (d,i){
+				he += d.interval;
+			});
+			return {
+				'totalTime': totalTime,
+				'unit': testUnitArr,
+				'average': he/testUnitArr.length
+			}
+		}
+		this.createEle = function (eleName, callback){
+			var ele = doc.createElement(eleName);
+			callback && callback( f(ele) );
+			return ele;
+		};
 	};
 	var f = function (str){
 		if ( typeof str !== 'string' ){
@@ -525,55 +569,15 @@
 		domArr.__proto__ = new domMethod(domArr);
 		return domArr;
 	};
-	var f_All = function (s){
-		var dom = doc.querySelectorAll(s);
-		return dom;
-	};
+
 	myMethod.prototype = new publicMethod;
+
+	publicMethod.prototype = new eventMethod;
 	domMethod.prototype = new publicMethod;
 	f.__proto__ = new myMethod;
-	f_All.__proto__ = new myMethod;
 
-	if ( !win.$ ){
-		win.$ = f;
-	}
-	if ( !win.$c ){
-		win.$c = f.createEle;
-	}
-	if ( !win.$$ ){
-		win.$$ = f_All;
-	}
+	if ( !win.$ )	win.$ = f;
+	if ( !win.$c )	win.$c = f.createEle;
 
 	win.Remilia = f;
-	win.Remilia_f = f;
 })(window, document);
-
-function bechMark(testCount, count, func, arg){
-	var testUnitArr = [];
-	var start = performance.now();
-	function testUnit(count, func, arg){
-		this.start = performance.now();
-
-		for ( var i=0; i<count; ++i )
-			func.apply(null, arg);
-
-		this.end = performance.now();
-		this.interval = this.end - this.start;
-	}
-
-	for ( var i=0; i<testCount; ++i )
-		testUnitArr.push( new testUnit(count, func, arg) );
-
-	var end = performance.now();
-	var totalTime = end - start;
-
-	var he = 0;
-	testUnitArr.forEach(function (d,i){
-		he += d.interval;
-	});
-	return {
-		'totalTime': totalTime,
-		'unit': testUnitArr,
-		'average': he/testUnitArr.length
-	}
-}
