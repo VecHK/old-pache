@@ -1,10 +1,41 @@
-var innerText = function (ele, str){
-	if (str===undefined){
-		return ele.textContent || ele.innerText;
-	}else{
-		ele.textContent ? (ele.innerText = str) : ( ele.textContent = str );
+var htmlConsole = function (ele){
+	var my = this;
+	this.conEle = createHtmlConsoleEle();
+	this.log = function (str){
+		this.conEle.appendChild( $c('li', function (ele){
+			ele.text(str);
+		}) );
+	};
+	function createHtmlConsoleEle(){
+		return $c('div', function (ele){
+			ele[0].className = "html-console";
+			ele.text('htmlConsole v0.01a');
+			ele.css({
+				'display': 'block',
+				'position': 'relative',
+				'height': '0px',
+				'padding': '0px',
+				'margin': '0px',
+				'overflow': 'scroll',
+				'background': 'rgba(27, 29, 82, 0.14)',
+				'border-top-left-radius': '5px',
+				'border-top-right-radius': '5px',
+
+				'transition': 'height 0.618s'
+			});
+		})
+	};
+	console.log(ele.parentNode);
+	ele.parentNode.insertBefore( this.conEle, ele );
+	function inspect(){
+		this.logg = this.log;
+		this.log = function (){
+			//my.log.apply(this, arguments);
+			return this.logg.apply(this, arguments);
+		};
 	}
-};
+	inspect.apply(console);
+}
 
 var noFound = function (ele){
 	var f =  document.getElementById('float');
@@ -108,6 +139,16 @@ var myDateFormat = function (d){
 					console.warn(item);
 					item.innerHTML = prettyPrintOne(item.innerHTML);
 					item.parentElement.className = 'prettyprint';
+					item.parentElement.insertBefore($c('button', function (ele){
+						ele.text('▶');
+						ele.addEvent('click', function (ele){
+							var hCon = new htmlConsole(item.parentElement);
+							return function (){
+								$(hCon.conEle).css( {'height': '100px'} );
+								eval( $(ele.parentElement.getElementsByClassName('javascript')[0]).text() );
+							}
+						}(ele[0]),false);
+					}), item.parentElement.firstChild );
 				}
 				return true;
 			}
@@ -118,8 +159,8 @@ var myDateFormat = function (d){
 	codeLight.apply(null, document.getElementById('article').getElementsByTagName('code'));
 
 try{
-	var articleTime = innerText(document.getElementById('time').getElementsByTagName('time')[0]);
-	var articleLtime = innerText(document.getElementById('time').getElementsByTagName('time')[1]);
+	var articleTime = $( $('#time time')[0] ).text();
+	var articleLtime = $( $('#time time')[1] ).text();
 	-function (){
 		console.log(articleTime);
 		articleTime = new Date(articleTime);
