@@ -159,7 +159,7 @@ class outIndex{
 			$this->articlesTagList = getArticlesTagListById($idArr);
 //			var_dump($articlesTagList);
 
-			header('Content-type: text/plain; charset=utf-8');
+			header('Content-Type: text/plain; charset=utf-8');
 			echo json_encode($this);
 		}else if ( $this->display == 'html' ){
 			$pache = new pache;

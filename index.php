@@ -58,7 +58,7 @@ else if ( isset($_GET['tag']) ){
 }
 
 ?>
-<!doctype HTML>
+<!DOCTYPE HTML>
 <html>
 <head>
 	<title><?php echo $pache->title; ?></title>
