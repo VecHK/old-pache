@@ -74,21 +74,29 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 
 	<div id="editor">
 		<form method="post">
-			<input class="title" name="title" placeholder="标题" />
-			<textarea name="article" placeholder="正文"></textarea>
+			<div class="main">
+				<div class="title-head">
+					<input class="title" name="title" placeholder="标题" />
+				</div>
+				<div class="content">
+					<textarea name="article" placeholder="正文"></textarea>
+				</div>
+			</div>
 
-			<input id="class_list_input" type="class" list="class_list" name="class" placeholder="class" />
-			<datalist id="class_list" >
-				<option label="N/A" value="" ></option>
-			</datalist>
+			<div id="editor-control">
+				<input id="class_list_input" type="class" list="class_list" name="class" placeholder="class" />
+				<datalist id="class_list" >
+					<option label="N/A" value="" ></option>
+				</datalist>
 
-			<select name="type" >
-				<option value="markdown">Markdown</option>
-				<option value="text">text</option>
-				<option value="html">HTML</option>
-			</select>
-			<button type="submit">post</button>
-			<div id="status">N/A</div>
+				<select name="type" >
+					<option value="markdown">Markdown</option>
+					<option value="text">text</option>
+					<option value="html">HTML</option>
+				</select>
+				<button type="submit">post</button>
+				<div id="status">N/A</div>
+			</div>
 		</form>
 		<div id="editor_close">x</div>
 		<div id="tag">

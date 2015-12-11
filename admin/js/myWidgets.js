@@ -16,6 +16,9 @@ function tagSelector(ele){
 		}
 		ele.innerHTML = '';
 	};
+	function curSorCalcList(){
+
+	}
 	this.createItem = function (conObj){
 		var my = this;
 		var tagSelectorEle = ele;
@@ -48,21 +51,37 @@ function tagSelector(ele){
 					.top('0px')
 					.cursor('pointer');
 				closeTag[0].className = 'closeTag';
-				this.addEvent('click', function (ele, cursor){
+				this.addEvent('click', function (interEle, cursor){
 					return function (){
-						if ( typeof conObj === 'object' && typeof conObj.close === 'function' && conObj.close.apply(tagSelectorEle, [ele]) ){
-							tagSelectorEle.removeChild(ele);
-							return my.removeItem(cursor);
+						if ( typeof conObj === 'object' ){
+							if ( typeof conObj.close !== 'undefined' ){
+								if ( conObj.close.apply(tagSelectorEle, [interEle]) === false ){
+									return ;
+								}
+							}
 						}
-
+						tagSelectorEle.removeChild(interEle);
+						return my.removeItem(ele[0]);
 					}
 				}(ele[0], my.length), true);
 			}));
-			my.push(conObj[ conObj.value !== undefined ? 'value' : 'content' ]);
+
+			var obj = {
+				cursor: my.length,
+				value: conObj.value,
+				content: conObj.content,
+				ele: ele[0]
+			};
+			my.push( obj );
 		});
 	};
-	this.removeItem = function (cursor){
-		return this.splice(cursor, cursor);
+	this.removeItem = function (cursorEle){
+		console.warn(cursorEle);
+		for ( var i=0; i<this.length; ++i ){
+			if ( this[i].ele === cursorEle ){
+				this.splice(i, 1);
+			}
+		}
 	};
 }
 var tS=[];

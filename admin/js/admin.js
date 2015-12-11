@@ -1,5 +1,14 @@
 tabOverride.set($('textarea'));
 $('textarea')[0].spellcheck = false;
+function eventResizeTextarea(){
+	ResizeTextarea(this, 4);
+}
+$('textarea')
+	.addEvent('click', eventResizeTextarea, true)
+	.addEvent('focus', eventResizeTextarea, true)
+	.addEvent('keydown', eventResizeTextarea, true);
+
+
 var envir = {
 	/* mode: 'new'(create Articcle), 'update'(edit Article) */
 	'mode': null,
@@ -30,8 +39,9 @@ var mEvent = new function(){
 		display.loadEditor({
 			'title': 'Hello, World',
 			'article': '在这儿输入你的文章',
-			'type': 'text'
+			'type': 'markdown'
 		});
+		display.loadClass();
 	};
 
 	this.closeEditor = function (e){
@@ -78,6 +88,14 @@ var mEvent = new function(){
 		return false;
 	};
 	this.addTag = function (e){
+		if ( $('#tag input')[0].value === '' ){
+			alert('tag不能为空');
+			return 0;
+		}
+		if ( new RegExp(/ /g).test($('#tag input')[0].value) ){
+			alert('tag不能有空格');
+			return 0;
+		}
 		tS.appendItem({
 			'value': $('#tag input')[0].value,
 			'content': $('#tag input')[0].value,
@@ -97,17 +115,20 @@ var mEvent = new function(){
 
 var display = new function (){
 	var my = this;
-	function setCursor(str){
-		$('body')[0].style.cursor = str;
-	}
+	var processEle;
+	this.setCursor = function (str){
+		$('body').css({
+			'cursor': str
+		});
+	};
 	this.setWait = function (){
-		setCursor('wait');
+		this.setCursor('wait');
 	}
 	this.setProcess = function (){
-		setCursor('progress');
+		this.setCursor('progress');
 	}
 	this.removeProcess = function (){
-		setCursor('')
+		this.setCursor('');
 	}
 	this.editorForm = {};
 	this.displayEditorClass = function (classArr){
@@ -182,9 +203,9 @@ var display = new function (){
 		this.articleObj = article;
 
 		this.form	= editor.getElementsByTagName('form')[0];
-		this.title	= document.getElementsByName('title')[0];
-		this.type = document.getElementsByName('type')[0];
-		this.article = document.getElementsByName('article')[0];
+		this.title	= $('[name=title]')[0];
+		this.type = $('[name=type]')[0];
+		this.article = $('[name=article]')[0];
 
 		this.title.value = article.title;
 		this.article.value = article.article;
@@ -194,7 +215,7 @@ var display = new function (){
 
 		console.log('constructForm ok.');
 	};
-	this.loadEditor = function (article){
+	this.loadClass = function (ok, fail){
 		var url = 'ad.php?' + $.stringifyRequest({
 			'type': 'getclass',
 			'pw':$.cookie('pw'),
@@ -203,28 +224,37 @@ var display = new function (){
 		var classListInput = $('#class_list_input')[0];
 		var placeholderTemp = classListInput.placeholder;
 		classListInput.placeholder = 'loading';
-		my.setProcess();
 		$.vjax(url, 'GET',
 			function (d){
 				$.json2obj(d,
 					function (obj){
 						classListInput.placeholder = 'class';
-						if ( envir.mode !== 'new' )
-							if ( article.class.length !== 0 )
-								classListInput.value = article.class;
 
 						display.displayEditorClass(obj);
 						my.removeProcess();
+						ok && ok(obj);
 					},
-					function (err, json){
-						console.error('get class fail.');
-						console.error(json);
-						//throw new Error(err);
-					}
+					fail
 				);
 			},
 			function (err){
 				throw new Error(err);
+			}
+		);
+	};
+	this.loadEditor = function (article){
+		my.setProcess();
+		var classListInput = $('#class_list_input')[0];
+		this.loadClass(
+			function (obj){
+				if ( envir.mode !== 'new' )
+					if ( article.class.length !== 0 )
+						classListInput.value = article.class;
+			},
+			function (err, json){
+				console.error('get class fail.');
+				console.error(json);
+				//throw new Error(err);
 			}
 		);
 
@@ -459,7 +489,14 @@ var manager = new function(){
 		this.article = editorForm['article'].value;
 		this.type = editorForm['type'].value;
 		this.class = editorForm['class'].value;
-		this.tag = tS;
+
+		this.tag = [];
+		var my = this;
+		tS.forEach(function (item){
+			if ( typeof item.value === 'string' ){
+				my.tag.push(item.value);
+			}
+		});
 		return false;
 	};
 
@@ -521,3 +558,27 @@ var manager = new function(){
 };
 
 display.loadArticleList(envir.page, envir.limit);
+
+/* tanks http://www.aa25.cn/code/515.shtml */
+function ResizeTextarea(a,row){
+	var agt = navigator.userAgent.toLowerCase();
+	var is_op = (agt.indexOf("opera") != -1);
+	var is_ie = (agt.indexOf("msie") != -1) && document.all && !is_op;
+	if(!a){return}
+	if(!row)
+		row=5;
+	var b=a.value.split("\n");
+	var c=is_ie?1:0;
+	c+=b.length;
+	var d=a.cols;
+	if(d<=20){d=40}
+	for(var e=0;e<b.length;e++){
+		if(b[e].length>=d){
+			c+=Math.ceil(b[e].length/d)
+		}
+	}
+	c=Math.max(c,row);
+	if(c!=a.rows){
+		a.rows=c;
+	}
+}
