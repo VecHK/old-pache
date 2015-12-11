@@ -327,11 +327,19 @@
 
 		};
 		this.append = function (appendEle, createFunc){
-			if ( typeof appendEle === 'string' ){
-				ele[0].appendChild(this.createEle(appendEle, createFunc));
-			}else{
-				ele[0].appendChild(appendEle);
-			}
+			for ( var i in Object.keys(ele) )
+				ele[i].appendChild(
+					function (){
+						if ( typeof appendEle === 'string' ){
+							return ele.createEle(appendEle, createFunc);
+						}else if ( typeof appendEle === 'function' ){
+							return appendEle.apply(ele);
+						}else{
+							return appendEle;
+						}
+					}()
+				);
+
 			return ele;
 		};
 		this.cssLine = function (){
@@ -598,7 +606,7 @@
 		}
 		this.createEle = function (eleName, callback){
 			var ele = doc.createElement(eleName);
-			callback && callback( f(ele) );
+			callback && callback.apply( f(ele), [ f(ele) ] );
 			return ele;
 		};
 	};
