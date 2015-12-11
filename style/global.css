@@ -204,6 +204,14 @@ p{
 p + ul, p + ol{
 	margin-top: -1.5em;
 }
+p + pre{
+	margin-top: -1.5em !important;
+}
+
+p + .html-console{
+	margin-top: -1.5em !important;
+}
+
 
 h1,h2,h3,h4,h5,h6{
 	font-family: "黑体", "DengXian";
