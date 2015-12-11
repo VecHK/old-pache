@@ -1,5 +1,5 @@
 (function (win, doc){
-	var ver = 0.36;
+	var ver = 0.39;
 	console.log(
 		'永远鲜红的',
 		'☾',
@@ -119,7 +119,7 @@
 				}
 				if ( typeof arguments[0] === 'string' ){
 					var key = arguments[0];
-					return arguments[1] == undefined ? this.cookie.parse()[key] : this.cookie.set(key, arguments[1]);
+					return arguments[1] == undefined ? this.cookie.parse()[key] : this.cookie.set(key, arguments[1], arguments[2]);
 				}else if (typeof arguments[0] === 'object'){
 
 				}
@@ -148,6 +148,9 @@
 				};
 				this.set = function (key, value, time){
 					var set = new Date();
+					if ( time === undefined ){
+						time = '';
+					}
 					set.setDate( set.getDate() + time );
 					doc.cookie = key + ' = ' + escape(value) + ((time !== undefined) ? ';expires='+exdate.toGMTString() : '');
 				};
@@ -196,7 +199,7 @@
 			function stringify(obj, keys){
 				return isArray(obj[keys[0]]) ?
 				stringifyArray.apply(obj, [keys.shift()]) :
-				keys[0] + '=' + encodeURIComponent( obj[keys.shift()] ) + '&';
+				encodeURIComponent(keys[0]) + '=' + encodeURIComponent( obj[keys.shift()] ) + '&';
 			}
 			function objKeysMap(postObj, objKeys){
 					return objKeys.length ? stringify(postObj, objKeys) + arguments.callee(postObj, objKeys) : '';
@@ -309,8 +312,10 @@
 	var domMethod = function (ele){
 		var my = this;
 		this.addEvent = function (eventName, callback, t){
-			for ( var i in Object.keys(ele) )
-				return ele[i].addEventListener(eventName, callback, t);
+			for ( var i in Object.keys(ele) ){
+				ele[i].addEventListener(eventName, callback, t);
+				return ele;
+			}
 		};
 		this.rmEvent = function (eventName, callback, t){
 			for ( var i in Object.keys(ele) )
@@ -346,11 +351,19 @@
 			};
 			return obj;
 		};
-		this.css = function (cssobj){
-			for ( var i in Object.keys(ele) ){
-				for ( var key in cssobj ){
-					ele[i].style[ key ] = cssobj[key];
-				}
+		this.css = function (cssObj){
+			if ( typeof cssObj === 'object' ){
+				for ( var i in Object.keys(ele) )
+					for ( var key in cssObj )
+						ele[i].style[ key ] = cssObj[key];
+			}else if ( typeof cssObj === 'string' ){
+				var key = cssObj;
+				for ( var i in Object.keys(ele) )
+					if ( arguments[1] !== undefined ){
+						ele[i].style[ key ] = arguments[1];
+					}else{
+						/* 构造个css Array */
+					}
 			}
 			return this;
 		};
@@ -376,13 +389,15 @@
 				ele.style.removeProperty( com[i] );
 			}
 		}
-		this.fadeIn = function (timeStr, callback){
-			if ( typeof timeStr === 'function' ){
-				callback = timeStr;
-				timeStr = 0.618;
-			}else if ( timeStr === undefined ){
-				timeStr = 0.618;
+		this.fadeIn = function (callback, timeStr){
+			if ( typeof callback === 'function' ){
+				if ( typeof timeStr !== 'number' ){
+					timeStr = 0.618;
+				}
 			}
+			if ( callback === undefined )
+				timeStr = 0.618;
+
 			timeStr = Number(timeStr);
 			for ( var key in Object.keys(ele) ){
 				for ( var key in Object.keys(ele) ){
@@ -393,13 +408,13 @@
 					myRequestAnimationFrame(function (){
 						ele[key].__proto__.RMfade && clearTimeout(ele[key].__proto__.RMfade.timeEvent);
 						ele[key].__proto__.RMfade = {
-							timeEvent: setTimeout(function (ele){/*暂时的解决方法*/
+							timeEvent: setTimeout(function (singleEle){/*暂时的解决方法*/
 								return function (){
-									ele.style.opacity = '1';
+									singleEle.style.opacity = '1';
 									setTimeout(function (){
-										removeTransition(ele);
+										removeTransition(singleEle);
 										delete ele.__proto__.RMfade;
-										callback && callback(ele);
+										typeof callback === 'function' && callback.apply(singleEle, [ele]);
 									}, timeStr*1000);
 								}
 							}(ele[key]),0)
@@ -410,13 +425,15 @@
 			}
 
 		};
-		this.fadeOut = function (timeStr, callback){
-			if ( typeof timeStr === 'function' ){
-				callback = timeStr;
-				timeStr = 0.618;
-			}else if ( timeStr === undefined ){
-				timeStr = 0.618;
+		this.fadeOut = function (callback, timeStr){
+			if ( typeof callback === 'function' ){
+				if ( typeof timeStr !== 'number' ){
+					timeStr = 0.618;
+				}
 			}
+			if ( callback === undefined )
+				timeStr = 0.618;
+
 			timeStr = Number(timeStr);
 			for ( var key in Object.keys(ele) ){
 				ele[key].style.opacity = '0';
@@ -425,10 +442,10 @@
 				myRequestAnimationFrame(function (){
 
 					ele[key].__proto__.RMfade = {
-						timeEvent: setTimeout(function (ele){
+						timeEvent: setTimeout(function (singleEle){
 							return function (){
-								ele.style.display = 'none';
-								callback && callback(ele);
+								singleEle.style.display = 'none';
+								typeof callback === 'function' && callback.apply(singleEle,[ele]);
 
 							}
 						}(ele[key]), timeStr*1000)
@@ -451,8 +468,10 @@
 		};
 
 		this.each = function (callback){
-			for ( var i in ele )
-				callback(ele[i]);
+			for ( var i in Object.keys(ele) )
+				for ( var nodeI in ele[i].children ){
+					 callback.apply( ele, [ ele[i].children[nodeI], nodeI ]);
+				}
 		};
 
 		return this;
@@ -548,7 +567,7 @@
 				return a.length ? String(a.shift()) + arguments.callee(a) : '';
 			}(Array.prototype.slice.call(arguments));
 		};
-		function bechMark(testCount, count, func, arg){
+		this.bechMark = function (testCount, count, func, arg){
 			var testUnitArr = [];
 			var start = performance.now();
 			function testUnit(count, func, arg){
