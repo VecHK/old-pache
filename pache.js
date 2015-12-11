@@ -2,9 +2,11 @@ var htmlConsole = function (ele){
 	var my = this;
 	this.conEle = createHtmlConsoleEle();
 	this.log = function (str){
-		this.conEle.appendChild( $c('li', function (ele){
+		var li = $c('li', function (ele){
 			ele.text(str);
-		}) );
+		});
+		this.conEle.appendChild( li );
+		return li;
 	};
 	function createHtmlConsoleEle(){
 		return $c('div', function (ele){
