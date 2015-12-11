@@ -141,10 +141,14 @@ else if ( isset($_GET['tag']) ){
 				if ( $i > $countPage ){
 					break;
 				}
+				$url = '?';
+				if ( isset($_GET[$listingType]) )
+					$url = $url.$listingType.'='.urlencode($_GET[$listingType]).'&';
+
 				if ( $page == $i ){
 					echo '<a class="current_page" title="这是当前页">'.$i.'</a>';
 				}else{
-					echo '<a class="no_current" href="?page='.$i.'">'.$i.'</a> ';
+					echo '<a class="no_current" href="'.$url.'page='.$i.'">'.$i.'</a> ';
 				}
 			}
 		/*
