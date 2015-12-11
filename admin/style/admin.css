@@ -58,6 +58,32 @@ body{
 	font-family: Arial;
 	font-size: small;
 }
+#tag {
+	position: absolute;
+	right: 20px;
+	top: 0px;
+	color: rgb(255, 255, 255);
+}
+#tag .tag-selector{
+
+}
+#tag .tag-add{
+
+}
+#tag .tag-add input{
+	background: transparent;
+	border: none;
+	border-bottom: solid 1px #666;
+
+	width: 64px;
+	color: #fff;
+}
+#tag .tag-add .tag-add-button{
+	cursor: pointer;
+}
+
+
+
 #control{
 	width: 640px;
 	margin: auto;

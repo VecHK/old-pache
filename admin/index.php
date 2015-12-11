@@ -82,9 +82,6 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 				<option label="N/A" value="" ></option>
 			</datalist>
 
-			<input id="tag_list_input" name="tag" placeholder="Tag" />
-			<div id="tag-selector" ></div>
-
 			<select name="type" >
 				<option value="markdown">Markdown</option>
 				<option value="text">text</option>
@@ -94,6 +91,13 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 			<div id="status">N/A</div>
 		</form>
 		<div id="editor_close">x</div>
+		<div id="tag">
+			<ul class="tag-selector" ></ul>
+			<div class="tag-add">
+				<input />
+				<button class="tag-add-button">+</button>
+			</div>
+		</div>
 	</div>
 
 </body>
