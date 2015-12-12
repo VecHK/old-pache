@@ -484,7 +484,9 @@ var manager = new function(){
 			console.warn('collectEditorInfo: This is constructor Function.');
 			return new arguments.callee(editorForm);
 		}
-		this.id = display.editorForm.articleObj.id;
+		if ( envir.mode !== 'new' )
+			this.id = display.editorForm.articleObj.id;
+
 		this.title = editorForm['title'].value;
 		this.article = editorForm['article'].value;
 		this.type = editorForm['type'].value;
