@@ -327,11 +327,15 @@
 
 		};
 		this.append = function (appendEle, createFunc){
+			var create;
 			for ( var i in Object.keys(ele) )
-				ele[i].appendChild(
+				create = ele[i].appendChild(
 					function (){
 						if ( typeof appendEle === 'string' ){
-							return ele.createEle(appendEle, createFunc);
+							if ( typeof createFunc === 'function'  ){
+								return ele.createEle(appendEle, createFunc);
+							}
+							return ele.createEle(appendEle)[0];
 						}else if ( typeof appendEle === 'function' ){
 							return appendEle.apply(ele);
 						}else{
@@ -339,8 +343,11 @@
 						}
 					}()
 				);
-
-			return ele;
+			if ( typeof creaateFunc === 'function' ){
+				return ele;
+			}else{
+				return create;
+			}
 		};
 		this.cssLine = function (){
 			var keys = Object.keys(ele[0].style);
@@ -606,8 +613,12 @@
 		}
 		this.createEle = function (eleName, callback){
 			var ele = doc.createElement(eleName);
-			callback && callback.apply( f(ele), [ f(ele) ] );
-			return ele;
+			if ( typeof callback === 'function' ){
+				callback && callback.apply( f(ele), [ f(ele) ] );
+				return ele;
+			}else{
+				return f(ele);
+			}
 		};
 	};
 	var f = function (str){
