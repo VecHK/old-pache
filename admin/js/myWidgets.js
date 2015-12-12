@@ -10,9 +10,9 @@ function tagSelector(ele){
 		return ele.appendChild(this.createItem(text));
 	};
 	this.clearAll = function (f){
-		if ( this.length ){
-			f && f(this.pop());
-			arguments.callee(f);
+		while( this.length ){
+			var obj = this.pop();
+			f && f( obj );
 		}
 		ele.innerHTML = '';
 	};
@@ -76,9 +76,10 @@ function tagSelector(ele){
 		});
 	};
 	this.removeItem = function (cursorEle){
-		console.warn(cursorEle);
+
 		for ( var i=0; i<this.length; ++i ){
 			if ( this[i].ele === cursorEle ){
+				console.warn(cursorEle);
 				this.splice(i, 1);
 			}
 		}
