@@ -75,6 +75,7 @@ ins {
 }
 
 #article .footnotes{
+	margin-top: 100px;
 	font-family: sans-serif, "宋体";
 	font-size: small;
 	color:rgba(31, 15, 31, 0.618);
@@ -193,6 +194,12 @@ code {
 	margin-bottom: 3em;
 }
 
+pre + h1, pre + h2, pre + h3, pre + h4, pre + h5, pre + h6{
+	margin-top: 3em;
+}
+pre + p{
+	margin-top: 3.5em;
+}
 
 p{
 	font-size: 1em;
