@@ -58,7 +58,7 @@ function outClassIndexHTML(){
 
 	$str = $str.'<li>'.'<a href="'.$pache->root.'">'.'首页'.'</a>'.'</li>';
 	$str = $str.'<li><a href="get.php?id=33" target="_blank">关于</a></li>';
-	$str = $str.'<li>'.'<a href="'.$pache->root.'/get.php?id=30">'.'友情链接'.'</a>'.'</li>';
+	$str = $str.'<li>'.'<a href="'.$pache->root.'/get.php?id=30">'.'links'.'</a>'.'</li>';
 
 	for ( $i=0; $i<count($clist); ++$i ){
 		$str = $str.'<li>'.'<a href="'.$pache->root.'?class='.$clist[$i].'">'.$clist[$i].'</a>'.'</li>';
@@ -133,12 +133,63 @@ class outIndex{
 	public $page;
 	public $countPage;
 	public $articleCount;
-	public function __construct($page, $limit){
-		if ( count(func_get_args()) > 2 ){
-			$this->display = func_get_arg(2);
+	private function collectSort($req){
+		if ( isset( $req['sort'] ) ){
+			if ( $req['sort'] == 'ASC' )
+				return $this->sort = 'ASC';
+		}
+		$this->sort = 'DESC';
+	}
+	private function collectOrder($req){
+		$able = Array('id', 'title', 'class', 'time', 'ltime');
+		if ( isset($req['order']) ){
+			for( $i=0, $lim=count($able); $i<$lim; $i++ )
+				if ( strcmp($able[$i], $req['order']) == 0 )
+					return $this->order = $able[$i];
+		}
+		$this->order = 'time';
+	}
+	private function getArticles($start, $limit){
+		$sql = connectSQL();
+		$sqlstr = "SELECT * FROM `pache_article` ". $this->where ." ORDER BY ". $this->order ." ". $this->sort ." LIMIT ". $start .",". $limit;
+		echo $sqlstr;
+		$sqlresult = mysql_query($sqlstr, $sql->con);
+
+		!$sqlresult && die('SQLfail: '+mysql_error($sqlresult));
+
+		$this->article = Array();
+
+		while ( $row=mysql_fetch_array($sqlresult) ){
+			array_push( $this->article, $row );
+		}
+		mysql_close($sql->con);
+	}
+	private function collectWhere($req){
+		$this->where = '';
+		if ( isset($req['class']) ){
+			if ( is_array($req['class']) ){
+				$str = '';
+				foreach( $req['class'] as $key => $value ){
+					$str = $str.'\''. mysql_escape_string($value) .'\''.',';
+				}
+				$this->where = ' WHERE class IN('. substr($str, 0, -count($str)) .') ';
+			}
+		}else if ( isset($req['tag']) ){
+
+		}
+	}
+	public function __construct($getRequest, $page, $limit){
+		if ( count(func_get_args()) > 3 ){
+			$this->display = func_get_arg(3);
 		}
 		$pache = new pache;
-		$this->article = getArticles(((int)$page - 1) * (int)$limit, (int)$limit);
+
+		$this->collectOrder($getRequest);
+		$this->collectSort($getRequest);
+		$this->collectWhere($getRequest);
+
+		$this->getArticles(((int)$page - 1) * (int)$limit, (int)$limit);
+
 		$this->countPage = ceil( articleCount('default')/(int)$limit );
 		$this->page = (int)$page;
 		$this->articleCount = articleCount('default');
