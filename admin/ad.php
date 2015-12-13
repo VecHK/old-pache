@@ -66,12 +66,10 @@ switch($_GET['type']){
 			$limit = $pache->pagelimit;
 		}
 		if( isset($_GET['display']) ){
-			if ( $_GET['display'] == 'json' ){
-				new outIndex($page, $limit, 'json');
-				return 0;
-			}
+			if ( $_GET['display'] == 'json' )
+				return new outIndex($_GET, $page, $limit, 'json');
 		}
-		new outIndex($page, $limit, 'html');
+		new outIndex($_GET, $page, $limit, 'html');
 
 		break;
 	case 'getclass':
