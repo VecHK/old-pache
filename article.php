@@ -152,7 +152,7 @@ class outIndex{
 	private function getArticles($start, $limit){
 		$sql = connectSQL();
 		$sqlstr = "SELECT * FROM `pache_article` ". $this->where ." ORDER BY ". $this->order ." ". $this->sort ." LIMIT ". $start .",". $limit;
-		echo $sqlstr;
+//		echo $sqlstr;
 		$sqlresult = mysql_query($sqlstr, $sql->con);
 
 		!$sqlresult && die('SQLfail: '+mysql_error($sqlresult));
