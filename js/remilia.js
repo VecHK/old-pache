@@ -526,7 +526,9 @@
 					var comObjKeys = Object.keys( comparedObjs[comparedObjKey] );
 					for ( var comObjKey in comObjKeys ){
 						if ( comparedValueInArr( keys, comObjKeys[comObjKey] ) ){
-							if ( comparedObjs[comparedObjKey][comObjKeys[comObjKey]] !== obj[comObjKeys[comObjKey]] ){
+							if ( typeof comparedObjs[comparedObjKey][comObjKeys[comObjKey]] === 'function' ){
+								return !!comparedObjs[comparedObjKey][comObjKeys[comObjKey]]( obj[comObjKeys[comObjKey]] );
+							}else if ( comparedObjs[comparedObjKey][comObjKeys[comObjKey]] !== obj[comObjKeys[comObjKey]] ){
 								return false;
 							}
 						}else{
