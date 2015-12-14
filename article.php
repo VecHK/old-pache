@@ -133,6 +133,42 @@ class outIndex{
 	public $page;
 	public $countPage;
 	public $articleCount;
+
+	/* 将 $classList 和 $tagList 转为 xxx,xxx,xxx,xxx,...... */
+	private function outArrayStr($type, $arr){
+		for ( $i=0, $str='', $lim=count($arr); $i<$lim; ++$i )
+			$str = $str.'\''. mysql_escape_string( $arr[$i] ) .'\''.',';
+		$whereName = $type.'Where';
+		$listName = $type.'List';
+		if ( is_string($this->$whereName) && is_array($this->$listName) ){
+			$this->$whereName = substr($str, 0, -count($str));
+			$this->$listName = $arr;
+		}else{
+			die('非法操作');
+		}
+	}
+
+	/*
+		支持class和taglist联合查询（然而并没有什么卵用）
+	*/
+	private $classList = Array();
+	private $classWhere = '';
+	private function collectClass($req){
+		if ( isset($req['class']) && is_array($req['class']) ){
+			$this->outArrayStr('class', $req['class']);
+			$this->classWhere = 'WHERE class IN ( '. $this->classWhere .' ) ';
+		}
+	}
+
+	private $tagList = Array();
+	private $tagWhere = '';
+	private function collectTag($req){
+		if ( isset($req['tag']) && is_array($req['tag']) ){
+			$this->outArrayStr('tag', $req['tag']);
+			$this->tagWhere = 'WHERE tagname IN ( '. $this->tagWhere .' )';
+		}
+	}
+
 	private function collectSort($req){
 		if ( isset( $req['sort'] ) ){
 			if ( $req['sort'] == 'ASC' )
@@ -151,8 +187,20 @@ class outIndex{
 	}
 	private function getArticles($start, $limit){
 		$sql = connectSQL();
-		$sqlstr = "SELECT * FROM `pache_article` ". $this->where ." ORDER BY ". $this->order ." ". $this->sort ." LIMIT ". $start .",". $limit;
-//		echo $sqlstr;
+
+		$countTag = count($this->tagList);
+		if ( count( $countTag ) ){
+			$sqlstr = 'SELECT *, count(1) AS counts FROM(
+			(SELECT * FROM `pache_tag` '. $this->tagWhere .' ) taglist '.
+			' CROSS JOIN '.
+			' (SELECT * FROM `pache_article` '.$this->classWhere.' ) articles '.
+			' ) '.
+			' WHERE articleid=id GROUP BY id HAVING counts = '. $countTag .' ORDER BY '. $this->order .' '. $this->sort .' LIMIT '. $start .','. $limit;;
+			;
+		}else{
+			$sqlstr = "SELECT * FROM `pache_article` ". $this->classWhere ." ORDER BY ". $this->order ." ". $this->sort ." LIMIT ". $start .",". $limit;
+		}
+
 		$sqlresult = mysql_query($sqlstr, $sql->con);
 
 		!$sqlresult && die('SQLfail: '+mysql_error($sqlresult));
@@ -164,20 +212,6 @@ class outIndex{
 		}
 		mysql_close($sql->con);
 	}
-	private function collectWhere($req){
-		$this->where = '';
-		if ( isset($req['class']) ){
-			if ( is_array($req['class']) ){
-				$str = '';
-				foreach( $req['class'] as $key => $value ){
-					$str = $str.'\''. mysql_escape_string($value) .'\''.',';
-				}
-				$this->where = ' WHERE class IN('. substr($str, 0, -count($str)) .') ';
-			}
-		}else if ( isset($req['tag']) ){
-
-		}
-	}
 	public function __construct($getRequest, $page, $limit){
 		if ( count(func_get_args()) > 3 ){
 			$this->display = func_get_arg(3);
@@ -186,7 +220,9 @@ class outIndex{
 
 		$this->collectOrder($getRequest);
 		$this->collectSort($getRequest);
-		$this->collectWhere($getRequest);
+
+		$this->collectTag($getRequest);
+		$this->collectClass($getRequest);
 
 		$this->getArticles(((int)$page - 1) * (int)$limit, (int)$limit);
 
@@ -196,21 +232,21 @@ class outIndex{
 	}
 	public function __destruct(){
 		if ( $this->display == 'json' ){
-
-			$idArr = Array();
-			foreach( $this->article as $articleKey => $articleValue ){# 清除数字键
-//				$tag = new outTagById($articleKey, 'default');
-//				$this->article[$articleKey]['tag'] = getArticleTagListById($articleKey);
-				array_push($idArr, $this->article[$articleKey]['id']);
-				unset($this->article[$articleKey]['article'], $this->article[$articleKey]['format']);
-				foreach( $this->article[$articleKey] as $key => $value )
-					if ( is_numeric($key) )
-						unset($this->article[$articleKey][$key]);
+			if ( count($this->article) !== 0 ){
+				$idArr = Array();
+				foreach( $this->article as $articleKey => $articleValue ){# 清除数字键
+	//				$tag = new outTagById($articleKey, 'default');
+	//				$this->article[$articleKey]['tag'] = getArticleTagListById($articleKey);
+					array_push($idArr, $this->article[$articleKey]['id']);
+					unset($this->article[$articleKey]['article'], $this->article[$articleKey]['format']);
+					foreach( $this->article[$articleKey] as $key => $value )
+						if ( is_numeric($key) )
+							unset($this->article[$articleKey][$key]);
+				}
+				$this->articlesTagList = getArticlesTagListById($idArr);
 			}
-			$this->articlesTagList = getArticlesTagListById($idArr);
-//			var_dump($articlesTagList);
 
-			header('Content-Type: text/plain; charset=utf-8');
+			//header('Content-Type: text/plain; charset=utf-8');
 			echo json_encode($this);
 		}else if ( $this->display == 'html' ){
 			$pache = new pache;
