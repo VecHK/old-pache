@@ -190,17 +190,21 @@ class outIndex{
 
 		$countTag = count($this->tagList);
 		if ( $countTag ){
-			$sqlstr = 'SELECT *, count(1) AS counts FROM(
+			$count = '
 			(SELECT * FROM `pache_tag` '. $this->tagWhere .' ) taglist '.
 			' CROSS JOIN '.
 			' (SELECT * FROM `pache_article` '.$this->classWhere.' ) articles '.
 			' ) '.
-			' WHERE articleid=id GROUP BY id HAVING counts = '. $countTag .' ORDER BY '. $this->order .' '. $this->sort .' LIMIT '. $start .','. $limit;;
-			;
+			' WHERE articleid=id GROUP BY id HAVING counts = '. $countTag .' ORDER BY '. $this->order .' '. $this->sort;
+			$sqlstr = 'SELECT *, count(1) AS counts FROM('.$count;
+			$count = 'SELECT count(*) FROM('.$count;
 		}else{
-			$sqlstr = "SELECT * FROM `pache_article` ". $this->classWhere ." ORDER BY ". $this->order ." ". $this->sort ." LIMIT ". $start .",". $limit;
+			$count = " `pache_article` ". $this->classWhere ." ORDER BY ". $this->order ." ". $this->sort;
+			$sqlstr = "SELECT * FROM ".$count;
+			$count = "SELECT count(*) FROM ".$count;
 		}
 
+		$sqlstr = $sqlstr." LIMIT ". $start .",". $limit;
 		$sqlresult = mysql_query($sqlstr, $sql->con);
 
 		!$sqlresult && die('SQLfail: '+mysql_error($sqlresult));
@@ -210,7 +214,19 @@ class outIndex{
 		while ( $row=mysql_fetch_array($sqlresult) ){
 			array_push( $this->articles, $row );
 		}
+
+		$this->articlesCount = $this->collectArticleCount($count, $sql);
+
 		mysql_close($sql->con);
+	}
+	private function collectArticleCount($sqlstr, $sql){
+		$sqlresult = mysql_query($sqlstr, $sql->con);
+		if ( !$sqlresult ){
+			die('SQLfail: '+mysql_error($sqlresult));
+			return NULL;
+		}
+		$row = mysql_fetch_array($sqlresult);
+		return $row[0];
 	}
 	public function __construct($getRequest, $page, $limit){
 		if ( count(func_get_args()) > 3 ){
@@ -226,9 +242,10 @@ class outIndex{
 
 		$this->getArticles(((int)$page - 1) * (int)$limit, (int)$limit);
 
-		$this->countPage = ceil( articleCount('default')/(int)$limit );
+		//$this->countPage = ceil( articleCount('default')/(int)$limit );
+		$this->countPage = ceil( $this->articlesCount / (int)$limit );
 		$this->page = (int)$page;
-		$this->articlesCount = articleCount('default');
+		//$this->articlesCount = count($this->articles);//articleCount('default');
 	}
 	public function __destruct(){
 		if ( $this->display == 'json' ){
