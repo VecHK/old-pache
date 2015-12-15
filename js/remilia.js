@@ -503,6 +503,50 @@
 			Array.prototype.checkObj :
 			this.checkObj;
 		};
+		/* 对象检查器，检测无错则返回 false，有错误则返回true */
+		/* 未完待续 */
+		this.check = function (obj, comObj, checkType){
+			/* checkType
+			true: 	要求键也要完全相同
+			false:	相反
+			*/
+			/* 所有对象，包括原型链 */
+			/* (x)建立个对象键数组，然后eachObj，如有雷同则pop掉，没有雷同则push，最后统计 */
+			var objs = Object.keys(obj);
+			var comObjs = Object.keys(comObj);
+
+			function searchObjKey(obj, comparedKey){
+				for ( var key in obj )
+					if ( key === comparedKey )
+						return comparedKey;
+				return false;
+			}
+
+			for ( var comObjKey in comObj  ){
+				var result = searchObjKey( obj, comObjKey );
+				if ( result !== false ){
+					if ( typeof comObj[result] === 'function' ){
+						if ( Boolean( comObj[result].apply( obj, [ obj[result], result ] ) ) )/* value, object, key */
+							return true;
+					}
+					else if ( comObj[result] !== obj[result] ){
+						return true;
+					}
+				}else{
+					if ( checkType ){
+						return true;
+					}
+					else if ( typeof comObj[comObjKey] === 'function' ){
+						if ( Boolean( comObj[comObjKey].apply(obj, [ obj[comObjKey], comObjKey ]) ) )/* value, object, key */
+							return true;
+					}else{
+						return true;
+					}
+				}
+			}
+
+			return false;
+		};
 		this.checkObj = function (obj, compared){
 			var keys = Object.keys(obj);
 			var comparedObjs = [];
@@ -520,15 +564,15 @@
 						return false;
 				return true;
 			}
-			function eachObj(comparedObjs){
+			function eachObj(comObj){
 				/*兼容不支持 for(of) 的浏览器*/
-				for ( var comparedObjKey in comparedObjs ){
-					var comObjKeys = Object.keys( comparedObjs[comparedObjKey] );
+				for ( var comKey in comObj ){
+					var comObjKeys = Object.keys( comObj[comKey] );
 					for ( var comObjKey in comObjKeys ){
 						if ( comparedValueInArr( keys, comObjKeys[comObjKey] ) ){
-							if ( typeof comparedObjs[comparedObjKey][comObjKeys[comObjKey]] === 'function' ){
-								return !!comparedObjs[comparedObjKey][comObjKeys[comObjKey]]( obj[comObjKeys[comObjKey]] );
-							}else if ( comparedObjs[comparedObjKey][comObjKeys[comObjKey]] !== obj[comObjKeys[comObjKey]] ){
+							if ( typeof comObj[comKey][comObjKeys[comObjKey]] === 'function' ){
+								return !!comObj[comKey][comObjKeys[comObjKey]]( obj[comObjKeys[comObjKey]], obj, comObjKeys[comObjKey] );
+							}else if ( comObj[comKey][comObjKeys[comObjKey]] !== obj[comObjKeys[comObjKey]] ){
 								return false;
 							}
 						}else{
