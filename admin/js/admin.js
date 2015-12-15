@@ -12,9 +12,10 @@ $('textarea')
 var envir = {
 	/* mode: 'new'(create Articcle), 'update'(edit Article) */
 	'mode': null,
-	'page': 1,
+	'page': 0,
 	'limit': 10,
-	'article': null
+	'article': null,
+	'type': 'getindex'
 };
 var mEvent = new function(){
 	var my = this;
@@ -170,13 +171,11 @@ var display = new function (){
 		'Editor':{
 			'status': false,
 			'open': function (){
-//				this.style.display = '';
 				$('#first').fadeOut(function (){
 					$('#editor').fadeIn();
 				});
 			},
 			'close': function (){
-//				this.style.display = 'none';
 				$('#editor').fadeOut(function (){
 					$('#first').fadeIn();
 				});
@@ -193,7 +192,7 @@ var display = new function (){
 		}
 	};
 	$('#editor').fadeOut(function (){
-		my.animated.Editor.open();
+
 	});
 	//this.animated.Editor.close.apply($('#editor')[0], []);
 //	display.status('');
@@ -247,9 +246,11 @@ var display = new function (){
 		var classListInput = $('#class_list_input')[0];
 		this.loadClass(
 			function (obj){
-				if ( envir.mode !== 'new' )
+				if ( envir.mode !== 'new' ){
 					if ( article.class.length !== 0 )
 						classListInput.value = article.class;
+				}
+
 			},
 			function (err, json){
 				console.error('get class fail.');
@@ -286,7 +287,7 @@ var display = new function (){
 
 	/* listing ArticleList links */
 	function listenArticleList(){
-		var articleIdList = document.getElementById('articlelist').getElementsByTagName('a');
+		var articleIdList = $('#articlelist .article-link a');
 		for ( var i=0; i<articleIdList.length; ++i){
 			articleIdList[i].onclick = function (){
 				mEvent.articleList.click.apply(this, []);
@@ -316,11 +317,12 @@ var display = new function (){
 					fillZero(da.getHours()) +':'+
 					fillZero(da.getMinutes());
 		}
-		article.article.forEach(function (item){
+		//console.log(article);
+		article.articles.forEach(function (item){
 			var li = document.createElement('li');
 
 			var divLink = document.createElement('div');
-			divLink.className = 'link';
+			divLink.className = 'article-link';
 			var input = document.createElement('input');
 			input.type = 'checkbox';
 			input.name = 'selid[]';
@@ -348,33 +350,61 @@ var display = new function (){
 
 			li.appendChild(tag);
 			tableList['标题'].push(li);
-			tableList['分类'].push(item.class);
+			tableList['分类'].push( $c('a',
+				function (ele){
+					this.text(item.class);
+					this[0].href = '../?class='+item.class;
+					this[0].onclick = function (){
+						envir.page = 0;
+						my.loadArticleList(envir.page, envir.limit, {
+							'class': [item.class]
+						});
+						//mEvent.getArticlesByClass( item.class );
+						return false;
+					};
+				})
+			);
 			tableList['创建时间'].push( formatTime(item.time) );
 			tableList['修改时间'].push( formatTime(item.ltime) );
 
 			//articleEle.appendChild(li);
 		});
 		var table = new myTable(tableList);
-		articleEle.appendChild(table.create({'default': 'N/A'}));
+		articleEle.appendChild(
+			table.create(
+				{'default': 'N/A'},
+				{
+					'分类': $c('div', function (){
+						this.text('分类');
+					})
+				}
+			)
+		);
 
 
 		listenArticleList();
 	};
 
-	this.loadArticleList = function (page, limit){
+	this.loadArticleList = function (page, limit, conObj){
 		var my = this;
-		manager.getArticleList(
-			function (article){
+		manager.getArticleList(new function (){
+			if ( conObj ){
+				this.class = conObj.class || [];
+				this.tag = conObj.tag || [];
+			}
+			this.type = envir.type;
+			this.ok = function (article){
 				envir.article = article;
 				my.RenderingArticleList(article);
 				manager.renderingPageSelect();
-			},
-			function (err){
+			}
+			this.fail = function (err){
 				alert('loadArticleList fail!');
 				throw new Error(err);
-			},
-			page, limit
-		);
+			};
+			this.page = page;
+			this.limit = limit;
+		});
 	};
 };
 
@@ -415,45 +445,49 @@ var manager = new function(){
 			throw new Error(e);
 		}
 	};
-	this.getArticleList = function (ok, fail, page, limit){
-		var display = arguments.length > 4 ? arguments[5] : "json";
-		var tmp;
-		if ( typeof fail !== 'function' ){
-			tmp = page;
-			limit = page;
-			page = fail;
-		}
-		if ( limit === undefined ){
-			limit = envir.limit;
-		}
-
-		var getObj = {};
-		(function (){
-			function isUndefined(obj){
-				return obj === undefined ? true : false;
+	this.getArticleList = function (conObj){
+		$.check(conObj, {
+			'display': function (v, k){
+				if ( v === undefined )
+					this[k] = 'json';
+			},
+			'page': function (v, k){
+				if ( v === undefined )
+					this[k] = envir.page;
+			},
+			'limit':function (v, k){
+				if ( v === undefined )
+					this[k] = envir.limit;
+			},
+			'type': function (v, k){
+				if ( v === undefined)
+					this[k] = envir.type;
 			}
-			this.pw = $.cookie('pw');
-			this.type = 'getindex';
-			this.display = display;
-			isUndefined(page) || (this.page = page);
-			isUndefined(limit) || (this.limit = limit);
-		}).apply(getObj,[]);
-		var url = 'ad.php?'+$.stringifyRequest(getObj);
+		});
+		console.warn( conObj );
+		var url = 'ad.php?'+$.stringifyRequest({
+			pw: $.cookie('pw'),
+			type: conObj.type,
+			display: conObj.display,
+			page: conObj.page,
+			limit: conObj.limit,
+			class: conObj.class
+		});
 		$.get(url,
 			function (data){
-				if ( getObj.display === 'json' ){
+				if ( conObj.display === 'json' ){
 					var obj = $.json2obj(data);
 					if ( obj !== null ){
-						ok(obj);
+						conObj.ok(obj);
 					}else{
 						throw new Error('getArticleList/$.get/json2obj: json fail.');
 					}
 				}else{
-					ok(data);
+					conObj.ok(data);
 				}
 
 			},
-			fail
+			conObj.fail
 		);
 	};
 	this.updateArticle = function (articleInfo){
