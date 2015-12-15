@@ -8,18 +8,22 @@
 			font-family: DengXian, "微软雅黑", Helvetica;
 			color: #6789AB;
 		}
+		html, body{
+			background: #05090E;
+		}
 		form{
 			margin: auto;
 			text-align: center;
 			margin-top: calc( 100vh - 50vh - 48px / 2 );
 		}
 		input{
+			opacity: 0.382;
 			text-align: center;
 			border: 0;
 			background-color: transparent;
 			color: #A9A9A9;
 			font-size: 32px;
-			border-bottom: dotted #A9A9A9 1px;
+			border-bottom: solid #A9A9A9 1px;
 		}
 		input:focus{
 			outline: none;
@@ -29,7 +33,7 @@
 </head>
 <body>
 	<form method="post" >
-		<input name="pw" type="password" />
+		<input name="pw" type="password" placeholder="密码" />
 	</form>
 </body>
 </html>
