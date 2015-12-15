@@ -12,7 +12,7 @@ $('textarea')
 var envir = {
 	/* mode: 'new'(create Articcle), 'update'(edit Article) */
 	'mode': null,
-	'page': 0,
+	'page': 1,
 	'limit': 10,
 	'article': null,
 	'type': 'getindex'
@@ -300,6 +300,7 @@ var display = new function (){
 		articleEle.innerHTML = '';
 
 		var tableList = {
+			'select': [],
 			'标题': [],
 			'分类': [],
 			'创建时间': [],
@@ -332,7 +333,8 @@ var display = new function (){
 
 			$(a).text(item.title);
 
-			divLink.appendChild(input);
+			tableList['select'].push(input);
+			//divLink.appendChild(input);
 			divLink.appendChild(a);
 
 			li.appendChild(divLink);
@@ -355,9 +357,18 @@ var display = new function (){
 					this.text(item.class);
 					this[0].href = '../?class='+item.class;
 					this[0].onclick = function (){
-						envir.page = 0;
+						envir.page = 1;
 						my.loadArticleList(envir.page, envir.limit, {
-							'class': [item.class]
+							'class': [item.class],
+							'ok': function (){
+								envir.listStatus.text('back');
+								envir.listStatus[0].onclick = function (){
+									envir.listStatus.text('');
+									envir.page = 1;
+									envir.type = 'getindex';
+									my.loadArticleList(envir.page, envir.limit);
+								};
+							}
 						});
 						//mEvent.getArticlesByClass( item.class );
 						return false;
@@ -374,6 +385,10 @@ var display = new function (){
 			table.create(
 				{'default': 'N/A'},
 				{
+					'select': $c('div', function (){
+						this.text('');
+						envir.listStatus = this;
+					}),
 					'分类': $c('div', function (){
 						this.text('分类');
 					})
@@ -397,6 +412,9 @@ var display = new function (){
 				envir.article = article;
 				my.RenderingArticleList(article);
 				manager.renderingPageSelect();
+				if ( conObj ){
+					conObj.ok && conObj.ok(article);
+				}
 			}
 			this.fail = function (err){
 				alert('loadArticleList fail!');
