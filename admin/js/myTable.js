@@ -78,7 +78,7 @@ var myTable = function (table){
 			extendEach
 				是否遍历继承的对象
 		*/
-		this.create = function (conObj){
+		this.create = function (conObj, titleContent){
 			var keys = [];
 			this.table = [];
 			var rowCursor = 0;
@@ -106,6 +106,23 @@ var myTable = function (table){
 			}
 			for ( var i=0, maxCol=collectMaxColumn(); i<maxCol ; ++i)
 				my.table.push(createRow(table, i));
+
+			function collectTitleContent(tab){
+				if ( titleContent ){
+					tab[0] = tab[0].map(function ( item ){
+						if ( titleContent[item] !== undefined ){
+							if ( typeof titleContent[item] === 'function' )
+								return titleContent[item]();
+							else
+								return titleContent[item];
+						}else{
+							return item;
+						}
+					});
+				}
+				console.info(tab);
+			}
+			collectTitleContent(this.table);
 
 			return this.render({
 				'thead': true,
