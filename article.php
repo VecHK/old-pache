@@ -189,7 +189,7 @@ class outIndex{
 		$sql = connectSQL();
 
 		$countTag = count($this->tagList);
-		if ( count( $countTag ) ){
+		if ( $countTag ){
 			$sqlstr = 'SELECT *, count(1) AS counts FROM(
 			(SELECT * FROM `pache_tag` '. $this->tagWhere .' ) taglist '.
 			' CROSS JOIN '.
@@ -205,10 +205,10 @@ class outIndex{
 
 		!$sqlresult && die('SQLfail: '+mysql_error($sqlresult));
 
-		$this->article = Array();
+		$this->articles = Array();
 
 		while ( $row=mysql_fetch_array($sqlresult) ){
-			array_push( $this->article, $row );
+			array_push( $this->articles, $row );
 		}
 		mysql_close($sql->con);
 	}
@@ -228,20 +228,20 @@ class outIndex{
 
 		$this->countPage = ceil( articleCount('default')/(int)$limit );
 		$this->page = (int)$page;
-		$this->articleCount = articleCount('default');
+		$this->articlesCount = articleCount('default');
 	}
 	public function __destruct(){
 		if ( $this->display == 'json' ){
-			if ( count($this->article) !== 0 ){
+			if ( count($this->articles) !== 0 ){
 				$idArr = Array();
-				foreach( $this->article as $articleKey => $articleValue ){# 清除数字键
+				foreach( $this->articles as $articleKey => $articleValue ){# 清除数字键
 	//				$tag = new outTagById($articleKey, 'default');
-	//				$this->article[$articleKey]['tag'] = getArticleTagListById($articleKey);
-					array_push($idArr, $this->article[$articleKey]['id']);
-					unset($this->article[$articleKey]['article'], $this->article[$articleKey]['format']);
-					foreach( $this->article[$articleKey] as $key => $value )
+	//				$this->articles[$articleKey]['tag'] = getArticleTagListById($articleKey);
+					array_push($idArr, $this->articles[$articleKey]['id']);
+					unset($this->articles[$articleKey]['article'], $this->articles[$articleKey]['format']);
+					foreach( $this->articles[$articleKey] as $key => $value )
 						if ( is_numeric($key) )
-							unset($this->article[$articleKey][$key]);
+							unset($this->articles[$articleKey][$key]);
 				}
 				$this->articlesTagList = getArticlesTagListById($idArr);
 			}
@@ -250,8 +250,8 @@ class outIndex{
 			echo json_encode($this);
 		}else if ( $this->display == 'html' ){
 			$pache = new pache;
-			for ( $i=0; $i<count($this->article); ++$i){
-				echo '<li><div class="link"><a href="'.$pache->root.'/get.php?id='. $this->article[$i]['id'] .'">'.$this->article[$i]['title'].'</a></div><div class="datetime">'.$this->article[$i]['time'].'</div></li>';
+			for ( $i=0; $i<count($this->articles); ++$i){
+				echo '<li><div class="link"><a href="'.$pache->root.'/get.php?id='. $this->articles[$i]['id'] .'">'.$this->articles[$i]['title'].'</a></div><div class="datetime">'.$this->articles[$i]['time'].'</div></li>';
 			}
 		}
 	}
