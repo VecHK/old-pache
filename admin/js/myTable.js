@@ -1,6 +1,9 @@
 var myTable = function (table){
 	this.table = table;
 	var my = this;
+	var tHeadFlag = false;
+	this['default'] = 'N/A';
+	this.ele;
 	function createElementAndAddContent(eleName, str, h){
 		var ele = document.createElement(eleName);
 		({
@@ -25,35 +28,92 @@ var myTable = function (table){
   			return a > b ? a : b;
 		});
 	};
-	this.insert = function (){
+
+	this.toObj = function (){};
+	this.clear = function (){
+		var trArr = this.tableEle.getElementsByTagName('tr');
+		Array.prototype.slice.apply( trArr ).forEach(function (trEle){
+			my.tableEle.removeChild( trEle );
+		});
+	};
+	this.reload = function (newTable, conObj){
+		if ( conObj ){
+			if ( tHeadFlag ){
+				newTable.unshift( this.table.slice(0, 1)[0] );
+			}
+		}else{
+			conObj = {};
+		}
+		conObj.default = conObj.default || '';
+		this.table = newTable;
+		return this.render({
+			'type': 'reload',
+			'default': conObj.default,
+			'thead': tHeadFlag
+		});
 
 	};
-	this.toObj = function (){};
-	this.render = function (conObj){
+	this.insert = function (row){
 		function rowEach(arr, callback){
 			for ( var i=0; i<my.column; ++i )
 				callback(arr[i]);
 		}
+		function c(name, func){
+			var e = document.createElement(name);
+			func.apply(e, [e]);
+			return e;
+		}
+		this.tableEle.appendChild(
+			c('tr', function (tr){
+				rowEach(row, function (td){
+					tr.appendChild(createElementAndAddContent('td', td === '' ? '' : (td !== undefined ? td : my['default']) ));
+				});
+			})
+		);
+	};
+
+	function createTableHeadEle(theadArr){
+		my.table[0].forEach(function (th){
+			my.tableHeadEle.appendChild(createElementAndAddContent('th', th));
+		});
+		return my.tableHeadEle;
+	}
+	function createTableRow(conObj){
+		function rowEach(arr, callback){
+			for ( var i=0; i<my.column; ++i )
+				callback(arr[i]);
+		}
+		if ( typeof conObj !== 'object' ){
+			conObj = {};
+		}
+		conObj.default = conObj.default || '';
+		my.table.slice( Number(Boolean( tHeadFlag )) ).forEach(function (tr){
+			my.insert(tr);
+		});
+	}
+	this.render = function (conObj){
 		var table = this.table;
-		var tableEle = document.createElement('table'),
-			tableHeadEle = document.createElement('thead');
+		if ( this.tableEle === undefined ){
+			this.tableEle = document.createElement('table');
+		}
+		if ( this.tableHeadEle === undefined ){
+			this.tableHeadEle = document.createElement('thead');
+		}
+		var tableEle = this.tableEle;
+		var tableHeadEle = this.tableHeadEle;
+
+		/* 列数以表头做基准，溢出的忽略不计 */
 		this.column = table[0].length;
 
+		/*
+			如果有表头
+		*/
 		if ( conObj !== undefined && conObj.thead ){
-			table[0].forEach(function (th){
-				tableHeadEle.appendChild(createElementAndAddContent('th', th));
-			});
-			tableEle.appendChild(tableHeadEle);
+			tHeadFlag = true;
+			tableEle.appendChild( createTableHeadEle( table[0] ) );
 		}
+		createTableRow(conObj);
 
-		conObj.default = conObj.default || '';
-		table.slice( Number(Boolean(conObj.thead)) ).forEach(function (tr){
-			var tableTrEle = document.createElement('tr');
-			rowEach(tr, function (td){
-				tableTrEle.appendChild(createElementAndAddContent('td', td === '' ? '' : (td !== undefined ? td : conObj.default) ));
-			});
-			tableEle.appendChild(tableTrEle);
-		});
 		return tableEle;
 	};
 	if ( Array.isArray(table) ){
@@ -66,12 +126,9 @@ var myTable = function (table){
 		this.create = function (conObj){
 			return this.render(conObj);
 		};
-		this.getHTML = function (eleInfo){
-			return this.render(eleInfo).outerHTML;
-		};
 	}else if ( typeof table === 'object' ){
 		/*
-			对象建表
+			对象建表（ inDev ）
 				表头即是对象键
 			conObj:
 				default
