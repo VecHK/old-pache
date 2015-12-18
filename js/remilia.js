@@ -321,14 +321,13 @@
 			for ( var i in Object.keys(ele) )
 				ele[i].removeEventListener(eventName, callback, t);
 		};
-		win.t = this;
 		this.regTransition;
 		this.preEle = function (){
 
 		};
 		this.append = function (appendEle, createFunc){
 			var create;
-			for ( var i in Object.keys(ele) )
+			for ( var i in Object.keys(ele) ){
 				create = ele[i].appendChild(
 					function (){
 						if ( typeof appendEle === 'string' ){
@@ -343,6 +342,9 @@
 						}
 					}()
 				);
+
+			}
+
 			if ( typeof creaateFunc === 'function' ){
 				return ele;
 			}else{
@@ -546,6 +548,102 @@
 			}
 
 			return false;
+		};
+		/* 链式调用的检查器
+			$.checkLine({i:7, str:'vechk'}})
+				.isNumber('i')
+				.isString('str')
+				.eQual('i', 7)
+		*/
+		this.checkLine = function (obj, key){
+			var keys = Object.keys(obj);
+			var checkMethod = function (){
+				this.isNumber = function (key, func){
+					if ( func ){
+						if ( !!func.apply(obj, [obj, key]) ){	/* 如果返回true的话就会停住了 */
+							return false;
+						}
+					}else if ( typeof obj[key] !== 'number' ){
+						return false;
+					}
+					return this;
+				};
+				this.isString = function (){
+					if ( func ){
+						if ( !!func.apply(obj, [obj, key]) ){	/* 如果返回true的话就会停住了 */
+							return false;
+						}
+					}else if ( typeof obj[key] !== 'string' ){
+						return false;
+					}
+					return this;
+				};
+				this.isInteger = function (){
+					if ( func ){
+						if ( !!func.apply(obj, [obj, key]) ){	/* 如果返回true的话就会停住了 */
+							return false;
+						}
+					}else if ( !Number.isInteger(obj[key]) ){
+						return false;
+					}
+					return this;
+				};
+				this.isDefined = function (){
+					if ( func ){
+						if ( !!func.apply(obj, [obj, key]) ){	/* 如果返回true的话就会停住了 */
+							return false;
+						}
+					}else if ( obj[key] === undefined ){
+						return false;
+					}
+					return this;
+				};
+				this.isUndefined = function (){
+					if ( func ){
+						if ( !!func.apply(obj, [obj, key]) ){	/* 如果返回true的话就会停住了 */
+							return false;
+						}
+					}else if ( obj[key] !== undefined ){
+						return false;
+					}
+					return this;
+				};
+				this.isFinite = function (){
+					if ( func ){
+						if ( !!func.apply(obj, [obj, key]) ){	/* 如果返回true的话就会停住了 */
+							return false;
+						}
+					}else if ( !Number.isFinite( obj[key] ) ){
+						return false;
+					}
+					return this;
+				};
+				this.isNaN = function (){
+					if ( func ){
+						if ( !!func.apply(obj, [obj, key]) ){	/* 如果返回true的话就会停住了 */
+							return false;
+						}
+					}else if ( !Number.isNaN( obj[key] ) ){
+						return false;
+					}
+					return this;
+				};
+				this.isFloat = function (){
+					if ( func ){
+						if ( !!func.apply(obj, [obj, key]) ){	/* 如果返回true的话就会停住了 */
+							return false;
+						}
+					}else if ( typeof obj[key] !== 'number' || Number.isInteger(obj[key])  ){
+						return false;
+					}
+					return this;
+				};
+			};
+			function check(key){
+
+			}
+			check.__proto__ = new checkMethod;
+			return check;
 		};
 		this.checkObj = function (obj, compared){
 			var keys = Object.keys(obj);
