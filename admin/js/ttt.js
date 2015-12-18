@@ -10,6 +10,9 @@
 	conObj 为参数对象，包括：
 		defaultCell: 填充单元，如果不存在则使用缺省的 Default Unit
 		thead: 表头设定，如果为true则在渲染表格式第一行用 <thead> 元素替代
+
+		列模式
+			eachAll		是否遍历原型链
 */
 var ttt = function (dom, input, conObj){
 
@@ -31,6 +34,15 @@ var ttt = function (dom, input, conObj){
 	function cell( input, conObj ){
 		function WriteElementText( ele, text){
 			ele[ ele.textContent ? 'textContent' : 'innerText' ] = text;
+		}
+		function defaultCell( conObj ){
+			var td = document.createElement('td');
+			if ( conObj ){
+				if ( conObj.defaultCell ){
+					return cell(conObj.defaultCell);
+				}
+			}
+			return cell('');
 		}
 		var td = document.createElement('td');
 		switch ( typeof input ){
@@ -55,24 +67,12 @@ var ttt = function (dom, input, conObj){
 				break;
 
 			case 'undefined':
-				console.warn( 'the cell is undefined' );
-				//td = cell( my.defaultCell );
+				td = defaultCell( conObj );
 				break;
 
 			default:
 		}
 		return td;
-	}
-
-	if ( conObj ){
-		if ( conObj.defaultCell ){
-			this.defaultCell = cell( conObj.defaultCell );
-		}
-		else{
-			this.defaultCell = cell(function (ele){
-				ele.innerHTML = 'N/A';
-			});
-		}
 	}
 
 	/*
@@ -101,11 +101,83 @@ var ttt = function (dom, input, conObj){
 			}
 			rowEach( row, appendTr );
 
-			dom.appendChild( tr );
+			return dom.appendChild( tr );
 		};
 		input.forEach( this.insert.bind(this) );
-	}
 
+		return input;
+	}
+	/*
+		列模式要求 input 的数据结构大概是这样的
+		{
+			"列1": [A],
+			"列2": [B],
+			"列3": [C],
+			"列4": [D]
+		}
+		*	一般来说input对象中的键名为表头，input对象中每个属性数组即 列( column, col )
+		*	由于input中每个 元素数组 都是固定的，表的列数是固定的
+			但有可能会出现一些列小于 最大元素数目列(columnLength)
+
+	*/
+	var columnLength = 0;
+	function columnMode(input){
+		var eleMapping = Array();
+		function collectObjectKeys( input ){
+			var keys = Array();
+			if ( conObj ){
+				if ( conObj.eachAll ){
+					for ( key in input )
+						keys.push(key);
+					return arr;
+				}
+			}
+			keys = Object.keys( input );
+			return keys;
+		}
+
+		function getMaxRowColumn( input ){
+			function collectMaxRowColumnName(){
+				return collectObjectKeys(input).sort(function (a, b){
+					return input[a].length < input[b].length;
+				})[0];
+			}
+			return input[ collectMaxRowColumnName() ].length;
+		}
+		columnLength = getMaxRowColumn( input );
+
+		var keys = collectObjectKeys( input );
+		function colEach( rowCursor ){
+			var tr = document.createElement('tr');
+			var tdEleMapping = Array();
+			keys.forEach(function (colName){
+				var td = document.createElement('td');
+
+				td = cell( input[colName][rowCursor], conObj );
+				tdEleMapping.push( td );
+
+				tr.appendChild(td);
+			});
+
+			eleMapping.push( tdEleMapping );
+			dom.appendChild( tr );
+		}
+		function rowEach( input, callback ){
+			for ( var rowCursor = 0; rowCursor < columnLength; ++rowCursor )
+				callback( rowCursor );
+		}
+
+		rowEach( input, colEach );
+
+		this.add = function (key, value){
+			function search(){
+				
+			}
+			input[ keys[key] ][columnLength] = value;
+		};
+
+		//collectObjectKeys( input ).forEach();
+	}
 	/*	collectInput
 		将input转为 this.table
 		一般来说 this.table 只有两种模式： 行(数组)模式 和 列(对象)模式
@@ -122,19 +194,6 @@ var ttt = function (dom, input, conObj){
 
 	*/
 	function collectInput( input ){
-		/*
-			列模式要求 input 的数据结构大概是这样的
-			{
-				"列1": [A],
-				"列2": [B],
-				"列3": [C],
-				"列4": [D]
-			}
-			一般来说input对象中的键名为表头，input对象中每个属性数组即 列( column, col )
-		*/
-		function columnMode(input){
-
-		}
 		if ( Array.isArray(input) ){
 			return rowMode.apply(this, [input]);
 		}else if ( typeof input === 'object' ){
