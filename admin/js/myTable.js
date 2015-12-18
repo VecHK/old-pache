@@ -22,6 +22,7 @@ var myTable = function (table){
 		})[typeof str]();
 		return ele;
 	}
+	/* 接收一个数组或者arguments，选出其中最大值 */
 	function max(arr){
 		arr = arguments.length === 1 ? arr : Array.prototype.slice.apply(arguments);
 		return arr.reduce(function (a,b){
@@ -30,6 +31,7 @@ var myTable = function (table){
 	};
 
 	this.toObj = function (){};
+	/* 清除表，除了表头( <thead> ) */
 	this.clear = function (){
 		var trArr = this.tableEle.getElementsByTagName('tr');
 		Array.prototype.slice.apply( trArr ).forEach(function (trEle){
@@ -53,6 +55,7 @@ var myTable = function (table){
 		});
 
 	};
+	/* 数组方式插入列 */
 	this.insert = function (row){
 		function rowEach(arr, callback){
 			for ( var i=0; i<my.column; ++i )
@@ -70,6 +73,7 @@ var myTable = function (table){
 				});
 			})
 		);
+		this.table.push( row );
 	};
 
 	function createTableHeadEle(theadArr){
@@ -90,9 +94,11 @@ var myTable = function (table){
 		my.table.slice( Number(Boolean( tHeadFlag )) ).forEach(function (tr){
 			my.insert(tr);
 		});
+
 	}
 	this.render = function (conObj){
 		var table = this.table;
+
 		if ( this.tableEle === undefined ){
 			this.tableEle = document.createElement('table');
 		}
@@ -127,29 +133,49 @@ var myTable = function (table){
 			return this.render(conObj);
 		};
 	}else if ( typeof table === 'object' ){
+		this.objTab = new function (){
+			this.push = function (key, value){
+				table[key].push(value);
+			};
+			this.pop = function (pop){
+				table[key].pop();
+			};
+		};
 		/*
-			对象建表（ inDev ）
+			接收的是对象的建表方法
 				表头即是对象键
-			conObj:
-				default
-			extendEach
-				是否遍历继承的对象
+
+			参数：
+				conObj={
+					default
+						默认填充单元格
+					extendEach
+						是否遍历继承的对象
+				}
+
+				function collectObjectKeys
+					收集对象键，也就是收集表头
+
+				function collectMaxColumn
+					获取最大的行数
 		*/
 		this.create = function (conObj, titleContent){
-			var keys = [];
-			this.table = [];
+			this.table = Array();
 			var rowCursor = 0;
 			function collectObjectKeys(extend){
-				if ( extend )
+				/* 是否遍历原型链 */
+				var keys = Array();
+				if ( extend ){
 					for ( var key in table )
 						keys.push(key);
-				else
+				}
+				else{
 					keys = Object.keys(table);
+				}
 				return keys;
 			}
-			keys = collectObjectKeys( conObj.extendEach || false );
-
-			this.table.push(keys);
+			var keys = collectObjectKeys( conObj.extendEach || false );
+			this.table.push( keys );
 
 			function collectMaxColumn(){
 				return max(keys.map(function (d){
@@ -161,8 +187,28 @@ var myTable = function (table){
 					return tab[d][i];
 				});
 			}
-			for ( var i=0, maxCol=collectMaxColumn(); i<maxCol ; ++i)
-				my.table.push(createRow(table, i));
+
+			function createTable(){
+				var newTable = [];
+				for ( var i=0; i< collectMaxColumn(); ++i){
+					var newRow = createRow(table, i);
+					newTable.push( newRow );
+				}
+				return newTable;
+			}
+			function createTable(){
+				var newTable = [];
+				for ( var i=0; i< collectMaxColumn(); ++i){
+					var newRow = createRow(table, i);
+					newTable.push( newRow );
+				}
+				return newTable;
+			}
+
+			var newTable = createTable();
+			newTable.unshift(keys);
+			this.table = newTable;
+			console.warn(this.table);
 
 			function collectTitleContent(tab){
 				if ( titleContent ){
@@ -177,8 +223,8 @@ var myTable = function (table){
 						}
 					});
 				}
-				console.info(tab);
 			}
+
 			collectTitleContent(this.table);
 
 			return this.render({
