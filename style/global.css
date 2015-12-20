@@ -62,7 +62,8 @@ ins {
 /*  Markdown 相关 */
 
 #article sup{
-	vertical-align: sub;
+	/*vertical-align: sub;*/
+	vertical-align: top;
 }
 
 #article li{
