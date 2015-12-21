@@ -5,16 +5,24 @@
 
 /*
 	dom 为绑定元素
-	input只接受 数组、对象
+
 
 	conObj 为参数对象，包括：
+		input只接受 数组、对象
+
 		defaultCell: 填充单元，如果不存在则使用缺省的 Default Unit
-		thead: 表头设定，如果为true则在渲染表格式第一行用 <thead> 元素替代
+		thead: 行模式表头设定
+			一般是第一行作为 thead
+			如果为 true ，则 input中第一个 rowArr 作为 <thead>
+			如果为数组，则这个数组作为 <thead>
+
+		thead: 列模式表头设定
+			如果存在 rowArr thead
 
 		列模式
 			eachAll		是否遍历原型链
 */
-var ttt = function (dom, input, conObj){
+var ttt = function (dom, conObj){
 
 	var my = this;
 
@@ -93,11 +101,13 @@ var ttt = function (dom, input, conObj){
 	*/
 	var headColumn = 0;
 	function rowMode(input){
-		/* 插入行 接收一个 rowArray */
-		/* 插入时一般采用 最大列数溢出/填充 策略 */
-		headColumn = input[0].length;
-		this.insert = function (row){
-			var tr = document.createElement('tr');
+		this.insert = function (row, exEleName){
+			var eleName = 'tr';
+			if ( typeof exEleName === 'string' ){
+				eleName = exEleName;
+			}
+
+			var tr = document.createElement( eleName );
 
 			function appendTr(rowUnit){
 				tr.appendChild( cell( rowUnit ) );
@@ -110,7 +120,21 @@ var ttt = function (dom, input, conObj){
 
 			return dom.appendChild( tr );
 		};
-		input.forEach( this.insert.bind(this) );
+		/* 插入行 接收一个 rowArray */
+		/* 插入时一般采用 最大列数溢出/填充 策略 */
+		headColumn = input[0].length;
+		var thFlag = false;
+		if ( conObj.thead ){
+			if ( conObj.thead === true ){
+				this.insert( input[0], 'thead' );
+				thFlag = true;
+			}else{
+				this.insert( conObj.thead, 'thead' );
+//				headColumn = conObj.thead.length;
+			}
+		}
+
+		input.slice( Number( thFlag ) ).forEach( this.insert.bind(this) );
 
 		return input;
 	}
@@ -224,7 +248,7 @@ var ttt = function (dom, input, conObj){
 	/*
 		this.table 可以是对象也可以是数组
 	*/
-	this.table = collectInput.apply(this, [input]);
+	this.table = collectInput.apply(this, [ conObj.input ]);
 
 	this.tableEle = dom;
 
