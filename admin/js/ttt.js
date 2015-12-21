@@ -30,6 +30,7 @@ var ttt = function (dom, input, conObj){
 				直接 td.appendChild
 			undefined
 				采用填充策略
+		当 input 为 HTMLTableCellElement （也就是 <td>元素）的时候，conObj为input，arguments[2]为conObj
 	*/
 	function cell( input, conObj ){
 		function WriteElementText( ele, text){
@@ -44,7 +45,13 @@ var ttt = function (dom, input, conObj){
 			}
 			return cell('');
 		}
-		var td = document.createElement('td');
+		if ( input instanceof HTMLTableCellElement ){
+			var td = input;
+			input = conObj;
+			conObj = arguments[2];
+		}else{
+			var td = document.createElement('td');
+		}
 		switch ( typeof input ){
 			case 'string':
 			case 'number':
@@ -117,12 +124,11 @@ var ttt = function (dom, input, conObj){
 		}
 		*	一般来说input对象中的键名为表头，input对象中每个属性数组即 列( column, col )
 		*	由于input中每个 元素数组 都是固定的，表的列数是固定的
-			但有可能会出现一些列小于 最大元素数目列(columnLength)
+			但有可能会出现一些列小于 最大元素数目列(maxColumnLength)，此时一般采用填充策略
 
 	*/
-	var columnLength = 0;
+	var maxColumnLength = 0;
 	function columnMode(input){
-		var eleMapping = Array();
 		function collectObjectKeys( input ){
 			var keys = Array();
 			if ( conObj ){
@@ -136,47 +142,61 @@ var ttt = function (dom, input, conObj){
 			return keys;
 		}
 
-		function getMaxRowColumn( input ){
-			function collectMaxRowColumnName(){
-				return collectObjectKeys(input).sort(function (a, b){
-					return input[a].length < input[b].length;
-				})[0];
-			}
-			return input[ collectMaxRowColumnName() ].length;
-		}
-		columnLength = getMaxRowColumn( input );
-
+		var eleMapping = Array();
+		var columnKeys = new function (){
+			collectObjectKeys( input ).forEach(
+				(function (item, i){
+					this[ item ] = {
+						col: i,
+						length: 0
+					}
+				}).bind(this)
+			);
+		};
 		var keys = collectObjectKeys( input );
-		function colEach( rowCursor ){
-			var tr = document.createElement('tr');
-			var tdEleMapping = Array();
-			keys.forEach(function (colName){
-				var td = document.createElement('td');
-
-				td = cell( input[colName][rowCursor], conObj );
-				tdEleMapping.push( td );
-
-				tr.appendChild(td);
-			});
-
-			eleMapping.push( tdEleMapping );
-			dom.appendChild( tr );
-		}
-		function rowEach( input, callback ){
-			for ( var rowCursor = 0; rowCursor < columnLength; ++rowCursor )
-				callback( rowCursor );
-		}
-
-		rowEach( input, colEach );
+		var table = new Object;
 
 		this.add = function (key, value){
-			function search(){
-				
+			function newRow( input ){
+				var tr = document.createElement('tr');
+				var tdEleMapping = Array();
+
+				keys.forEach(function (key){
+					var td = cell( undefined, conObj );
+
+					tdEleMapping.push( td );
+
+					tr.appendChild(td);
+				});
+				++maxColumnLength;
+
+				eleMapping.push( tdEleMapping );
+				dom.appendChild( tr );
 			}
-			input[ keys[key] ][columnLength] = value;
+			if ( eleMapping[input[key].length ] === undefined ){
+				var row = keys.map(function (colKey){
+					return colKey === key ? value : undefined;
+				});
+
+				newRow(row, input[key].length);
+			}
+			if ( columnKeys[key] !== undefined && input[key] !== undefined ){
+				cell( eleMapping[ columnKeys[key].length ][ columnKeys[key].col ], value );
+
+				table[key] || ( table[key] = Array() );
+
+				table[ key ].push(value);
+
+				++columnKeys[key].length;
+			}
 		};
 
-		//collectObjectKeys( input ).forEach();
+		keys.forEach(function (key){
+			input[key].forEach(function (value){
+				my.add(key, value);
+			});
+		});
+		return table;
 	}
 	/*	collectInput
 		将input转为 this.table
