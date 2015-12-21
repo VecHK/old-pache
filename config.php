@@ -22,5 +22,7 @@ class pache{
 		'type',
 		'class',
 	);
+	/* 多说名称 */
+	public $duoshuo = "vechk";
 }
 ?>
