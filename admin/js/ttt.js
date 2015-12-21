@@ -17,7 +17,10 @@
 			如果为数组，则这个数组作为 <thead>
 
 		thead: 列模式表头设定
-			如果存在 rowArr thead
+			如果为 true，则 input中的 columnKey 作为 <thad> （也就是对象键名）
+			如果为 对象，则对象中与input中相同键名的值作为 <thead>
+			* 如果为 数组，则按照行模式的套路输出
+				这个数组表头的功能暂时不开发
 
 		列模式
 			eachAll		是否遍历原型链
@@ -180,40 +183,74 @@ var ttt = function (dom, conObj){
 		var keys = collectObjectKeys( input );
 		var table = new Object;
 
-		this.add = function (key, value){
-			function newRow( input ){
-				var tr = document.createElement('tr');
-				var tdEleMapping = Array();
-
-				keys.forEach(function (key){
-					var td = cell( undefined, conObj );
-
-					tdEleMapping.push( td );
-
-					tr.appendChild(td);
-				});
-				++maxColumnLength;
-
-				eleMapping.push( tdEleMapping );
-				dom.appendChild( tr );
+		function newRow( row, exEleName){
+			var eleName = 'tr';
+			if ( typeof exEleName === 'string' ){
+				eleName = exEleName;
 			}
-			if ( eleMapping[input[key].length ] === undefined ){
+			var tr = document.createElement(eleName);
+			var tdEleMapping = Array();
+
+			row.forEach(function (unit){
+				var td = cell( unit, conObj );
+
+				tdEleMapping.push( td );
+
+				tr.appendChild(td);
+			});
+			++maxColumnLength;
+
+			eleMapping.push( tdEleMapping );
+			dom.appendChild( tr );
+		}
+		this.append = function (key, value){
+			if ( eleMapping[ columnKeys[key].length ] === undefined ){
 				var row = keys.map(function (colKey){
-					return colKey === key ? value : undefined;
+					if ( colKey === key ){
+						return value;
+					}else{
+						return undefined;
+					}
 				});
-
-				newRow(row, input[key].length);
+				newRow(row);
 			}
-			if ( columnKeys[key] !== undefined && input[key] !== undefined ){
+			else if ( columnKeys[key] !== undefined && input[key] !== undefined ){
 				cell( eleMapping[ columnKeys[key].length ][ columnKeys[key].col ], value );
-
-				table[key] || ( table[key] = Array() );
-
-				table[ key ].push(value);
-
-				++columnKeys[key].length;
 			}
+		}
+		this.add = function (key, value){
+			this.append(key, value);
+			table[key] || ( table[key] = Array() );
+			table[ key ].push(value);
+
+			++columnKeys[key].length;
 		};
+		if ( conObj.thead ){
+			var thead = document.createElement('thead');
+
+			if ( conObj.thead === true ){
+				keys.forEach(function (item){
+					thead.appendChild( cell(item) );
+				});
+			}
+			else if ( Array.isArray(conObj.thead) ){
+
+			}
+			else if ( typeof conObj.thead === 'object' ){
+				var theadArr = Array();
+
+				Object.keys( conObj.thead ).forEach(function (comKey){
+					if ( input[comKey] !== undefined ){
+						var td = cell( conObj.thead[comKey] );
+						thead.appendChild(td);
+
+						theadArr.push( conObj.thead[comKey] );
+					}
+				});
+			}
+			dom.appendChild(thead);
+
+		}
 
 		keys.forEach(function (key){
 			input[key].forEach(function (value){
