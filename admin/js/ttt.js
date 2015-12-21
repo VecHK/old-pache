@@ -234,7 +234,7 @@ var ttt = function (dom, conObj){
 				});
 			}
 			else if ( Array.isArray(conObj.thead) ){
-
+				conObj.thead.map( cell ).forEach( thead.appendChild.bind(thead) );
 			}
 			else if ( typeof conObj.thead === 'object' ){
 				var theadArr = Array();
