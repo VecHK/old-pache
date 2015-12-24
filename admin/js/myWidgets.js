@@ -23,34 +23,34 @@ function tagSelector(ele){
 		var my = this;
 		var tagSelectorEle = ele;
 		return $c('li', function (ele){
-			ele.append('div', function (contentEle){
-				contentEle[0].className = 'content';
-				contentEle.css({
+			this.append('div', function (contentEle){
+				contentEle.className = 'content';
+				this.css({
 					'position': 'relative'
 				});
 				function applyContent(content){
 					if ( typeof content === 'string' )
-						contentEle.text(content);
+						this.text(content);
 					else
-						contentEle.append(content(contentEle));
+						this.append(content(contentEle));
 				}
 				if ( conObj instanceof window.Node || conObj instanceof window.HTMLElement ){
-					contentEle.append(conObj);
+					this.append(conObj);
 				}else{
-					applyContent( typeof conObj !== 'object' ? conObj : conObj.content );
+					applyContent.bind(this)( typeof conObj !== 'object' ? conObj : conObj.content );
 				}
 			});
-			ele.css({
+			this.css({
 				'position': 'relative'
 			});
-			ele.append($c('div', function (closeTag){
-				closeTag.text('x');
-				closeTag.cssLine()
+			this.append($c('div', function (closeTag){
+				this.text('x');
+				this.cssLine()
 					.position('absolute')
 					.right('0px')
 					.top('0px')
 					.cursor('pointer');
-				closeTag[0].className = 'closeTag';
+				closeTag.className = 'closeTag';
 				this.addEvent('click', function (interEle, cursor){
 					return function (){
 						if ( typeof conObj === 'object' ){
@@ -61,16 +61,16 @@ function tagSelector(ele){
 							}
 						}
 						tagSelectorEle.removeChild(interEle);
-						return my.removeItem(ele[0]);
+						return my.removeItem(ele);
 					}
-				}(ele[0], my.length), true);
+				}(ele, my.length), true);
 			}));
 
 			var obj = {
 				cursor: my.length,
 				value: conObj.value,
 				content: conObj.content,
-				ele: ele[0]
+				ele: ele
 			};
 			my.push( obj );
 		});
