@@ -15,7 +15,8 @@ var htmlConsole = function (ele){
 			this.css({
 				'display': 'block',
 				'position': 'relative',
-				'height': '0px',
+				'width': '100%',
+				'max-height': '0px',
 				'padding': '0px',
 				'margin': '0px',
 				'overflow': 'scroll',
@@ -23,7 +24,7 @@ var htmlConsole = function (ele){
 				'border-top-left-radius': '5px',
 				'border-top-right-radius': '5px',
 
-				'transition': 'height 0.618s'
+				'transition': 'max-height 0.618s'
 			});
 		})
 	};
@@ -130,7 +131,7 @@ var noFound = function (ele){
 						this.addEvent('click', function (ele){
 							var hCon = new htmlConsole(item.parentElement);
 							return function (){
-								$(hCon.conEle).css( {'height': '200px'} );
+								$(hCon.conEle).css( {'max-height': '220px'} );
 								eval( $(ele.parentElement.getElementsByClassName('javascript')[0]).text() );
 							}
 						}(ele),false);
