@@ -758,7 +758,7 @@
 		this.createEle = function (eleName, callback){
 			var ele = doc.createElement(eleName);
 			if ( typeof callback === 'function' ){
-				callback && callback.apply( f(ele), [ f(ele) ] );
+				callback && callback.apply( f(ele), [ ele ] );
 				return ele;
 			}else{
 				return f(ele);
