@@ -3,16 +3,16 @@ var htmlConsole = function (ele){
 	this.conEle = createHtmlConsoleEle();
 	this.log = function (str){
 		var li = $c('li', function (ele){
-			ele.text(str);
+			this.text(str);
 		});
 		this.conEle.appendChild( li );
 		return li;
 	};
 	function createHtmlConsoleEle(){
 		return $c('div', function (ele){
-			ele[0].className = "html-console";
-			ele.text('htmlConsole v0.01a');
-			ele.css({
+			ele.className = "html-console";
+			this.text('htmlConsole v0.01a');
+			this.css({
 				'display': 'block',
 				'position': 'relative',
 				'height': '0px',
@@ -126,14 +126,14 @@ var noFound = function (ele){
 					item.innerHTML = prettyPrintOne(item.innerHTML);
 					item.parentElement.className = 'prettyprint';
 					item.parentElement.insertBefore($c('button', function (ele){
-						ele.text('▶');
-						ele.addEvent('click', function (ele){
+						this.text('▶');
+						this.addEvent('click', function (ele){
 							var hCon = new htmlConsole(item.parentElement);
 							return function (){
-								$(hCon.conEle).css( {'height': '100px'} );
+								$(hCon.conEle).css( {'height': '200px'} );
 								eval( $(ele.parentElement.getElementsByClassName('javascript')[0]).text() );
 							}
-						}(ele[0]),false);
+						}(ele),false);
 					}), item.parentElement.firstChild );
 				}
 				return true;
