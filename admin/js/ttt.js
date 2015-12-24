@@ -289,4 +289,26 @@ var ttt = function (dom, conObj){
 
 	this.tableEle = dom;
 
+	/* 清除表，只留下表头 */
+	this.clear = function (){
+		function clearArray(arr){
+			while (arr.length !== 0 )
+				arr.shift();
+		}
+		if ( Array.isArray(this.table) ){
+			if ( conObj.thead ){
+				this.table = Array( this.table[0] );
+			}else{
+				this.table = Array();
+			}
+		}else{
+			Object.keys(this.table).forEach(function ( key ){
+				clearArray( this.table[key] );
+			}.bind(this));
+		}
+		Array.prototype.slice.apply(dom.childNodes).forEach(function ( node ){
+			node.tagName.toLowerCase() !== 'thead' && dom.removeChild(node);
+		});
+	};
+
 };
