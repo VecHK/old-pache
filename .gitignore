@@ -22,3 +22,6 @@ js/myLoader.js
 
 #console
 /console/*
+
+#图片目录
+img/*
