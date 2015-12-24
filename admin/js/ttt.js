@@ -155,31 +155,31 @@ var ttt = function (dom, conObj){
 
 	*/
 	var maxColumnLength = 0;
-	function columnMode(input){
-		function collectObjectKeys( input ){
-			var keys = Array();
-			if ( conObj ){
-				if ( conObj.eachAll ){
-					for ( key in input )
-						keys.push(key);
-					return arr;
-				}
+	var eleMapping = Array();
+	function collectObjectKeys( input ){
+		var keys = Array();
+		if ( conObj ){
+			if ( conObj.eachAll ){
+				for ( key in input )
+					keys.push(key);
+				return arr;
 			}
-			keys = Object.keys( input );
-			return keys;
 		}
-
-		var eleMapping = Array();
-		var columnKeys = new function (){
-			collectObjectKeys( input ).forEach(
-				(function (item, i){
-					this[ item ] = {
-						col: i,
-						length: 0
-					}
-				}).bind(this)
-			);
-		};
+		keys = Object.keys( input );
+		return keys;
+	}
+	function ColumnKeys(input){
+		collectObjectKeys( input ).forEach(
+			(function (item, i){
+				this[ item ] = {
+					col: i,
+					length: 0
+				}
+			}).bind(this)
+		);
+	};
+	var columnKeys = new ColumnKeys(conObj.input);
+	function columnMode(input){
 		var keys = collectObjectKeys( input );
 		var table = new Object;
 
@@ -224,6 +224,7 @@ var ttt = function (dom, conObj){
 			table[ key ].push(value);
 
 			++columnKeys[key].length;
+			
 		};
 		if ( conObj.thead ){
 			var thead = document.createElement('thead');
@@ -293,7 +294,7 @@ var ttt = function (dom, conObj){
 	this.clear = function (){
 		function clearArray(arr){
 			while (arr.length !== 0 )
-				arr.shift();
+				arr = Array();
 		}
 		if ( Array.isArray(this.table) ){
 			if ( conObj.thead ){
@@ -302,9 +303,16 @@ var ttt = function (dom, conObj){
 				this.table = Array();
 			}
 		}else{
-			Object.keys(this.table).forEach(function ( key ){
-				clearArray( this.table[key] );
-			}.bind(this));
+			function createEmpty(){
+				collectObjectKeys( conObj.input ).forEach(function (key){
+					this[key] = Array();
+				}.bind(this));
+			};
+			this.table = new createEmpty;
+
+			eleMapping = Array();
+			columnKeys = null;
+			columnKeys = new ColumnKeys( this.table );
 		}
 		Array.prototype.slice.apply(dom.childNodes).forEach(function ( node ){
 			node.tagName.toLowerCase() !== 'thead' && dom.removeChild(node);
