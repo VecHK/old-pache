@@ -113,7 +113,7 @@ var ttt = function (dom, conObj){
 			var tr = document.createElement( eleName );
 
 			function appendTr(rowUnit){
-				tr.appendChild( cell( rowUnit ) );
+				tr.appendChild( cell( rowUnit, conObj) );
 			}
 			function rowEach(row, callback){
 				for ( var cursor = 0; cursor < headColumn; ++cursor )
@@ -224,7 +224,7 @@ var ttt = function (dom, conObj){
 			table[ key ].push(value);
 
 			++columnKeys[key].length;
-			
+
 		};
 		if ( conObj.thead ){
 			var thead = document.createElement('thead');
