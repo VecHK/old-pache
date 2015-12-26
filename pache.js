@@ -126,16 +126,18 @@ var noFound = function (ele){
 					console.warn(item);
 					item.innerHTML = prettyPrintOne(item.innerHTML);
 					item.parentElement.className = 'prettyprint';
-					item.parentElement.insertBefore($c('button', function (ele){
-						this.text('▶');
-						this.addEvent('click', function (ele){
-							var hCon = new htmlConsole(item.parentElement);
-							return function (){
-								$(hCon.conEle).css( {'max-height': '220px'} );
-								eval( $(ele.parentElement.getElementsByClassName('javascript')[0]).text() );
-							}
-						}(ele),false);
-					}), item.parentElement.firstChild );
+					if ( item.className === 'javascript' ){
+						item.parentElement.insertBefore($c('button', function (ele){
+							this.text('▶');
+							this.addEvent('click', function (ele){
+								var hCon = new htmlConsole(item.parentElement);
+								return function (){
+									$(hCon.conEle).css( {'max-height': '220px'} );
+									eval( $(ele.parentElement.getElementsByClassName('javascript')[0]).text() );
+								}
+							}(ele),false);
+						}), item.parentElement.firstChild );
+					}
 				}
 				return true;
 			}
