@@ -116,7 +116,7 @@ var viewer = new function (){
 		}
 		setEditorType( article.type );
 
-		article.tagList.forEach(function ( tag ){
+		article.tag.forEach(function ( tag ){
 			viewer.tS.appendItem({
 				'value': tag.tagname,
 				'content': tag.tagname
