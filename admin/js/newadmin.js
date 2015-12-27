@@ -22,6 +22,10 @@ var viewer = new function (){
 	var viewer = this;
 	var articleListEle = $('#articlelist .list')[0];
 
+	/* tagSelector */
+	this.tS=[];
+	tagSelector.apply( this.tS, [$('#editor .tag .tag-selector')[0]] );
+
 	var ResizeTextarea = function (a,row){
 		var agt = navigator.userAgent.toLowerCase();
 		var is_op = (agt.indexOf("opera") != -1);
@@ -112,6 +116,13 @@ var viewer = new function (){
 		}
 		setEditorType( article.type );
 
+		article.tagList.forEach(function ( tag ){
+			viewer.tS.appendItem({
+				'value': tag.tagname,
+				'content': tag.tagname
+			});
+		});
+
 		viewer.eventResizeTextarea.bind($('#editor .edit-area [name="content"]')[0])();
 	};
 	this.openEditor = function (article){
@@ -166,33 +177,30 @@ var control = new function (){
 
 		window.onload = load;
 		$('#editor .close').addEvent('click', viewer.closeEditor, true)
+
+		var addTag = function (e){
+			var tagInputEle = $('#editor .tag .tag-add input')[0];
+			if ( tagInputEle.value === '' ){
+				alert('tag不能为空');
+				return 0;
+			}
+			if ( new RegExp(/ /g).test( tagInputEle.value ) ){
+				alert('tag不能有空格');
+				return 0;
+			}
+			viewer.tS.appendItem({
+				'value': tagInputEle.value,
+				'content': tagInputEle.value,
+			});
+			tagInputEle.value = '';
+		};
+		$('#editor .tag .tag-add-button').addEvent('click', addTag, true);
 	}).bind(this);
 	var mEvent = new mEventF;
 
 	/* tab控制 */
 	tabOverride.set($('textarea'));
 	$('textarea')[0].spellcheck = false;
-
-	/* tagSelector */
-	var tS=[];
-	tagSelector.apply( tS, [$('#editor .tag .tag-selector')[0]] );
-	var addTag = function (e){
-		var tagInputEle = $('#editor .tag .tag-add input')[0];
-		if ( tagInputEle.value === '' ){
-			alert('tag不能为空');
-			return 0;
-		}
-		if ( new RegExp(/ /g).test( tagInputEle.value ) ){
-			alert('tag不能有空格');
-			return 0;
-		}
-		tS.appendItem({
-			'value': tagInputEle.value,
-			'content': tagInputEle.value,
-		});
-		tagInputEle.value = '';
-	};
-	$('#editor .tag .tag-add-button').addEvent('click', addTag, true);
 
 	/*
 		textarea自动变长
