@@ -85,5 +85,3 @@ function tagSelector(ele){
 		}
 	};
 }
-var tS=[];
-tagSelector.apply( tS, [$('#tag .tag-selector')[0]] );
