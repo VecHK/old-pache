@@ -47,68 +47,65 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 	<meta name="HandheldFriendly" content="true" />
 	<title>manageArticle</title>
 
-	<link href="style/admin.css" rel="stylesheet" type="text/css" />
+	<link href="style/global.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="../js/remilia.js"></script>
-	<script type="text/javascript" src="js/myTable.js"></script>
+	<script type="text/javascript" src="js/ttt.js"></script>
+	<script type="text/javascript" src="js/tipper.js"></script>
 	<script type="text/javascript" src="../js/taboverride.min.js"></script>
 </head>
 <body>
-	<div id="first">
-		<form id="articlemanagelist">
-			<ul id="articlelist">
+	<div id="articlelist">
+		<ul class="list">
 
-			</ul>
-		</form>
-		<div id="control">
-			<div id="pageselect">
+		</ul>
+		<div class="control">
+			<div class="pageselect">
 				<div class='pagebutton'>上一页</div>
 				<ul class="pagelink">
 					<a>1</a> <a>2</a> <a>3</a>
 				</ul>
 				<div class='pagebutton'>下一页</div>
 			</div>
-			<button id="delete">删除</button>
-			<button id='create'>创建文章</button>
+			<button class="delete">删除</button>
+			<button class='create'>创建文章</button>
 		</div>
 	</div>
 
 	<div id="editor">
-		<form method="post">
-			<div class="main">
-				<div class="title-head">
-					<input class="title" name="title" placeholder="标题" />
-				</div>
-				<div class="content">
-					<textarea name="article" placeholder="正文"></textarea>
+		<div class="update">
+			<div class="tag">
+				<ul class="tag-selector"></ul>
+				<div class="tag-add">
+					<button class="tag-add-button">+</button>
+					<input />
 				</div>
 			</div>
 
-			<div id="editor-control">
-				<input id="class_list_input" type="class" list="class_list" name="class" placeholder="class" />
-				<datalist id="class_list" >
-					<option label="N/A" value="" ></option>
-				</datalist>
+			<div class="class">
+				<input name="class" placeholder="分类" />
+			</div>
 
-				<select name="type" >
-					<option value="markdown">Markdown</option>
-					<option value="text">text</option>
-					<option value="html">HTML</option>
-				</select>
-				<button type="submit">post</button>
-				<div id="status">N/A</div>
-			</div>
-		</form>
-		<div id="editor_close">x</div>
-		<div id="tag">
-			<ul class="tag-selector" ></ul>
-			<div class="tag-add">
-				<input />
-				<button class="tag-add-button">+</button>
-			</div>
+			<select name="type">
+				<option value="markdown">Markdown</option>
+				<option value="text">text</option>
+				<option value="html">HTML</option>
+			</select>
+
+			<button class="submit">发布</button>
+			<button class="close">取消</button>
 		</div>
+
+		<div class="edit-area">
+			<input name="title" placeholder="标题" />
+			<textarea name="content" placeholder="正文"></textarea>
+		</div>
+	</div>
+
+	<div id="tipper">
+
 	</div>
 
 </body>
 <script type="text/javascript" src="js/myWidgets.js"></script>
-<script type="text/javascript" src="js/admin.js"></script>
+<script type="text/javascript" src="js/newadmin.js"></script>
 </html>
