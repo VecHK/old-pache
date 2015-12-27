@@ -322,10 +322,10 @@ function getArticlesTagListById($arr){
 	$lst = new stdClass;
 	while ( $row=mysql_fetch_array($sqlresult) ){
 		foreach( $arr as $key=> $value ){
+			if ( !isset($lst->$value) ){
+				$lst->$value = Array();
+			}
 			if ( $value === $row['articleid'] ){
-				if ( !isset($lst->$value) ){
-					$lst->$value = Array();
-				}
 				array_push($lst->$value, $row['tagname']);
 			}
 		}
