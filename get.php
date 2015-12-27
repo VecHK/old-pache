@@ -15,7 +15,9 @@ if ( isset($_GET['id']) ){
 		case 'JSON':
 			//echo json_encode(getArticleBy($_GET['by'], $_GET['byarg'], $display));
 			header('Content-Type: text/plain; charset=utf-8');
-			echo json_encode(getArticleById( (int) $id ));
+			$article = getArticleById( (int) $id );
+			$article->tagList = getArticleTagListById( (int) $id );
+			echo json_encode($article);
 			return 0;
 			break;
 
