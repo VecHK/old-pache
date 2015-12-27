@@ -44,7 +44,7 @@ function tagSelector(ele){
 				'position': 'relative'
 			});
 			this.append($c('div', function (closeTag){
-				this.text('x');
+				this.text('X');
 				this.cssLine()
 					.position('absolute')
 					.right('0px')
