@@ -204,4 +204,14 @@ var control = new function (){
 		.addEvent('focus', viewer.eventResizeTextarea, true)
 		.addEvent('keydown', viewer.eventResizeTextarea, true);
 
+	$('#articlelist .control .create').addEvent('click', function (){
+		envir.updateType = 'new';
+		viewer.openEditor({
+			title: 'Hello, World',
+			article: '',
+			'class': '',
+			'tag': []
+		});
+	}, true);
+
 };
