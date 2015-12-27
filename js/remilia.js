@@ -252,6 +252,14 @@
 		this.get = function (URLstr, ok, fail){
 			this.vjax(URLstr, 'GET', ok, fail);
 		};
+		this.getJSON = function (url, ok, fail){
+			this.get(url,
+				function (data){
+					this.json2obj(data, ok, fail);
+				}.bind(this),
+				fail
+			);
+		};
 		this.encodeJson = function (jsonStr){
 
 		};
