@@ -92,6 +92,7 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 			</select>
 
 			<button class="submit">发布</button>
+			<button class="preview">预览</button>
 			<button class="close">取消</button>
 		</div>
 

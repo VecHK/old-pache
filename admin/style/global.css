@@ -5,19 +5,62 @@ body, html{
 	height: 100%;
 }
 #articlelist {
-	width: 800px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+
+	margin: auto;
+
+	width: 800px;
 	height: 100%;
 }
 
-#articlelist ul.class{
+#articlelist ul.list{
 	display: flex;
 	flex-direction: column;
 }
-#articlelist ul.class .title {
+#articlelist ul.list > li{
+	margin-top: 5px;
+	margin-bottom: 5px;
 
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+#articlelist .list input[type="checkbox"]{
+
+}
+#articlelist .list .class:focus{
+	outline: none;
+	margin-right: 10px;
+	padding-left: 0px;
+	border-left-color: transparent;
+	border-bottom-color: brown;
+}
+#articlelist .list .class{
+	border: none;
+	border-left-color: brown;
+	border-left-style: solid;
+	border-left-width: medium;
+
+	border-bottom-color: transparent;
+	border-bottom-style: solid;
+	border-bottom-width: thin;
+
+	padding-left: 10px;
+
+	width: 64px;
+
+	transition: margin-right 0.618s, padding-left 0.618s, border-left-color 0.618s, border-bottom-color 0.618s;
+}
+
+#articlelist ul.list .title {
+	display: flex;
+	flex-direction: column;
+	height: 48px;
+	/* align-content: center; */
+	justify-content: center;
 }
 #articlelist ul .title .title-name{
 	display: inline-flex;
@@ -34,6 +77,12 @@ body, html{
 	padding: 0;
 
 	list-style: none;
+
+	font-size: small;
+	font-family: Arial;
+}
+#articlelist ul .title ul.tag li{
+	border: none;
 }
 #articlelist ul .title ul.tag li::after{
 	content: "、";
@@ -113,7 +162,7 @@ body, html{
 	width: 640px;
 	margin: auto;
 
-	font-size: 1.5em;
+	font-size: 1em;
 	text-align: left;
 
 	margin-top: 20px;

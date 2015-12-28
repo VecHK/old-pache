@@ -54,7 +54,18 @@ var viewer = new function (){
 	var renderingArticleList = function (articleList){
 		function row( articleInfo ){
 			$(articleListEle).append('li', function(){
-				var classEle;
+
+				var check = this.append('input', function (checkEle){
+					checkEle.type = 'checkbox';
+					checkEle.name = 'selid[]';
+					checkEle.value = articleInfo.id;
+				});
+
+				var classEle = this.append('input', function ( classEle ){
+					classEle.className = 'class';
+					classEle.placeholder = '空';
+					classEle.value = articleInfo.class;
+				});
 
 				var titleEle = this.append('div', function (titleEle){
 					titleEle.className = 'title';
@@ -127,8 +138,8 @@ var viewer = new function (){
 	};
 	this.openEditor = function (article){
 		console.info(article);
-		$('#editor').fadeIn();
 		renderingEditor(article);
+		$('#editor').fadeIn();
 	};
 	this.closeEditor = function (){
 		$('#editor').fadeOut();
@@ -218,6 +229,7 @@ var control = new function (){
 			title: 'Hello, World',
 			article: '',
 			'class': '',
+			'type': 'markdown',
 			'tag': []
 		});
 	}, true);
