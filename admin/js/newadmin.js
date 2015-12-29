@@ -1,5 +1,5 @@
 var model = new function (){
-	this.loadArticleList = function ( conObj ){
+	this.loadArticleList = function (conObj){
 		var url = 'ad.php?' + $.stringifyRequest({
 			pw: $.cookie('pw'),
 			type: 'getindex',
@@ -15,6 +15,18 @@ var model = new function (){
 			display: 'json'
 		});
 		$.getJSON(url, conObj.ok, conObj.fail);
+	};
+	this.updateArticle = function (conObj){
+		var url = 'ad.php?' + $.stringifyRequest({
+			pw: $.cookie('pw'),
+			type: conObj.id ? 'update' : 'new'
+		});
+		$.post(
+			url,
+			conObj.article,
+			conObj.ok,
+			conObj.fail
+		);
 	};
 };
 
@@ -87,8 +99,7 @@ var viewer = new function (){
 					})
 					var tagEle = this.append('ul', function (tagEle){
 						tagEle.className = 'tag';
-						var tagList = articleList.articlesTagList[ articleInfo.id ];
-
+						var tagList = articleList.articlesTagList[ articleInfo.id ] || Array();
 						tagList.forEach(function ( item ){
 							var titleName = this.append('li', function (){
 								this.text(item);
@@ -100,9 +111,10 @@ var viewer = new function (){
 
 			});
 		};
+		$(articleListEle).html('');
 		articleList.articles.forEach(row);
 	};
-	this.showArticleList = function (articleList){
+	this.refreshArticleList = function (articleList){
 		renderingArticleList(articleList);
 	};
 
@@ -163,7 +175,6 @@ var viewer = new function (){
 };
 
 var control = new function (){
-	var control = this;
 	/* Tipper */
 	var tip = Tipper( $('#tipper') );
 
@@ -171,14 +182,36 @@ var control = new function (){
 		this.page = 0;
 		this.limit = 10;
 		this.updateType = null;
-		this.editorStatus = null;
+		this.editorStatus = 'new';
+		this.currentArticle;
 	};
 
-	this.showArticleList = function (){
+	this.collectArticleData = function (){
+		var getEditorFormValueByName = function ( name ){
+			return $('#editor [name="'+name+'"]')[0].value;
+		};
+		this['class'] = getEditorFormValueByName('class');
+
+		this.title = getEditorFormValueByName('title');
+
+		this.article = getEditorFormValueByName('content');
+
+		this.type = getEditorFormValueByName('type');
+
+		this.tag = viewer.tS.map(function (item){
+			return item.value;
+		});
+
+		/* Extend */
+		this.time;
+		this.ltime;
+	};
+
+	this.refreshArticleList = function (){
 		model.loadArticleList({
 			page: envir.page,
 			limit: envir.limit,
-			ok: viewer.showArticleList,
+			ok: viewer.refreshArticleList,
 			fail: function (err){
 				console.error(err);
 				alert('错误QAQ');
@@ -188,7 +221,11 @@ var control = new function (){
 	this.openArticle = function (id){
 		model.loadArticleById({
 			'id': id,
-			ok: viewer.openEditor,
+			ok: function (data){
+				console.warn(data);
+				viewer.openEditor(data);
+				envir.currentArticle = data;
+			},
 			fail: function (err){
 				console.error(err);
 			}
@@ -197,9 +234,10 @@ var control = new function (){
 
 
 	var mEventF = (function (){
+		var control = this;
 		var load = function (){
 			viewer.closeEditor();
-			control.showArticleList();
+			control.refreshArticleList();
 		};
 
 		window.onload = load;
@@ -222,8 +260,48 @@ var control = new function (){
 			tagInputEle.value = '';
 		};
 		$('#editor .tag .tag-add-button').addEvent('click', addTag, true);
-	}).bind(this);
-	var mEvent = new mEventF;
+
+		var EditorSubmit = function (){
+			this.collectArticleData.apply( envir.currentArticle );
+			model.updateArticle({
+				'article': envir.currentArticle,
+				'ok': function (data){
+					var backInfo = JSON.parse(data);
+					if ( backInfo.code == 0 ){
+						envir.currentArticle = backInfo.info;
+
+						this.refreshArticleList();
+					}else{
+						console.error('submit fail: '+backInfo.str);
+					}
+				}.bind(this),
+				'fail': function (err){
+					console.warn(err);
+				}
+			});
+		};
+		$('#editor .submit').addEvent('click', EditorSubmit.bind(control), true);
+
+		var delArticles = function (){
+			function collectSelected(){
+				var select = Array.prototype.slice.apply( $('#articlelist [name="selid[]"]') );
+				return select.filter(function (checkbox){
+					return checkbox.checked && checkbox.value;
+				});
+			}
+			function selected2Array( checked ){
+				return checked.map(function (checked){
+					return checked.value;
+				});
+			}
+			selected2Array( collectSelected() );
+			
+		};
+
+		$('#articlelist .control .delete').addEvent('click', delArticles, true);
+
+
+	}).apply(this);
 
 	/* tab控制 */
 	tabOverride.set($('textarea'));
@@ -233,7 +311,6 @@ var control = new function (){
 		textarea自动变长
 		tanks http://www.aa25.cn/code/515.shtml
 	*/
-
 	$('#editor .edit-area [name="content"]')
 		.addEvent('click', viewer.eventResizeTextarea, true)
 		.addEvent('focus', viewer.eventResizeTextarea, true)
@@ -241,13 +318,14 @@ var control = new function (){
 
 	$('#articlelist .control .create').addEvent('click', function (){
 		envir.updateType = 'new';
-		viewer.openEditor({
-			title: 'Hello, World',
-			article: '',
+		envir.currentArticle = {
+			'title': 'Hello, World',
+			'article': '',
 			'class': '',
 			'type': 'markdown',
 			'tag': []
-		});
+		};
+		viewer.openEditor(envir.currentArticle);
 	}, true);
 
 };
