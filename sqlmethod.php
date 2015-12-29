@@ -230,7 +230,7 @@ function getArticleTop(){
 		die('SQLfail: '+mysql_error($sqlresult));
 		return NULL;
 	}
-	$row=mysql_fetch_array($sqlresult);
+	$row=mysql_fetch_object($sqlresult);
 	mysql_close($sql->con);
 	return $row;
 }
