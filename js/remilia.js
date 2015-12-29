@@ -438,6 +438,7 @@
 									singleEle.style.opacity = '1';
 									setTimeout(function (){
 										removeTransition(singleEle);
+										singleEle.style.opacity = '';
 										delete ele.__proto__.RMfade;
 										typeof callback === 'function' && callback.apply(singleEle, [ele]);
 									}, timeStr*1000);
@@ -469,6 +470,8 @@
 					ele[key].__proto__.RMfade = {
 						timeEvent: setTimeout(function (singleEle){
 							return function (){
+								singleEle.style.removeProperty('opacity');
+								removeTransition(singleEle);
 								singleEle.style.display = 'none';
 								typeof callback === 'function' && callback.apply(singleEle,[ele]);
 
