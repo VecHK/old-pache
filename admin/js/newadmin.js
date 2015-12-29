@@ -139,10 +139,26 @@ var viewer = new function (){
 	this.openEditor = function (article){
 		console.info(article);
 		renderingEditor(article);
-		$('#editor').fadeIn();
+		$('#editor').cssLine()
+			.display('')
+			.opacity('0');
+		setTimeout(function (){
+			$('#editor').cssLine()
+				.opacity('1')
+				.transform('scale(1)');
+		},5);
+		$('#articlelist').fadeOut();
 	};
 	this.closeEditor = function (){
-		$('#editor').fadeOut();
+		$('#articlelist').fadeIn();
+		setTimeout(function (){
+			$('#editor').cssLine()
+				.opacity('0')
+				.transform('scale(1.2)');
+			setTimeout(function (){
+				$('#editor').css('display', 'none');
+			}, 618-5);
+		}, 5);
 	};
 };
 
@@ -182,7 +198,7 @@ var control = new function (){
 
 	var mEventF = (function (){
 		var load = function (){
-			$('#editor').fadeOut();
+			viewer.closeEditor();
 			control.showArticleList();
 		};
 

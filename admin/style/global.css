@@ -11,13 +11,15 @@ body, html{
 
 	margin: auto;
 
-	width: 800px;
+	width: 960px;
 	height: 100%;
 }
 
 #articlelist ul.list{
 	display: flex;
 	flex-direction: column;
+	padding: 0;
+	margin: 0;
 }
 #articlelist ul.list > li{
 	margin-top: 5px;
@@ -53,6 +55,7 @@ body, html{
 	width: 64px;
 
 	transition: margin-right 0.618s, padding-left 0.618s, border-left-color 0.618s, border-bottom-color 0.618s;
+	transition-timing-function: cubic-bezier(0.38, 0.68, 0.38, 0.68);
 }
 
 #articlelist ul.list .title {
@@ -62,14 +65,26 @@ body, html{
 	/* align-content: center; */
 	justify-content: center;
 }
+#articlelist ul .title .title-name:hover{
+	text-shadow: 0px 0px 1px black;
+}
 #articlelist ul .title .title-name{
 	display: inline-flex;
-	margin: 0;
-	padding: 0;
-
-	font-size: 1.75em;
-
-	cursor: pointer;
+    margin: 0;
+    padding: 0;
+    font-size: 1.5em;
+    cursor: pointer;
+    /* font-size: 1.75em; */
+    font-family: 'Hiragino Sans GB', DengXian, 'WenQuanYi Microhei', 'Microsoft yahei light', 黑体;
+    /* font-weight: 100; */
+    font-weight: 500;
+    font-size: x-large;
+    text-decoration: none;
+    margin-left: 10px;
+    transition: color 0.618s, text-shadow 0.618s;
+}
+#articlelist ul .title ul.tag:hover{
+	color: black;
 }
 #articlelist ul .title ul.tag{
 	display: flex;
@@ -80,16 +95,33 @@ body, html{
 
 	font-size: small;
 	font-family: Arial;
+
+	color: rgba(0,0,0, 0.618);
+	transition: color 0.618s;
+}
+#articlelist ul .title ul.tag li::after{
+	/*content: ", ";*/
+	cursor: auto;
+}
+#articlelist ul .title ul.tag li:hover{
+	border-bottom-color: brown;
 }
 #articlelist ul .title ul.tag li{
 	border: none;
-}
-#articlelist ul .title ul.tag li::after{
-	content: "、";
+
+	cursor: pointer;
+
+	margin-right: 5px;
+
+	border-bottom-color: transparent;
+	border-bottom-style: solid;
+	border-bottom-width: thin;
+	transition: border-bottom-color 0.618s;
 }
 
 #articlelist ul .title ul.tag li:nth-last-child(1)::after{
 	content: "";
+	margin-right: 0px;
 }
 
 .pageselect {
@@ -113,12 +145,15 @@ body, html{
 	position: fixed;
 	top: 0px;
 	left: 0px;
-
 	display: flex;
 	justify-content: center;
-
 	width: 100%;
 	height: 100%;
+	background: white;
+	/* transition: transform 0.618s, opacity 0.618s; */
+	/* transition-timing-function: cubic-bezier(0.45, 0.54, 0.57, 0.4); */
+	transform: scale(1.2);
+	transition: transform 0.618s, opacity 0.618s;
 
 	background: white;
 }
