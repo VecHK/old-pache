@@ -360,7 +360,10 @@
 			}
 		};
 		this.cssLine = function (){
-			var keys = Object.keys(ele[0].style);
+			var keys = Array();
+			for ( var cssPropertyName in ele[0].style ){
+				keys.push( cssPropertyName );
+			}
 			var obj = new function (){
 				var cssObj = this;
 				this.lineEnd = function (){
