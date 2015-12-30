@@ -55,19 +55,21 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 </head>
 <body>
 	<div id="articlelist">
-		<ul class="list">
-
-		</ul>
 		<div class="control">
 			<div class="pageselect">
-				<div class='pagebutton last'>上一页</div>
+				<div class='pagebutton last' style="display:none;">上一页</div>
 				<ul class="pagelink">
+					loading
 				</ul>
-				<div class='pagebutton next'>下一页</div>
+				<div class='pagebutton next' style="display:none;">下一页</div>
 			</div>
 			<button class="delete">删除</button>
 			<button class='create'>创建文章</button>
 		</div>
+		<ul class="list">
+
+		</ul>
+
 	</div>
 
 	<div id="editor">

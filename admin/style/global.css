@@ -2,17 +2,14 @@ body, html{
 	margin: 0;
 	padding: 0;
 	width: 100%;
-	height: 100%;
 }
 #articlelist {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 
-	margin: auto;
+	margin: 20px auto;
 
 	width: 960px;
-	height: 100%;
 }
 
 #articlelist ul.list{
@@ -66,21 +63,21 @@ body, html{
 	justify-content: center;
 }
 #articlelist ul .title .title-name:hover{
-	text-shadow: 0px 0px 1px black;
+	/*text-shadow: 0px 0px 1px black;*/
 }
 #articlelist ul .title .title-name{
 	display: inline-flex;
 	margin: 0;
+	margin-left: 10px;
 	padding: 0;
-	font-size: 1.5em;
+
 	cursor: pointer;
-	/* font-size: 1.75em; */
+	font-size: 1.5em;
 	font-family: 'Hiragino Sans GB', DengXian, 'WenQuanYi Microhei', 'Microsoft yahei light', 黑体;
-	/* font-weight: 100; */
 	font-weight: 500;
 	font-size: x-large;
 	text-decoration: none;
-	margin-left: 10px;
+
 	transition: color 0.618s, text-shadow 0.618s;
 }
 #articlelist ul .title ul.tag:hover{
@@ -124,23 +121,32 @@ body, html{
 	margin-right: 0px;
 }
 
+.control{
+	display: flex;
+}
 .pageselect {
 	display: flex;
 	justify-content: space-around;
 
-	width: 480px;
+	width: 128px;
 }
 .pageselect .pagebutton{
 	width: 64px;
 	text-align: center;
 }
 .pageselect .pagelink{
+	display: flex;
+	align-content: center;
+	align-items: center;
+
 	padding: 0;
 	margin: 0;
-	display: flex;
 	list-style-type: none;
 }
 .pageselect .pagelink > li {
+	display: flex;
+	align-items: center;
+
 	margin-left: 2.5px;
 	margin-right: 2.5px;
 }
@@ -150,7 +156,7 @@ body, html{
 }
 .pageselect .pagelink > li a.current{
 	cursor:auto;
-	color: grey;
+	color: #C3C3C3;
 }
 
 #editor{
@@ -206,14 +212,11 @@ body, html{
 }
 #editor [name="content"]{
 	display: block;
-	width: 640px;
+	width: inherit;
 	margin: auto;
 
 	font-size: 1em;
 	text-align: left;
-
-	margin-top: 20px;
-	margin-left: 20px;
 
 	border-left-style: dotted;
 	border-left-color: brown;
@@ -289,7 +292,15 @@ button{
 	transition: transform 0.618s;
 }
 
-
+#editor .update .tag-selector{
+	list-style-type: circle;
+	padding: 0;
+}
+#editor .update .tag-selector li{
+	margin: 5px 0px 5px 0px;
+	font-size: small;
+	font-family: Arial;
+}
 #editor .update .tag .tag-add input{
 	border: none;
 	border-bottom-color: #ADADAD;
@@ -300,6 +311,7 @@ button{
 }
 #editor .update .tag .tag-add .tag-add-button{
 	border: none;
+	box-shadow: 0px 0px 0px transparent;
 	cursor: pointer;
 
 	background: transparent;
@@ -312,6 +324,9 @@ button{
 #editor .update .tag .tag-add .tag-add-button:hover{
 	transform: rotate(-90deg);
 	color: brown;
+}
+#editor .update .tag .tag-add input{
+	outline: none;
 }
 
 #editor .class{

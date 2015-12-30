@@ -183,6 +183,7 @@ var viewer = new function (){
 		}
 		setEditorType( article.type );
 
+		viewer.tS.clearAll();
 		article.tag.forEach(function ( tag ){
 			viewer.tS.appendItem({
 				'value': tag.tagname,
