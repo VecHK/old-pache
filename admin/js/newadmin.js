@@ -19,7 +19,7 @@ var model = new function (){
 	this.updateArticle = function (conObj){
 		var url = 'ad.php?' + $.stringifyRequest({
 			pw: $.cookie('pw'),
-			type: conObj.id !== undefined ? 'update' : 'new'
+			type: conObj.article.id !== undefined ? 'update' : 'new'
 		});
 		$.post(
 			url,
@@ -49,9 +49,10 @@ var viewer = new function (){
 
 	this.addTagEff = function(targetInput){
 		var animatedStat = false;
-		return function (){
-			control.appendTag('', '');
+		return function (tagName){
+			control.appendTag(tagName, tagName);
 			var contentTagEle = viewer.tS[viewer.tS.length-1].ele.getElementsByClassName('content')[0];
+			$(contentTagEle).text('');
 			var createTimeCharArray = function (value, intervalTime){
 				return Array.prototype.slice.apply(value).reverse().map(function (ch, cursor){
 					return new function (){
@@ -272,7 +273,7 @@ var control = new function (){
 		this.type = getEditorFormValueByName('type');
 
 		this.tag = viewer.tS.map(function (item){
-			return item.ele.getElementsByClassName('content').innerText;
+			return item.value;
 		});
 
 		/* Extend */
@@ -343,13 +344,13 @@ var control = new function (){
 				this.appendTag( tagInputEle.value, tagInputEle.value );
 				tagInputEle.value = '';
 			}
-		};
+		}.bind(this);
 		$('#editor .tag .tag-add-button').addEvent('click', this.addTag, true);
 		/* 回车插入 */
 		$('#editor .tag .tag-add input').addEvent('keydown',function (e){
 				if ( e.keyCode === 13 ){
 					if ( !checkTagInput(e.target) ){
-						viewer.addTagEff(e.target);
+						viewer.addTagEff(e.target.value);
 					}
 				}
 
