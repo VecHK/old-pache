@@ -66,7 +66,7 @@ var viewer = new function (){
 
 			timeArr.forEach(function (ch){
 				setTimeout(function (){
-					contentTagEle.innerText = ch.ch + contentTagEle.innerText;
+					$(contentTagEle).text( ch.ch + $(contentTagEle).text() );
 					targetInput.value = targetInput.value.substr(0, targetInput.value.length-1);
 					--animatedStat;
 				}, ch.time);
