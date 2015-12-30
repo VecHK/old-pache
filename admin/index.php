@@ -92,9 +92,11 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 				<option value="html">HTML</option>
 			</select>
 
-			<button class="submit">发布</button>
-			<button class="preview">预览</button>
-			<button class="close">取消</button>
+			<div class="control">
+				<button class="submit">发布</button>
+				<button class="preview">预览</button>
+				<button class="close">取消</button>
+			</div>
 		</div>
 
 		<div class="edit-area">

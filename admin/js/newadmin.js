@@ -293,23 +293,66 @@ var control = new function (){
 		window.onload = load;
 		$('#editor .close').addEvent('click', viewer.closeEditor, true)
 
-		var addTag = function (e){
+		var appendTag = function (value, content){
+			viewer.tS.appendItem({
+				'value': value,
+				'content': content,
+			});
+		};
+		var checkTagInput = function (ele){
 			var tagInputEle = $('#editor .tag .tag-add input')[0];
 			if ( tagInputEle.value === '' ){
 				alert('tag不能为空');
-				return 0;
+				return true;
 			}
 			if ( new RegExp(/ /g).test( tagInputEle.value ) ){
 				alert('tag不能有空格');
-				return 0;
+				return true;
 			}
-			viewer.tS.appendItem({
-				'value': tagInputEle.value,
-				'content': tagInputEle.value,
-			});
-			tagInputEle.value = '';
+		};
+		var addTag = function (e){
+			checkTagInput();
+			var tagInputEle = $('#editor .tag .tag-add input')[0];
+			if ( !checkTagInput( tagInputEle ) ){
+				appendTag( tagInputEle.value, tagInputEle.value );
+				tagInputEle.value = '';
+			}
 		};
 		$('#editor .tag .tag-add-button').addEvent('click', addTag, true);
+		/* 回车插入 */
+		$('#editor .tag .tag-add input').addEvent('keydown',function (e){
+			var animatedStat = false;
+			return function (e){
+				if ( animatedStat )
+					return false;
+
+				if ( e.keyCode === 13 ){
+					if ( !checkTagInput(e.target) ){
+						appendTag('', '');
+						var contentTagEle = viewer.tS[viewer.tS.length-1].ele.getElementsByClassName('content')[0];
+
+						var createTimeCharArray = function (value, intervalTime){
+							return Array.prototype.slice.apply(value).reverse().map(function (ch, cursor){
+								return new function (){
+									this.time = (cursor+1) * intervalTime;
+									this.ch = ch;
+								}
+							});
+						};
+						var timeArr = createTimeCharArray(e.target.value, 50);
+						animatedStat = timeArr.length;
+
+						timeArr.forEach(function (ch){
+							setTimeout(function (){
+								contentTagEle.innerText = ch.ch + contentTagEle.innerText;
+								e.target.value = e.target.value.substr(0, e.target.value.length-1);
+								--animatedStat;
+							}, ch.time);
+						})
+					}
+				}
+			}
+		}(), true);
 
 		var EditorSubmit = function (){
 			this.collectArticleData.apply( envir.currentArticle );

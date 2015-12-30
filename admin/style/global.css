@@ -3,6 +3,36 @@ body, html{
 	padding: 0;
 	width: 100%;
 }
+button:hover{
+	border-color: transparent;
+	background-color: brown !important;
+	color: #fff;
+	box-shadow: 0px 0px 2px brown;
+}
+
+button{
+	outline: none;
+	border: none;
+
+	background-color: white;
+
+	border-color: transparent;
+	border-style: solid;
+	border-width: thin;
+
+	font-family: "黑体", Arial;
+	font-size: 1em;
+
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 8px;
+	padding-right: 8px;
+
+	box-shadow: 0px 0px 1px black;
+
+	transition: box-shadow 0.618s, border-color 0.618s, background-color 0.618s, color 0.618s;
+}
+
 #articlelist {
 	display: flex;
 	flex-direction: column;
@@ -121,7 +151,7 @@ body, html{
 	margin-right: 0px;
 }
 
-.control{
+#articlelist .control{
 	display: flex;
 }
 .pageselect {
@@ -247,36 +277,8 @@ body, html{
 	align-self: auto;
 
 	height: 50%;
-	margin-left: 20px;
-}
-button:hover{
-	border-color: transparent;
-	background-color: brown !important;
-	color: #fff;
-	box-shadow: 0px 0px 2px brown;
-}
 
-button{
-	outline: none;
-	border: none;
-
-	background-color: white;
-
-	border-color: transparent;
-	border-style: solid;
-	border-width: thin;
-
-	font-family: "黑体", Arial;
-	font-size: 1em;
-
-	padding-top: 2px;
-	padding-bottom: 2px;
-	padding-left: 8px;
-	padding-right: 8px;
-
-	box-shadow: 0px 0px 1px black;
-
-	transition: box-shadow 0.618s, border-color 0.618s, background-color 0.618s, color 0.618s;
+	margin: 0px 20px 0px 20px;
 }
 #editor .update *{
 }
@@ -314,7 +316,7 @@ button{
 	box-shadow: 0px 0px 0px transparent;
 	cursor: pointer;
 
-	background: transparent;
+	background: transparent !important;
 
 	font-size: 24px;
 	color: #ADADAD;
