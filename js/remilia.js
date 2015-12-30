@@ -309,6 +309,35 @@
 			}
 			return end === undefined ? undefined : end();
 		};
+		this.constructEle = function (cup, eleObj){
+			function conEle( unit ){
+				if ( typeof unit === 'string' ){
+					var ele = my.createEle( unit );
+					return ele;
+				}else{
+					return unit;
+				}
+			}
+			function con(){
+				var objKeys = Object.keys( eleObj );
+				objKeys.forEach(function (key){
+					if ( eleObj[key] instanceof HTMLElement ){
+						cup.appendChild( eleObj[key] );
+					}
+					else if ( typeof eleObj[key] === 'object' ){
+						if ( eleObj.currentConstruct !== undefined ){
+							my.constructEle( eleObj.currentConstruct, eleObj[key]);
+						}else{
+							my.constructEle( conEle(key), eleObj[key]);
+						}
+					}else{
+						cup.appendChild( conEle(eleObj[key]) );
+					}
+				});
+				return cup;
+			}
+			return con();
+		};
 	};
 	var eventMethod = function (){
 		this.click = function (){};
