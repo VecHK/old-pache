@@ -127,6 +127,8 @@ body, html{
 .pageselect {
 	display: flex;
 	justify-content: space-around;
+
+	width: 480px;
 }
 .pageselect .pagebutton{
 	width: 64px;
@@ -257,7 +259,7 @@ button{
 
 	background-color: white;
 
-	border-color: #ADADAD;
+	border-color: transparent;
 	border-style: solid;
 	border-width: thin;
 
@@ -269,7 +271,7 @@ button{
 	padding-left: 8px;
 	padding-right: 8px;
 
-	box-shadow: 0px 0px 2px transparent;
+	box-shadow: 0px 0px 1px black;
 
 	transition: box-shadow 0.618s, border-color 0.618s, background-color 0.618s, color 0.618s;
 }
