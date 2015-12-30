@@ -47,6 +47,32 @@ var viewer = new function (){
 	this.tS=[];
 	tagSelector.apply( this.tS, [$('#editor .tag .tag-selector')[0]] );
 
+	this.addTagEff = function(targetInput){
+		var animatedStat = false;
+		return function (){
+			control.appendTag('', '');
+			var contentTagEle = viewer.tS[viewer.tS.length-1].ele.getElementsByClassName('content')[0];
+			var createTimeCharArray = function (value, intervalTime){
+				return Array.prototype.slice.apply(value).reverse().map(function (ch, cursor){
+					return new function (){
+						this.time = (cursor+1) * intervalTime;
+						this.ch = ch;
+					}
+				});
+			};
+			var timeArr = createTimeCharArray(targetInput.value, 50);
+			animatedStat = timeArr.length;
+
+			timeArr.forEach(function (ch){
+				setTimeout(function (){
+					contentTagEle.innerText = ch.ch + contentTagEle.innerText;
+					targetInput.value = targetInput.value.substr(0, targetInput.value.length-1);
+					--animatedStat;
+				}, ch.time);
+			});
+		}
+	}($('#editor .tag .tag-add input')[0]);
+
 	var ResizeTextarea = function (a,row){
 		var agt = navigator.userAgent.toLowerCase();
 		var is_op = (agt.indexOf("opera") != -1);
@@ -293,7 +319,7 @@ var control = new function (){
 		window.onload = load;
 		$('#editor .close').addEvent('click', viewer.closeEditor, true)
 
-		var appendTag = function (value, content){
+		this.appendTag = function (value, content){
 			viewer.tS.appendItem({
 				'value': value,
 				'content': content,
@@ -310,49 +336,24 @@ var control = new function (){
 				return true;
 			}
 		};
-		var addTag = function (e){
+		this.addTag = function (e){
 			checkTagInput();
 			var tagInputEle = $('#editor .tag .tag-add input')[0];
 			if ( !checkTagInput( tagInputEle ) ){
-				appendTag( tagInputEle.value, tagInputEle.value );
+				this.appendTag( tagInputEle.value, tagInputEle.value );
 				tagInputEle.value = '';
 			}
 		};
-		$('#editor .tag .tag-add-button').addEvent('click', addTag, true);
+		$('#editor .tag .tag-add-button').addEvent('click', this.addTag, true);
 		/* 回车插入 */
 		$('#editor .tag .tag-add input').addEvent('keydown',function (e){
-			var animatedStat = false;
-			return function (e){
-				if ( animatedStat )
-					return false;
-
 				if ( e.keyCode === 13 ){
 					if ( !checkTagInput(e.target) ){
-						appendTag('', '');
-						var contentTagEle = viewer.tS[viewer.tS.length-1].ele.getElementsByClassName('content')[0];
-
-						var createTimeCharArray = function (value, intervalTime){
-							return Array.prototype.slice.apply(value).reverse().map(function (ch, cursor){
-								return new function (){
-									this.time = (cursor+1) * intervalTime;
-									this.ch = ch;
-								}
-							});
-						};
-						var timeArr = createTimeCharArray(e.target.value, 50);
-						animatedStat = timeArr.length;
-
-						timeArr.forEach(function (ch){
-							setTimeout(function (){
-								contentTagEle.innerText = ch.ch + contentTagEle.innerText;
-								e.target.value = e.target.value.substr(0, e.target.value.length-1);
-								--animatedStat;
-							}, ch.time);
-						})
+						viewer.addTagEff(e.target);
 					}
 				}
-			}
-		}(), true);
+
+		}, true);
 
 		var EditorSubmit = function (){
 			this.collectArticleData.apply( envir.currentArticle );
