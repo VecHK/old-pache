@@ -28,6 +28,15 @@ var model = new function (){
 			conObj.fail
 		);
 	};
+	this.deleteArticles = function (conObj){
+		var url = 'ad.php?' + $.stringifyRequest({
+			'pw': $.cookie('pw'),
+			'type': 'manage',
+			'manage': 'del'
+		});
+
+		$.post(url, {'selid': conObj.select}, conObj.ok, conObj.fail);
+	};
 };
 
 var viewer = new function (){
@@ -294,9 +303,21 @@ var control = new function (){
 					return checked.value;
 				});
 			}
-			selected2Array( collectSelected() );
-			
-		};
+			model.deleteArticles({
+				'select': selected2Array( collectSelected() ),
+				'ok': function (data){
+					var info = JSON.parse(data);
+					if ( info.code ){
+						console.error('delArticles: '+info.str);
+					}
+					this.refreshArticleList();
+				}.bind(this),
+				'fail': function (){
+
+				}
+			})
+
+		}.bind(this);
 
 		$('#articlelist .control .delete').addEvent('click', delArticles, true);
 
