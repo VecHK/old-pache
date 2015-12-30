@@ -95,7 +95,7 @@ function createArticleProcess($POST){
 	if ( createArticle($POST) ){
 		$topArticle = getArticleTop();
 		if ( isset($POST['tag']) && gettype($POST['tag']) == 'array' ){
-			if ( !insertTagsById($topArticle['id'], $POST['tag']) ){
+			if ( !insertTagsById($topArticle->id, $POST['tag']) ){
 				return echoInfoJson(101, 'ok, but tag fail');
 			}
 		}
@@ -249,7 +249,7 @@ class outIndex{
 	}
 	public function __destruct(){
 		if ( $this->display == 'json' ){
-			if ( count($this->articles) !== 0 ){
+			if ( count($this->articles) > 0 ){
 				$idArr = Array();
 				foreach( $this->articles as $articleKey => $articleValue ){# 清除数字键
 	//				$tag = new outTagById($articleKey, 'default');
