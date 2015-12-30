@@ -244,16 +244,22 @@ body, html{
 	height: 50%;
 	margin-left: 20px;
 }
-
-#editor .update button:hover{
-	background: brown;
+button:hover{
+	border-color: transparent;
+	background-color: brown !important;
 	color: #fff;
+	box-shadow: 0px 0px 2px brown;
 }
 
-#editor .update button{
+button{
+	outline: none;
+	border: none;
+
+	background-color: white;
+
 	border-color: #ADADAD;
-	border-width: thin;
 	border-style: solid;
+	border-width: thin;
 
 	font-family: "黑体", Arial;
 	font-size: 1em;
@@ -263,17 +269,11 @@ body, html{
 	padding-left: 8px;
 	padding-right: 8px;
 
-	transition: background 0.618s, color 0.618s;
-}
-#editor .update button.submit{
+	box-shadow: 0px 0px 2px transparent;
 
-}
-#editor .update button.close{
-
+	transition: box-shadow 0.618s, border-color 0.618s, background-color 0.618s, color 0.618s;
 }
 #editor .update *{
-	outline: none;
-	border: none;
 }
 
 #editor .tag-selector .closeTag:hover{
@@ -318,5 +318,7 @@ body, html{
 	border-left-width: medium;
 }
 #editor [name="class"]{
+	border: none;
+	outline: none;
 	padding-left: 10px;
 }
