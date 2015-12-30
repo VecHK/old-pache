@@ -19,7 +19,7 @@ var model = new function (){
 	this.updateArticle = function (conObj){
 		var url = 'ad.php?' + $.stringifyRequest({
 			pw: $.cookie('pw'),
-			type: conObj.id ? 'update' : 'new'
+			type: conObj.id !== undefined ? 'update' : 'new'
 		});
 		$.post(
 			url,
@@ -272,7 +272,7 @@ var control = new function (){
 		this.type = getEditorFormValueByName('type');
 
 		this.tag = viewer.tS.map(function (item){
-			return item.value;
+			return item.ele.getElementsByClassName('content').innerText;
 		});
 
 		/* Extend */
