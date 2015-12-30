@@ -73,6 +73,40 @@ var viewer = new function (){
 		ResizeTextarea(this, 4);
 	};
 	var renderingArticleList = function (articleList){
+		function renderSelectPage(articleList){
+			var countPage = envir.currentArticleList.countPage;
+			var page = envir.currentArticleList.page;
+
+			function pageEach(callback){
+				var renderLimit = 5;
+
+				var renderStart = page - 3;
+				if ( renderStart <= 0 ){
+					renderStart = 1;
+				}
+				for ( var cursor = renderStart; cursor<=countPage && cursor<page+renderLimit; ++cursor ){
+					callback(cursor)
+				}
+			}
+			var pageList = $('.control .pageselect .pagelink');
+			pageList.html('');
+
+			pageEach(function (pageCode){
+				pageList.append('li', function (ele){
+					this.append('a', function (link){
+						this.text(pageCode);
+						if ( page !== pageCode ){
+							this.addEvent('click', function (){
+								control.setPage(pageCode);
+								control.refreshArticleList();
+							});
+						}else{
+							link.className = 'current';
+						}
+					});
+				});
+			});
+		}
 		function row( articleInfo ){
 			$(articleListEle).append('li', function(){
 
@@ -122,6 +156,7 @@ var viewer = new function (){
 		};
 		$(articleListEle).html('');
 		articleList.articles.forEach(row);
+		renderSelectPage(articleList);
 	};
 	this.refreshArticleList = function (articleList){
 		renderingArticleList(articleList);
@@ -188,12 +223,14 @@ var control = new function (){
 	var tip = Tipper( $('#tipper') );
 
 	var envir = new function (){
-		this.page = 0;
+		this.page = 1;
 		this.limit = 10;
 		this.updateType = null;
 		this.editorStatus = 'new';
-		this.currentArticle;
+		this.currentArticle = null;
+		this.currentArticleList = null;
 	};
+	window.envir = envir;
 
 	this.collectArticleData = function (){
 		var getEditorFormValueByName = function ( name ){
@@ -220,7 +257,10 @@ var control = new function (){
 		model.loadArticleList({
 			page: envir.page,
 			limit: envir.limit,
-			ok: viewer.refreshArticleList,
+			ok: function (data){
+				envir.currentArticleList = data;
+				viewer.refreshArticleList(data);
+			},
 			fail: function (err){
 				console.error(err);
 				alert('错误QAQ');
@@ -318,9 +358,34 @@ var control = new function (){
 			})
 
 		}.bind(this);
-
 		$('#articlelist .control .delete').addEvent('click', delArticles, true);
 
+		var selectPage = function (){
+			this.setPage = function (page){
+				envir.page = Number.parseInt(page);
+			};
+			this.lastPage = function (){
+				if ( envir.page <= 1 ){
+					envir.page = 1;
+					return 0;
+				}else{
+					--envir.page;
+					this.refreshArticleList();
+				}
+			};
+			this.nextPage = function (){
+				if ( envir.page >= envir.currentArticleList.countPage ){
+					envir.page = envir.currentArticleList.countPage;
+					return 0;
+				}else{
+					++envir.page;
+					this.refreshArticleList();
+				}
+			};
+
+			$('#articlelist .pageselect .last').addEvent('click', this.lastPage.bind(this), true);
+			$('#articlelist .pageselect .next').addEvent('click', this.nextPage.bind(this), true);
+		}.apply(this);
 
 	}).apply(this);
 

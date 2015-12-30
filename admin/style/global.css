@@ -70,18 +70,18 @@ body, html{
 }
 #articlelist ul .title .title-name{
 	display: inline-flex;
-    margin: 0;
-    padding: 0;
-    font-size: 1.5em;
-    cursor: pointer;
-    /* font-size: 1.75em; */
-    font-family: 'Hiragino Sans GB', DengXian, 'WenQuanYi Microhei', 'Microsoft yahei light', 黑体;
-    /* font-weight: 100; */
-    font-weight: 500;
-    font-size: x-large;
-    text-decoration: none;
-    margin-left: 10px;
-    transition: color 0.618s, text-shadow 0.618s;
+	margin: 0;
+	padding: 0;
+	font-size: 1.5em;
+	cursor: pointer;
+	/* font-size: 1.75em; */
+	font-family: 'Hiragino Sans GB', DengXian, 'WenQuanYi Microhei', 'Microsoft yahei light', 黑体;
+	/* font-weight: 100; */
+	font-weight: 500;
+	font-size: x-large;
+	text-decoration: none;
+	margin-left: 10px;
+	transition: color 0.618s, text-shadow 0.618s;
 }
 #articlelist ul .title ul.tag:hover{
 	color: black;
@@ -132,13 +132,23 @@ body, html{
 	width: 64px;
 	text-align: center;
 }
-.pageselect ul.pagelink{
+.pageselect .pagelink{
 	padding: 0;
 	margin: 0;
 	display: flex;
+	list-style-type: none;
 }
-.pageselect ul.pagelink a{
+.pageselect .pagelink > li {
+	margin-left: 2.5px;
+	margin-right: 2.5px;
+}
+.pageselect .pagelink > li a{
+	font-family: Arial;
 	cursor: pointer;
+}
+.pageselect .pagelink > li a.current{
+	cursor:auto;
+	color: grey;
 }
 
 #editor{

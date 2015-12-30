@@ -60,11 +60,10 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 		</ul>
 		<div class="control">
 			<div class="pageselect">
-				<div class='pagebutton'>上一页</div>
+				<div class='pagebutton last'>上一页</div>
 				<ul class="pagelink">
-					<a>1</a> <a>2</a> <a>3</a>
 				</ul>
-				<div class='pagebutton'>下一页</div>
+				<div class='pagebutton next'>下一页</div>
 			</div>
 			<button class="delete">删除</button>
 			<button class='create'>创建文章</button>
