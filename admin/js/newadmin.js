@@ -247,9 +247,6 @@ var viewer = new function (){
 };
 
 var control = new function (){
-	/* Tipper */
-	var tip = Tipper( $('#tipper') );
-
 	var envir = new function (){
 		this.page = 1;
 		this.limit = 10;
@@ -389,19 +386,26 @@ var control = new function (){
 					return checked.value;
 				});
 			}
-			model.deleteArticles({
-				'select': selected2Array( collectSelected() ),
-				'ok': function (data){
-					var info = JSON.parse(data);
-					if ( info.code ){
-						console.error('delArticles: '+info.str);
-					}
-					this.refreshArticleList();
+			tipper.confirm('你确定要删除吗？',
+				function (){
+					model.deleteArticles({
+						'select': selected2Array( collectSelected() ),
+						'ok': function (data){
+							var info = JSON.parse(data);
+							if ( info.code ){
+								console.error('delArticles: '+info.str);
+							}
+							this.refreshArticleList();
+						}.bind(this),
+						'fail': function (){
+
+						}
+					});
 				}.bind(this),
-				'fail': function (){
+				function (){
 
 				}
-			})
+			);
 
 		}.bind(this);
 		$('#articlelist .control .delete').addEvent('click', delArticles, true);

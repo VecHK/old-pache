@@ -1,30 +1,38 @@
-(function (){
-	function fn(dom){
-		this.page = Object();
-		var createPage = function (){
-			return $c('', function(ele){
-				
-			});
-		};
-		this.addPage = function (pageName, page){
+(function (tipperDom){
+	function fn(){
+		this.confirm = function (str, ok, cancel){
+			function closeConfirm(){
+				setTimeout(function (){
+					$('#tipper .confirm')[0].style.removeProperty('height');
+				}, 5);
+				$(tipperDom).fadeOut(function (){
+					$('#tipper .confirm .label').text('');
+					$('#tipper .confirm').fadeOut();
+				}, 0.382);
+				if ( this.className === 'ok' ){
+					cancel && ok(this);
+				}else if ( this.className = 'cancel' ){
+					cancel && cancel(this);
+				}
+			}
+			var okButton = $('#tipper .confirm .ok')[0];
+			var cancelButton = $('#tipper .confirm .cancel')[0];
 
-		};
-		this.removePage = function (pageName){
+			$('#tipper .confirm .label').text(str);
 
-		};
+			$('#tipper .confirm')[0].style.removeProperty('display');
 
-		this.pageTip = function (conObj){
+			$(tipperDom).fadeIn();
 
-		};
+			setTimeout(function (){
+				$('#tipper .confirm').css('height', '128px');
+			}, 5);
 
-		this.smallTip = function (conObj){
-
-		};
-
-		this.thinTip = function (str, x, y){
-
+			okButton.onclick = closeConfirm;
+			cancelButton.onclick = closeConfirm;
 		};
 	}
-	window.Tipper = fn;
-
-})();
+	$(tipperDom).css('display', 'none');
+	$('#tipper .confirm').css('display', 'none');
+	window.tipper = new fn;
+})($('#tipper')[0])

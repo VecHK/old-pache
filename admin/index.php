@@ -48,9 +48,9 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 	<title>manageArticle</title>
 
 	<link href="style/global.css" rel="stylesheet" type="text/css" />
+	<link href="../style/tipper.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="../js/remilia.js"></script>
 	<script type="text/javascript" src="js/ttt.js"></script>
-	<script type="text/javascript" src="js/tipper.js"></script>
 	<script type="text/javascript" src="../js/taboverride.min.js"></script>
 </head>
 <body>
@@ -106,9 +106,15 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 	</div>
 
 	<div id="tipper">
-
+		<div class="confirm">
+			<div class="label"></div>
+			<div class="control">
+				<button class="ok">ok</button>
+				<button class="cancel">no</button>
+			</div>
+		</div>
 	</div>
-
+	<script type="text/javascript" src="js/tipper.js"></script>
 </body>
 <script type="text/javascript" src="js/myWidgets.js"></script>
 <script type="text/javascript" src="js/newadmin.js"></script>
