@@ -106,11 +106,29 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 	</div>
 
 	<div id="tipper">
+		<div class="cursor">
+		</div>
 		<div class="confirm">
 			<div class="label"></div>
 			<div class="control">
 				<button class="ok">ok</button>
 				<button class="cancel">no</button>
+			</div>
+		</div>
+		<div class="progress">
+
+		</div>
+		<div class="warn"></div>
+		<div class="error">
+			<div class="error-logo">
+				<div class="left"></div>
+				<div class="right"></div>
+			</div>
+			<div class="content">
+				<div class="label"></div>
+				<div class="control">
+					<button class="ok">ok</button>
+				</div>
 			</div>
 		</div>
 	</div>
