@@ -362,7 +362,7 @@ var control = new function (){
 				'article': envir.currentArticle,
 				'ok': function (data){
 					var backInfo = JSON.parse(data);
-					if ( backInfo.code == 0 && backInfo.code == 101 ){
+					if ( backInfo.code == 0 || backInfo.code == 101 ){
 						envir.currentArticle = backInfo.info;
 
 						this.refreshArticleList();
