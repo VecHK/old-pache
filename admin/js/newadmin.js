@@ -279,28 +279,37 @@ var control = new function (){
 	};
 
 	this.refreshArticleList = function (){
+		tipper.setWait();
 		model.loadArticleList({
 			page: envir.page,
 			limit: envir.limit,
 			ok: function (data){
+				tipper.canWait();
+
 				envir.currentArticleList = data;
 				viewer.refreshArticleList(data);
 			},
 			fail: function (err){
+				tipper.canWait();
 				console.error(err);
 				alert('错误QAQ');
 			}
 		});
 	};
 	this.openArticle = function (id){
+		tipper.setWait();
 		model.loadArticleById({
 			'id': id,
 			ok: function (data){
+				tipper.canWait();
+
 				console.warn(data);
 				envir.currentArticle = data;
 				viewer.openEditor(data);
 			},
 			fail: function (err){
+				tipper.canWait();
+
 				console.error(err);
 			}
 		})
@@ -388,11 +397,14 @@ var control = new function (){
 			}
 			tipper.confirm('你确定要删除吗？',
 				function (){
+					tipper.setWait();
 					model.deleteArticles({
 						'select': selected2Array( collectSelected() ),
 						'ok': function (data){
+							tipper.canWait();
 							var info = JSON.parse(data);
 							if ( info.code ){
+								tipper.error('删除好像出了点问题...' + info.str);
 								console.error('delArticles: '+info.str);
 							}
 							this.refreshArticleList();
