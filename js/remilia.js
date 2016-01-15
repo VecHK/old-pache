@@ -769,7 +769,7 @@
 				return a.length ? String(a.shift()) + arguments.callee(a) : '';
 			}(Array.prototype.slice.call(arguments));
 		};
-		this.bechMark = function (testCount, count, func, arg){
+		this.benchMark = function (testCount, count, func, arg){
 			var testUnitArr = [];
 			var start = performance.now();
 			function testUnit(count, func, arg){
@@ -797,7 +797,7 @@
 				'unit': testUnitArr,
 				'average': he/testUnitArr.length
 			}
-		}
+		};
 		this.createEle = function (eleName, callback){
 			var ele = doc.createElement(eleName);
 			if ( typeof callback === 'function' ){
