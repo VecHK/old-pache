@@ -130,9 +130,10 @@ var noFound = function (ele){
 						item.parentElement.insertBefore($c('button', function (ele){
 							this.text('▶');
 							this.addEvent('click', function (ele){
-								var hCon = new htmlConsole(item.parentElement);
+								var console = new htmlConsole(item.parentElement);
+								var hCon = console;	/* 兼容以前的文章 */
 								return function (){
-									$(hCon.conEle).css( {'max-height': '220px'} );
+									$(console.conEle).css( {'max-height': '220px'} );
 									eval( $(ele.parentElement.getElementsByClassName('javascript')[0]).text() );
 								}
 							}(ele),false);
