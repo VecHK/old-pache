@@ -78,12 +78,12 @@ if ( is_null($article->id) ){
 		<div id="time" <?php echo isset($nofound) ? 'style="display:none;"' : ''; ?> >
 			创建时间：
 			<time>
-				<?php echo date("Y/m/d h:m:s", strtotime($article->time)); ?>
+				<?php echo date("Y/m/d H:i:s", strtotime($article->time)); ?>
 			</time>
 			<br />
 			修改时间：
 			<time>
-				<?php echo date("Y/m/d h:m:s", strtotime($article->ltime)); ?>
+				<?php echo date("Y/m/d H:i:s", strtotime($article->ltime)); ?>
 			</time>
 		</div>
 		</header>
