@@ -229,6 +229,9 @@ h1,h2,h3,h4,h5,h6{
 	line-height: 1em;
 	margin-top: 1em;
 	margin-bottom: 0.5em;
+	max-width: 100%;
+	word-break: break-word;
+	word-wrap: break-word;
 }
 h1{
 	font-size: 2em;
@@ -539,7 +542,7 @@ ul#taglist:before {
 	position: absolute;
 	left: 0px;
 	top: 0px;
-	
+
 	border-radius: 999px;
 
 	width: 48px;
