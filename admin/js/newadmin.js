@@ -58,7 +58,7 @@ var viewer = new function (){
 					return new function (){
 						this.time = (cursor+1) * intervalTime;
 						this.ch = ch;
-					}
+					};
 				});
 			};
 			var timeArr = createTimeCharArray(targetInput.value, 50);
@@ -254,8 +254,9 @@ var control = new function (){
 		this.editorStatus = 'new';
 		this.currentArticle = null;
 		this.currentArticleList = null;
+
+		window.envir = this;
 	};
-	window.envir = envir;
 
 	this.collectArticleData = function (){
 		var getEditorFormValueByName = function ( name ){
@@ -363,13 +364,16 @@ var control = new function (){
 		}, true);
 
 		var EditorSubmit = function (){
+			console.log(JSON.stringify(envir.currentArticle));
 			this.collectArticleData.apply( envir.currentArticle );
+
 			model.updateArticle({
 				'article': envir.currentArticle,
 				'ok': function (data){
 					var backInfo = JSON.parse(data);
 					if ( backInfo.code == 0 || backInfo.code == 101 ){
-						envir.currentArticle = backInfo.info;
+						console.info(backInfo.info);
+						/* envir.currentArticle = backInfo.info; */
 
 						this.refreshArticleList();
 					}else{
