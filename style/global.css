@@ -25,7 +25,7 @@ ins {
 	font-family: "WenQuanYi Microhei","黑体","DengXian", "Calibri", "Hiragino Sans GB", "microsoft yahei";
 	font-size: 16px;
 	font-weight: 200;
-	color: rgb(27, 29, 82);
+	color: rgb(59, 59, 70);
 	width: 640px;
 	margin: auto;
 	text-align: justify;
@@ -353,9 +353,12 @@ ul#list{
 #list li div.link:hover{
 }
 #list a {
-	color: rgb(27, 29, 82);
+	font-family: 'Hiragino Sans GB', DengXian, 'WenQuanYi Microhei', 'Microsoft yahei light', 黑体;
+	/* color: rgb(27, 29, 82); */
+	color: rgb(59, 59, 70);
+
 	text-decoration: blink;
-	text-shadow: 0px 0px 1px rgba(27,29,82,0.38);
+	text-shadow: rgba(27, 29, 82, 0.380392) 0px 0px 1px;
 }
 #list .datetime{
 	font-size: small;
@@ -381,7 +384,8 @@ ul#list{
 	font-size: 48px;
 	font-weight: 100;
 	text-align: center;
-	color: rgb(27, 29, 82);
+	/* color: rgb(27, 29, 82); */
+	color: rgb(59, 59, 70);
 	/* width: 61.8%; */
 	/* border-bottom-style: inset; */
 	border-width: 5;
@@ -471,46 +475,98 @@ ul#taglist:before {
 	content: "";
 }
 
-#selectpage{
-	text-align: center;
+#pageselect{
+	display: flex;
+	justify-content: center;
+
+	font-family: Arial;
 }
-#selectpage form input{
+#pageselect > a:visited{
+	color: azure;
+}
+#pageselect > a:link{
+	text-decoration: none;
+}
+#pageselect > a:hover{
+	border-bottom-color: #6789AB;
+
+	border-color: transparent;
+}
+
+#pageselect > a{
+	color: azure;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	margin: 0px 16px 0px 16px;
+	width: 48px;
+	height: 48px;
+}
+
+.current > div{
+	width: 48px;
+	height: 48px;
+}
+
+@keyframes pagebg_rotate{
+	from {transform: rotate(0deg);}
+	to {transform: rotate(360deg);}
+}
+.current .pagebg:hover{
+	animation-play-state: running;
+}
+
+.current .pagebg{
+	opacity: 0.618;
+	border-radius: 999px;
+	border-width: 3px;
+	border-color: rgb(59, 59, 70);
+	border-style: dotted;
+
+	width: 42px;
+	height: 42px;
+
+	animation:pagebg_rotate 5s infinite;
+	animation-timing-function: linear;
+
+	animation-play-state: paused;
+}
+
+.current .pagecode{
+	color: rgb(59, 59, 70);
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	
+	border-radius: 999px;
+
+	width: 48px;
+	height: 48px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.nocurrent:hover{
+	box-shadow: 0px 0px 16px grey;
+	/*background-color: transparent;*/
+}
+
+.nocurrent{
+	border-radius: 999px;
+
+	background-color: rgb(59, 59, 70);
+	color: azure;
+
+	transition: box-shadow .382s, background-color .382s;
+}
+
+#pageselect input[name="page"]{
 	display: none;
 }
-#selectpage a{
-	background-color: rgb(27, 29, 82);
-	color: #fff;
-	border-radius: 1000px;
-	width: 16px;
-/*	padding: 11px 15px 11px 15px;*/
-	padding: 14px 16.5px 14px 16.5px;
-	margin-left: 0.5em;
-	margin-right: 0.5em;
-	box-shadow: 0px 0px 1px;
-	display: inline-block;
-}
-#selectpage a:visited, #selectpage a:link {
-	color: #fff;
-}
-
-#selectpage a.no_current{
-	transition: transform 0.382s;
-}
-
-#selectpage a.no_current:hover{
-	transform: scale(1.2);
-}
-
-#selectpage a.current_page{
-	background-color: rgba(128, 128, 128, 0.54);
-	/*opacity: 0.382;*/
-}
-
-
-#selectpage a.current_page:visited, #selectpage a.current_page:link{
-	color: #fff;
-}
-
 
 /* 多说CSS */
 .ds-meta{

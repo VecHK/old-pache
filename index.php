@@ -120,8 +120,7 @@ else if ( isset($_GET['tag']) ){
 			}
 		?>
 	</ul>
-	<div id="selectpage">
-		<form method="get">
+		<form id="pageselect" method="get">
 		<?php
 //			$articleCountObj = new ArticleCount();
 			if ( !isset($_GET[$listingType]) ){
@@ -146,9 +145,9 @@ else if ( isset($_GET['tag']) ){
 					$url = $url.$listingType.'='.urlencode($_GET[$listingType]).'&';
 
 				if ( $page == $i ){
-					echo '<a class="current_page" title="这是当前页">'.$i.'</a>';
+					echo '<a class="current"><div class="pagecode">'.$i.'</div><div class="pagebg"></div></a>';
 				}else{
-					echo '<a class="no_current" href="'.$url.'page='.$i.'">'.$i.'</a> ';
+					echo '<a class="nocurrent" href="'.$url.'page='.$i.'">'.$i.'</a> ';
 				}
 			}
 		/*
@@ -161,7 +160,6 @@ else if ( isset($_GET['tag']) ){
 			<input name="page" size="4" />
 		</form>
 
-	</div>
 	<footer id="pachefooter">
 		Hello, Pache
 	</footer>
