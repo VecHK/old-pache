@@ -1,0 +1,114 @@
+/* 主页文章列表 */
+ul#list{
+	list-style-position: inside;
+	margin-top: 0.5em;
+	margin-bottom: 2.5em;
+	margin: 0;
+	padding: 0;
+	width: 640px;
+	margin: 64px auto;
+}
+#list li{
+	list-style-type: none;
+	font-size: 3em;
+	font-weight: lighter;
+	position: relative;
+	margin: 0px;
+	margin-top: 0px;
+	margin-bottom: 48px;
+	text-align: center;
+}
+#list li:hover{
+
+}
+#list li div.link{
+	transition:			list-style-type 0.382s, opacity 0.382s, margin-top 0.382s, margin-bottom 0.382s;
+	-moz-transition:	list-style-type 0.382s, opacity 0.382s, margin-top 0.382s, margin-bottom 0.382s;
+	-webkit-transition:	list-style-type 0.382s, opacity 0.382s, margin-top 0.382s, margin-bottom 0.382s;
+	-o-transition:		list-style-type 0.382s, opacity 0.382s, margin-top 0.382s, margin-bottom 0.382s;
+}
+#list li div.link:hover{}
+#list a {
+	font-family: 'Hiragino Sans GB', DengXian, 'WenQuanYi Microhei', 'Microsoft yahei light', '黑体';
+	color: rgb(59, 59, 70);
+
+	text-decoration: blink;
+	text-shadow: rgba(27, 29, 82, 0.13) 0px 0px 5px;
+}
+#list .datetime{
+	font-size: small;
+	display: block;
+	font-family: Arial;
+}
+#list .summary{
+	font-size: medium;
+}
+
+#pageselect, #pageselect .pagecode, #pageselect .current, #pageselect .current .code{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background: transparent;
+	font-family: Arial;
+
+	color: azure;
+}
+
+#pageselect .pagecode:not(.current):hover{
+	box-shadow: 0px 0px 16px grey;
+}
+#pageselect .pagecode:not(.current){
+	background-color: rgb(59, 59, 70);
+	transition: box-shadow .382s, background-color .382s;
+}
+
+#pageselect .pagecode {
+	position: relative;
+
+	width: 48px;
+	height: 48px;
+
+	border-radius: 999px;
+}
+/* 页码的间距 */
+#pageselect .pagecode{
+	margin: 0px 24px 0px 0px;
+}
+#pageselect .pagecode:last-of-type{
+	margin: 0 !important;
+}
+
+
+@keyframes pagebgrotate{
+	from {transform: rotate(0deg);}
+	to {transform: rotate(360deg);}
+}
+#pageselect .bg:hover{
+	animation-play-state: running;
+}
+#pageselect .bg{
+	border-radius: 100%;
+	border: 3px dotted rgba(59, 59, 70, .618);
+	width: calc(100% - 3px * 2);
+	height: calc(100% - 3px * 2);
+
+	animation:pagebgrotate 5s infinite;
+	animation-timing-function: linear;
+
+	animation-play-state: paused;
+}
+#pageselect .current .code{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	color: rgba(59, 59, 70, .618);
+}
+
+#pageselect a:visited, #pageselect a:link, #pageselect a:hover{
+	text-decoration: none;
+	color: azure;
+	border: 0;
+}

@@ -1,10 +1,13 @@
 body, html {
 	margin:0;
 	padding: 0;
-	font-family: "思源黑体 CN Light", "Hiragino Sans GB", "microsoft yahei", "WenQuanYi Microhei", "黑体";
 	margin: 0;
 	padding: 0;
 }
+body, html{
+	font-family: "冬青黑体", "思源黑体 CN Light", "Hiragino Sans GB", "Hiragino Sans GB W3", "microsoft yahei", "WenQuanYi Microhei", "黑体";
+}
+
 footer#pachefooter{
 	margin-top: 48px;
 	width: 100%;
@@ -12,247 +15,6 @@ footer#pachefooter{
 	font-size: small;
 	text-align: center;
 }
-
-ins {
-	text-decoration: line-through;
-	opacity: 0.5;
-}
-#article .text{
-	line-height: 180%;
-}
-#article {
-	/*font-family: "DengXian","Hiragino Sans GB", "microsoft yahei","WenQuanYi Microhei","黑体", "Calibri"; */
-	font-family: "WenQuanYi Microhei","黑体","DengXian", "Calibri", "Hiragino Sans GB", "microsoft yahei";
-	font-size: 16px;
-	font-weight: 200;
-	color: rgb(59, 59, 70);
-	width: 640px;
-	margin: auto;
-	text-align: justify;
-	/*font-family: "Hiragino Sans GB", DengXian, "WenQuanYi Microhei", "Microsoft yahei light", "黑体";*/
-	text-shadow: 0px 0px 1px rgba(27, 29, 82, 0.182);
-}
-#article pre{
-	font-style: initial;
-	text-align: left;
-	padding: 1em; */
-	border-radius: 0.5em;
-	background-color: #101010;
-	color: #CCC;
-	overflow: auto;
-	max-height: 480px;
-	font-family: Consolas;
-	/* font-size: small; */
-	font-size: 14px;
-	line-height: 130%;
-	padding: 10px;
-	margin: 0px;
-	border-radius: 5px;
-
-}
-#article pre::selection {
-	background: rgba(200, 255, 255, 0.15);
-	transition: background 2s;
-	-moz-transition: background 2s;
-	-webkit-transition: background 2s;
-	-o-transition: background 2s;
-}
-#article pre::selection:window-inactive {
-	background: rgba(255, 255, 255, 0.15);
-}
-
-/*  Markdown 相关 */
-
-#article sup{
-	/*vertical-align: sub;*/
-	vertical-align: top;
-}
-
-#article li{
-	margin-top: 8px;
-	margin-bottom: 8px;
-	list-style: disc;
-}
-#article ol li{
-	list-style-type: inherit;
-}
-
-#article .footnotes{
-	margin-top: 100px;
-	font-family: sans-serif, "宋体";
-	font-size: small;
-	color:rgba(31, 15, 31, 0.618);
-}
-#article a.footnote{
-	vertical-align: super;
-	font-size: 14px;
-	font-family: Arial;
-}
-#article a.footnote:link,#article a.footnote:visited{color:#999;text-decoration:none;}
-
-#article .footnotes ol{
-	margin: 0;
-}
-#article .footnotes hr{
-	/* height: 100px; */
-	border-color: rgba(255, 255, 255, 0.182);
-	/* display: none; */
-	margin: 16px 0 16px 0;
-}
-#article .footnotes ol li p{
-	margin: 0;
-}
-a.footnote-ref{vertical-align: super; font-family: serif;}
-a.footnote-ref:link,a.footnote-ref:visited{color:#999;text-decoration:none;}
-
-a, a:link, a:visited{
-	color: #5943CE;
-}
-a{
-	border-bottom-width: 1px;
-	border-bottom-style: dashed;
-	border-bottom-color: transparent;
-	transition: border-bottom-color 0.618s;
-}
-a:link{
-	text-decoration: none;
-}
-a:hover{
-	border-bottom-color: #6789AB;
-}
-
-
-ul{
-	list-style-position: inside;
-	margin-top: 0.5em;
-	margin-bottom: 2.5em;
-}
-li p{
-	margin: auto;
-}
-
-#article img{
-	display: block;
-	margin: auto;
-	max-width: 100%;
-	box-shadow: 0px 0px 16px rgba(128, 128, 128, 0.382);
-}
-#article #float img{
-	box-shadow: 0px 0px 0px;
-}
-#fail{
-	margin-top: -192px;
-}
-
-code {
-	white-space: pre-wrap;
-	font-family: Courier, "Hiragino Sans GB", "microsoft yahei", "WenQuanYi Microhei", "黑体";
-	border: solid 1px #AAA;
-	margin-top: 0px;
-	margin-left: 2px;
-	margin-right: 2px;
-
-	padding-top: 2px;
-	padding-left: 4px;
-	padding-right: 4px;
-
-	border-radius: 2px;
-}
-
-#article hr{
-	border-color: #6789AB;
-	border-style: dashed;
-}
-#article pre code {
-	/* border-bottom-width: 0; */
-	/* border-bottom-color: transparent; */
-	margin: 0;
-	padding: 0;
-	border-width: 0;
-}
-
-#article blockquote p{
-
-}
-#article blockquote {
-	border-left-color: #1f0f1f; */
-	/* border-left-style: solid; */
-	/* border-left-width: 8px; */
-
-
-	margin-left: 0px;
-	padding-left: 2em;
-	font-style: italic;
-	border-bottom-left-radius: calc( 100% * 0.382 );
-	border-color: rgba(31, 15, 31, 0.24);
-	border-left-style: solid;
-	border-left-width: 1px;
-	border-top-left-radius: calc( 100% * 0.618 );
-	/* border-bottom-width: 8px; */
-	/* border-bottom-style: inset; */
-	/* border-bottom-right-radius: 450px; */
-
-	margin-top: 3em;
-
-	margin-bottom: 3em;
-}
-
-pre + h1, pre + h2, pre + h3, pre + h4, pre + h5, pre + h6{
-	margin-top: 3em;
-}
-pre + p{
-	margin-top: 3.5em;
-}
-
-p{
-	font-size: 1em;
-	line-height: 1.7em;
-	text-justify: inter-ideographic;
-	margin-bottom: 2.5em;
-}
-
-p + ul, p + ol{
-	margin-top: -1.5em;
-}
-p + pre{
-	margin-top: -1.5em !important;
-}
-
-p + .html-console{
-	margin-top: -1.5em !important;
-}
-
-
-h1,h2,h3,h4,h5,h6{
-	font-family: "黑体", "DengXian";
-	/* font-weight: lighter; */
-	line-height: 1em;
-	margin-top: 1em;
-	margin-bottom: 0.5em;
-	max-width: 100%;
-	word-break: break-word;
-	word-wrap: break-word;
-}
-h1{
-	font-size: 2em;
-}
-h2{
-	font-size: 1.8em;
-}
-h3{
-	font-size: 1.6em;
-}
-h4{
-	font-size:1.4em;
-}
-h5{
-	font-size:1.3em;
-}
-h6{
-	font-size:1.20em;
-}
-
-
 
 /* 设置滚动条的样式 */
 ::-webkit-scrollbar {
@@ -303,14 +65,31 @@ h6{
 	height: 100%;
 	cursor: wait;
 }
+
+/* 顶部class栏 */
 #class {
-	list-style-type: none;
 	height: 32px;
 }
 #class li {
 	float: left;
-	padding-left: 1em;
-	padding-right: 1em;
+	list-style-type: none;
+	padding: 1px .5em 1px .5em;
+	margin: 0 .618em 0 .618em;
+}
+li#current-class:hover {
+	border-bottom-color: #6789AB;
+	border-color: transparent;
+	box-shadow: 0px 0px 8px #3b3b46;
+}
+li#current-class > a{
+	color: aliceblue !important;
+}
+li#current-class {
+	background: rgb(59, 59, 70);
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	box-shadow: 0px 0px 1px #3b3b46;
+	transition: box-shadow 0.382s;
 }
 #class a:link{
 	color: grey;
@@ -325,258 +104,12 @@ h6{
 	text-decoration: underline;
 }
 
-ul#list{
-	list-style-position: inside;
-	margin-top: 0.5em;
-	margin-bottom: 2.5em;
-	margin: 0;
-	padding: 0;
-	width: 640px;
-	margin: 64px auto;
-}
-#list li{
-	list-style-type: none;
-	font-size: 3em;	/*xx-large;*/
-	font-weight: lighter;
-	position: relative;
-	margin: 0px;
-	margin-top: 0px;
-	margin-bottom: 48px;
-	text-align: center;
-}
-#list li:hover{
-
-}
-#list li div.link{
-	transition:			list-style-type 0.382s, opacity 0.382s, margin-top 0.382s, margin-bottom 0.382s;
-	-moz-transition:	list-style-type 0.382s, opacity 0.382s, margin-top 0.382s, margin-bottom 0.382s;
-	-webkit-transition:	list-style-type 0.382s, opacity 0.382s, margin-top 0.382s, margin-bottom 0.382s;
-	-o-transition:		list-style-type 0.382s, opacity 0.382s, margin-top 0.382s, margin-bottom 0.382s;
-}
-#list li div.link:hover{
-}
-#list a {
-	font-family: 'Hiragino Sans GB', DengXian, 'WenQuanYi Microhei', 'Microsoft yahei light', 黑体;
-	/* color: rgb(27, 29, 82); */
-	color: rgb(59, 59, 70);
-
-	text-decoration: blink;
-	text-shadow: rgba(27, 29, 82, 0.380392) 0px 0px 1px;
-}
-#list .datetime{
-	font-size: small;
-	display: block;
-	font-family: Arial;
-}
-#list .summary{
-	font-size: medium;
-}
-
-#main{
-	width:100%;
-	padding:0px;
-	margin: 48px auto;
-}
-#main header {
-	margin-top: 96px;
-	margin-bottom: 256px;
-}
-#main header h1{
-	font-family: "Hiragino Sans GB", DengXian, "WenQuanYi Microhei", "Microsoft yahei light", "黑体";
-	text-shadow: 0px 0px 1px rgba(27, 29, 82, 0.382);
-	font-size: 48px;
-	font-weight: 100;
-	text-align: center;
-	/* color: rgb(27, 29, 82); */
-	color: rgb(59, 59, 70);
-	/* width: 61.8%; */
-	/* border-bottom-style: inset; */
-	border-width: 5;
-	/* border-color: rgba(139, 0, 0, 0.5); */
-	margin-bottom: 0px;
-	padding-bottom: 0;
-	display: table;
-	margin: auto auto auto auto;
-	/* border-bottom-left-radius: 20px; */
-	/* border-left-style: inset; */
-	/* border-top-left-radius: 61.8px; */
-	/* border-bottom: inset; */
-	border-bottom-right-radius: 61.8px;
-	border-top-right-radius: 20px;
-	border-color: rgba(139, 0, 0, 0.5);
-	transition: border-bottom-left-radius 0.618s, border-top-right-radius 0.618s;
-
-	/* text-align-last: auto; */
-}
-#main header h1:hover{
-	border-bottom-left-radius: 38.2px;
-	border-top-right-radius: 38.2px;
-}
-#time{
-	text-align: center;
-	font-size: xx-small;
-	margin-top: 64px;
-}
-#time ins{
-	opacity: 0.618;
-	color: grey;
-}
-#time ins time{
-	opacity: 0.382;
-	/* position: absolute; */
-	/* margin: auto; */
-	/* left: 50%; */
-	/* right: 50%; */
-	/* left: 50%; */
-	/* width: 100%; */
-	/* text-align: center; */
-	filter: blur(10px);
-	-webkit-filter: blur(1px);
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-#time time{
-	text-align: center;
-	font-size: small;
-	color: rgb(27, 29, 82);
-	display: block;
-	position: absolute;
-	width: 100%;
-}
-ul#taglist:before {
-	content: 'tag: ';
-	font-style: normal;
-}
-#taglist {
-	font-style: italic;
-	padding: 0;
-	margin: 0;
-	width: 640px;
-	margin: auto;
-	margin-top: 72px;
-}
-#taglist li{
-	/* display: inline-block; */
-	display: inline-block;
-}
-#taglist a{
-	color: rgba(39,153,153,0.618);
-	text-decoration: blink;
-	transition: color 0.618s;
-}
-#taglist a:hover{
-	color: #FF7720;
-}
-
-#taglist li::after{
-	content: "、";
-}
-
-#taglist li:nth-last-child(1)::after{
-	content: "";
-}
-
-#pageselect{
-	display: flex;
-	justify-content: center;
-
-	font-family: Arial;
-}
-#pageselect > a:visited{
-	color: azure;
-}
-#pageselect > a:link{
-	text-decoration: none;
-}
-#pageselect > a:hover{
-	border-bottom-color: #6789AB;
-
-	border-color: transparent;
-}
-
-#pageselect > a{
-	color: azure;
-	position: relative;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	margin: 0px 16px 0px 16px;
-	width: 48px;
-	height: 48px;
-}
-
-.current > div{
-	width: 48px;
-	height: 48px;
-}
-
-@keyframes pagebg_rotate{
-	from {transform: rotate(0deg);}
-	to {transform: rotate(360deg);}
-}
-.current .pagebg:hover{
-	animation-play-state: running;
-}
-
-.current .pagebg{
-	opacity: 0.618;
-	border-radius: 999px;
-	border-width: 3px;
-	border-color: rgb(59, 59, 70);
-	border-style: dotted;
-
-	width: 42px;
-	height: 42px;
-
-	animation:pagebg_rotate 5s infinite;
-	animation-timing-function: linear;
-
-	animation-play-state: paused;
-}
-
-.current .pagecode{
-	color: rgb(59, 59, 70);
-	position: absolute;
-	left: 0px;
-	top: 0px;
-
-	border-radius: 999px;
-
-	width: 48px;
-	height: 48px;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.nocurrent:hover{
-	box-shadow: 0px 0px 16px grey;
-	/*background-color: transparent;*/
-}
-
-.nocurrent{
-	border-radius: 999px;
-
-	background-color: rgb(59, 59, 70);
-	color: azure;
-
-	transition: box-shadow .382s, background-color .382s;
-}
-
-#pageselect input[name="page"]{
-	display: none;
-}
 
 /* 多说CSS */
 .ds-meta{
 	display: none;
 }
-#ds-thread #ds-reset li.ds-tab{
-}
+#ds-thread #ds-reset li.ds-tab{}
 #ds-thread #ds-reset li.ds-tab a.ds-current{
 	border: 0px !important;
 	background-color: transparent !important;

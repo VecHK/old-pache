@@ -428,7 +428,7 @@ var control = new function (){
 
 		var selectPage = function (){
 			this.setPage = function (page){
-				envir.page = Number.parseInt(page);
+				envir.page = parseInt(page);
 			};
 			this.lastPage = function (){
 				if ( envir.page <= 1 ){

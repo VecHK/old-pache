@@ -1,23 +1,18 @@
-#main{
-	width: 100%;
-}
-#duoshuo{
+#main, #duoshuo, ul#list{
 	width: 100%;
 }
 
-ul#list{
-	width: 100%;
-}
 #list li{
-	font-size: 2em;	/*xx-large;*/
-	font-weight: lighter;
 	position: relative;
 	margin-top: 0.5em;
 	margin-left: 0px;
-
 	padding-left: 0.5em;
 	padding-right: 0.5em;
+
 	width: calc( 100% - 1em );
+
+	font-size: 2em;
+	font-weight: lighter;
 }
 #list a{
 	text-shadow: 0px 0px 0px;
@@ -48,9 +43,8 @@ article#article{
 	padding-left: 1em;
 	padding-right: 1em;
 	font-family: "Hiragino Sans GB", "microsoft yahei", "WenQuanYi Microhei", "黑体";
-	font-size: medium;
+	font-size: 18px;
 	width: calc( 100% - 2em);
-
 }
 #article.content blockquote {
 	padding: 0;
@@ -62,9 +56,19 @@ article#article{
 #taglist{
 	width: 100%;
 }
-#selectpage a{
-	width: 8px;
-	padding: 5.5px 12px 5.5px 12px;
-	/* padding: 14px 16.5px 14px 16.5px; */
-	text-align: center;
+
+#article table{
+	max-width: 100%;
+}
+
+.split-layer .split-content{
+	width: calc( 100% - 2em) !important;
+	padding-left: 1em !important;
+	padding-right: 1em !important;
+}
+
+#pageselect .pagecode{
+	margin-right: 12px;
+	width: 42px;
+	height: 42px;
 }

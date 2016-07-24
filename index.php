@@ -68,8 +68,9 @@ else if ( isset($_GET['tag']) ){
 	<meta name="HandheldFriendly" content="true" />
 
 	<link rel="stylesheet" href="style/global.css" type="text/css" />
-	<link rel="stylesheet" href="style/normal.css" type="text/css" media="screen and (min-width: 851px)" />
-	<link rel="stylesheet" href="style/min.css" type="text/css" media="screen and (max-width: 850px)" />
+	<link rel="stylesheet" href="style/home.css" type="text/css" />
+	<link rel="stylesheet" href="style/normal.css" type="text/css" media="screen and (min-width: 800px)" />
+	<link rel="stylesheet" href="style/min.css" type="text/css" media="screen and (max-width: 799px)" />
 <!--
 	<script src="js/remilia.js"></script>
 	<script src="js/myLoader.js"></script>
@@ -145,9 +146,9 @@ else if ( isset($_GET['tag']) ){
 					$url = $url.$listingType.'='.urlencode($_GET[$listingType]).'&';
 
 				if ( $page == $i ){
-					echo '<a class="current"><div class="pagecode">'.$i.'</div><div class="pagebg"></div></a>';
+					echo '<a class="pagecode current"><div class="code">'.$i.'</div><div class="bg"></div></a>';
 				}else{
-					echo '<a class="nocurrent" href="'.$url.'page='.$i.'">'.$i.'</a> ';
+					echo '<a class="pagecode" href="'.$url.'page='.$i.'">'.$i.'</a> ';
 				}
 			}
 		/*
@@ -157,7 +158,7 @@ else if ( isset($_GET['tag']) ){
 		*/
 		?>
 
-			<input name="page" size="4" />
+			<input name="page" size="4" style="display:none;" />
 		</form>
 
 	<footer id="pachefooter">

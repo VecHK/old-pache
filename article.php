@@ -50,20 +50,55 @@ function listingArticleBy($by, $start, $limit, $arg/*, $sort*/){
 function outClassIndexJson(){
 	return json_encode(getClassIndex());
 }
-function outClassIndexHTML(){
-	$pache = new pache;
+function noClass($currentClass=false){
+	$pache = $GLOBALS['pache'];
+	$str = '';
 
-	$str = '<nav id="class">';
-	$clist = getClassIndex();
+	if ( is_null($currentClass) ){
+		$li = '<li id="current-class">';
+	}else{
+		$li = '<li>';
+	}
 
-	$str = $str.'<li>'.'<a href="'.$pache->root.'">'.'首页'.'</a>'.'</li>';
-	$str = $str.'<li><a href="get.php?id=33" target="_blank">关于</a></li>';
+	$str = $li.'<a href="'.$pache->root.'">'.'首页'.'</a>'.'</li>';
+	$str = $str.'<li><a href="get.php?id=33">关于</a></li>';
 	$str = $str.'<li>'.'<a href="'.$pache->root.'/get.php?id=30">'.'links'.'</a>'.'</li>';
 
-	for ( $i=0; $i<count($clist); ++$i ){
-		$str = $str.'<li>'.'<a href="'.$pache->root.'?class='.$clist[$i].'">'.$clist[$i].'</a>'.'</li>';
+	$str = '<div id="noclass">'.$str.'</div>';
+	return $str;
+}
+function outClassIndexHTML(){
+	$pache = $GLOBALS['pache'];
+	if ( isset($GLOBALS['article']) ){
+		$currentClass = $GLOBALS['article']->class;
 	}
-	$str = $str.'</nav>';
+	else if( isset($_GET['class']) ){
+		$currentClass = $_GET['class'];
+	}else{
+		$currentClass = NULL;
+	}
+
+	$str = '';
+	$clist = getClassIndex();
+
+	for ( $i=0; $i<count($clist); ++$i ){
+		$len = strlen($clist[$i]);
+		$name = $len ? $clist[$i] : '未分类';
+
+		if ( $currentClass === $clist[$i] ){
+			$li = '<li id="current-class">';
+		}else{
+			$li = '<li>';
+		}
+		$newItem = $li.'<a href="'.$pache->root.'?class='.$clist[$i].'">'.$name.'</a>'.'</li>';
+
+		if ( $len ){
+			$str = $str.$newItem;
+		}else{
+			$str = $newItem.$str;
+		}
+	}
+	$str = '<nav id="class">'.noClass($currentClass).$str.'</nav>';
 	return $str;
 }
 class updateAble{

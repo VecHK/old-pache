@@ -24,8 +24,6 @@ if ( isset($_GET['id']) ){
 		case 'HTML':
 		default:
 			$article = getArticleById( (int) $id );
-			//$article = getArticleBy($_GET['by'], $_GET['byarg'], $display);
-//			echo var_dump($article);
 	}
 
 }else{
@@ -35,8 +33,9 @@ if ( isset($_GET['id']) ){
 
 if ( is_null($article->id) ){
 	$article = new stdClass;
+	$article->class = "";
 	$article->title = "出现了点问题";
-	$article->article = '<div id="fail"><div id="float" style="position:relative;margin: auto;" ><img class="floatimg" src="articleNoFound.jpg" style="display:block; margin:auto;" /></div>当你看到这个页面的时候，说明文章因为不可抗力被删除了。或者你请求的id是一个未知数，Pache无法提供</div><div></div>';
+	$article->article = '<div id="article-nofound"><div id="float" style="position:relative;margin: auto;" ><img class="floatimg" src="articleNoFound.jpg" style="display:block; margin:auto;" /></div>当你看到这个页面的时候，说明文章因为不可抗力被删除了。或者你请求的id是一个未知数，Pache无法提供</div><div></div>';
 	$article->type = 'html';
 	$nofound = true;
 }
@@ -52,9 +51,11 @@ if ( is_null($article->id) ){
 	<meta name="HandheldFriendly" content="true" />
 
 	<link rel="stylesheet" href="style/global.css" type="text/css" />
-	<link rel="stylesheet" href="style/normal.css" type="text/css" media="screen and (min-width: 851px)" />
-	<link rel="stylesheet" href="style/min.css" type="text/css" media="screen and (max-width: 850px)" />
+	<link rel="stylesheet" href="style/article.css" type="text/css" />
 	<link rel="stylesheet" href="style/myprettify.css" type="text/css" />
+	<link rel="stylesheet" href="style/normal.css" type="text/css" media="screen and (min-width: 800px)" />
+	<link rel="stylesheet" href="style/min.css" type="text/css" media="screen and (max-width: 799px)" />
+
 
 <!--
 	<script type="text/javascript" src="js/Markdown.Converter.min.js"></script>
@@ -64,7 +65,15 @@ if ( is_null($article->id) ){
 	<script type="text/javascript" src="js/prettify.min.js"></script>
 	<script type="text/javascript" src="js/remilia.js"></script>
 
-	<!--<script type="text/javascript" src="js/prettify.min.js"></script>-->
+	<script type="application/javascript" src="js/page.js" def></script>
+
+<!--
+	<script type="text/javascript" src="js/page-scroll.js" def></script>
+	<script type="text/javascript" src="js/dotBG.js" def></script>
+	<script type="text/javascript" src="js/iii.js"></script>
+	<script type="text/javascript" src="js/ppp.js"></script>
+-->
+
 </head>
 <body>
 		<?php
@@ -112,12 +121,13 @@ if ( is_null($article->id) ){
 				isset($nofound) || new outTagById($_GET['id'], 'html');
 			?>
 	</div>
+
 <?php
 if ( !isset($nofound) ){
 print <<<EOT
 	<div id="duoshuo">
 	<!-- 多说评论框 start -->
-		<div class="ds-thread" data-thread-key="$article->id" data-title="$article->title" data-url="$pache->root/get.php?id=$article->id"></div>
+		<div class="ds-thread" data-thread-key="$article->id" data-title="$article->title" data-url="http://vechk.com$pache->root/get.php?id=$article->id"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
@@ -138,9 +148,4 @@ EOT;
 }
  ?>
 </body>
-	<script type="text/javascript" src="pache.js"></script>
-<!--
-	<script type="text/javascript" src="js/iii.js"></script>
-	<script type="text/javascript" src="js/ppp.js"></script>
--->
 </html>

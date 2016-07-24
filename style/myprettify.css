@@ -34,73 +34,71 @@ pre.prettyprint code{
 }
 @media screen {
 	.str {
-	color: #00cc99;
+		color: #00cc99;
+	}
+	.kwd {
+		color: #9ff;
+	}
+	.com {
+		color: #999;
+	}
+	.typ {
+		color: #cba987;
+	}
+	.lit {
+		color: #d99;
+	}
+	.pun,.opn,.clo {
+		color: #99d
+	}
+	.tag {
+		color: #ABCDEF;
+	}
+	.atn {
+		color: #9DA;
+	}
+	.atv {
+		color: #CDC;
+	}
+	.dec,.var {
+		color: ##CC9999;
+	}
+	.fun {
+		color: red
+	}
 }
-.kwd {
-	color: #9ff;
-}
-.com {
-	color: #999;
-}
-.typ {
-	color: #cba987;
-}
-.lit {
-	color: #d99;
-}
-.pun,.opn,.clo {
-	color: #99d
-}
-.tag {
-	color: #ABCDEF;
-}
-.atn {
-	color: #9DA;
-}
-.atv {
-	color: #CDC;
-}
-.dec,.var {
-	color: ##CC9999;
-}
-.fun {
-	color: red
-}
-}@media print,projection {
+@media print,projection {
 	.str {
-	color: #060
-}
-.kwd {
-	color: #006;
-	font-weight: bold
-}
-.com {
-	color: #600;
-	font-style: italic
-}
-.typ {
-	color: #404;
-	font-weight: bold
-}
-.lit {
-	color: #044
-}
-.pun,.opn,.clo {
-	color: #440
-}
-.tag {
-	color: #006;
-	font-weight: bold
-}
-.atn {
-	color: #404
-}
-.atv {
-	color: #060
-}
-}pre.prettyprint {
-	padding: 2px;
-	border: 1px solid #888
+		color: #060
+	}
+	.kwd {
+		color: #006;
+		font-weight: bold
+	}
+	.com {
+		color: #600;
+		font-style: italic
+	}
+	.typ {
+		color: #404;
+		font-weight: bold
+	}
+	.lit {
+		color: #044
+	}
+	.pun,.opn,.clo {
+		color: #440
+	}
+	.tag {
+		color: #006;
+		font-weight: bold
+	}
+	.atn {
+		color: #404
+	}
+	.atv {
+		color: #060
+	}
 }
 ol.linenums {
 	margin-top: 0;

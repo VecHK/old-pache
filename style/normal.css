@@ -1,9 +1,9 @@
 #main{
 	width: 100%;
-    /*width: calc( 1366px * 0.618 );*/
+	/*width: calc( 1366px * 0.618 );*/
 }
 #duoshuo{
-	width: 640px;
+	width: 800px;
 /*	width: calc(1366px * 0.618);*/
 	margin: auto;
 	margin-bottom: 382px;
