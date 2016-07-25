@@ -5,7 +5,7 @@ ul#list{
 	margin-bottom: 2.5em;
 	margin: 0;
 	padding: 0;
-	width: 640px;
+	width: 800px;
 	margin: 64px auto;
 }
 #list li{
@@ -44,10 +44,14 @@ ul#list{
 	font-size: medium;
 }
 
-#pageselect, #pageselect .pagecode, #pageselect .current, #pageselect .current .code{
+#page, #page .pagecode, #page .current, #page .current .code{
 	display: flex;
+	display: -webkit-flex;
+
 	align-items: center;
 	justify-content: center;
+	-webkit-align-items: center;
+	-webkit-justify-content: center;
 
 	background: transparent;
 	font-family: Arial;
@@ -55,15 +59,15 @@ ul#list{
 	color: azure;
 }
 
-#pageselect .pagecode:not(.current):hover{
+#page .pagecode:not(.current):hover{
 	box-shadow: 0px 0px 16px grey;
 }
-#pageselect .pagecode:not(.current){
+#page .pagecode:not(.current){
 	background-color: rgb(59, 59, 70);
 	transition: box-shadow .382s, background-color .382s;
 }
 
-#pageselect .pagecode {
+#page .pagecode {
 	position: relative;
 
 	width: 48px;
@@ -72,10 +76,10 @@ ul#list{
 	border-radius: 999px;
 }
 /* 页码的间距 */
-#pageselect .pagecode{
+#page .pagecode{
 	margin: 0px 24px 0px 0px;
 }
-#pageselect .pagecode:last-of-type{
+#page .pagecode:last-of-type{
 	margin: 0 !important;
 }
 
@@ -84,11 +88,11 @@ ul#list{
 	from {transform: rotate(0deg);}
 	to {transform: rotate(360deg);}
 }
-#pageselect .bg:hover{
+#page .bg:hover{
 	animation-play-state: running;
 }
-#pageselect .bg{
-	border-radius: 100%;
+#page .bg{
+	border-radius: 100vw;
 	border: 3px dotted rgba(59, 59, 70, .618);
 	width: calc(100% - 3px * 2);
 	height: calc(100% - 3px * 2);
@@ -98,7 +102,7 @@ ul#list{
 
 	animation-play-state: paused;
 }
-#pageselect .current .code{
+#page .current .code{
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -107,7 +111,7 @@ ul#list{
 	color: rgba(59, 59, 70, .618);
 }
 
-#pageselect a:visited, #pageselect a:link, #pageselect a:hover{
+#page a:visited, #page a:link, #page a:hover{
 	text-decoration: none;
 	color: azure;
 	border: 0;

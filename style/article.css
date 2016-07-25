@@ -179,13 +179,15 @@ h5{ font-size: 1.3em;}
 h6{ font-size: 1.20em;}
 
 /* 文章框架 */
+#article, #taglist{
+	width: 760px;
+}
 #article {
 	font-family: "思源黑体 CN Light", "WenQuanYi Microhei","DengXian", "微软雅黑", "microsoft yahei", "Calibri", "Hiragino Sans GB";
 	font-size: 18px;
 
 	color: rgb(59, 59, 70);
 
-	width: 760px;
 	margin: auto;
 
 	text-align: justify;
@@ -221,6 +223,7 @@ h6{ font-size: 1.20em;}
 #article .footnotes ol *{
 	margin: 0;
 	font-size: 12px !important;
+	list-style: inherit;
 }
 #article .footnotes hr{
 	border-color: rgba(255, 255, 255, 0.182);
@@ -316,7 +319,6 @@ ul#taglist:before {
 	font-style: italic;
 	padding: 0;
 	margin: 0;
-	width: 640px;
 	margin: auto;
 	margin-top: 72px;
 }
@@ -327,10 +329,12 @@ ul#taglist:before {
 }
 #taglist li{
 	display: inline-block;
+	margin: 0;
 	padding: 3px .5em 3px .5em;
-	font-style: normal;
-	box-shadow: 0px 0px 1px #aaa;
 	font-size: medium;
+	font-style: normal;
+
+	box-shadow: 0px 0px 1px #aaa;
 
 	transition: background .618s, box-shadow .618s;
 }

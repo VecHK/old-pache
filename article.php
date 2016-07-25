@@ -50,6 +50,14 @@ function listingArticleBy($by, $start, $limit, $arg/*, $sort*/){
 function outClassIndexJson(){
 	return json_encode(getClassIndex());
 }
+function outCustomClassHTML(){
+	$pache = $GLOBALS['pache'];
+	$str = '';
+	foreach($pache->customClass as $key => $value){
+		$str .= "<li><a href=\"{$pache->root}/get.php?id={$value}\">{$key}</a></li>";
+	}
+	return $str;
+}
 function noClass($currentClass=false){
 	$pache = $GLOBALS['pache'];
 	$str = '';
@@ -60,11 +68,10 @@ function noClass($currentClass=false){
 		$li = '<li>';
 	}
 
-	$str = $li.'<a href="'.$pache->root.'">'.'首页'.'</a>'.'</li>';
-	$str = $str.'<li><a href="get.php?id=33">关于</a></li>';
-	$str = $str.'<li>'.'<a href="'.$pache->root.'/get.php?id=30">'.'links'.'</a>'.'</li>';
+	$str = $li.'<a href="'.$pache->root.'">Home</a>'.'</li>';
+	$str .= outCustomClassHTML();
 
-	$str = '<div id="noclass">'.$str.'</div>';
+	//$str = '<div id="noclass">'.$str.'</div>';
 	return $str;
 }
 function outClassIndexHTML(){

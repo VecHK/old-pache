@@ -176,7 +176,7 @@ window.addEventListener('load', function (){
 		try{
 			noFound();
 		}catch(e){
-			queryTime();
+			//queryTime();
 		}
 		codeLight.apply(null, document.getElementById('article').getElementsByTagName('code'));
 	}catch(e){
@@ -226,20 +226,29 @@ var CreateSplitLayer = function (parentEle){
 	content = document.createElement('div'),
 	greyArea = [document.createElement('div'), document.createElement('div')];
 
-	window.addEventListener('keydown', function (e){
-		if ( e.keyCode === 27 ){
-			this.fadeOut();
-		}
+	window.addEventListener('resize', function (){
+		this.sup && this.hide(function (){
+			setTimeout(this.show.bind(this), 16.7);
+		}.bind(this));
 	}.bind(this));
+
+	var closeSplitLayer = function (){
+		this.hide();
+		if ( this.sup ){
+			this.sup = undefined;
+		}
+	}.bind(this);
+
+	window.addEventListener('keydown', function (e){
+		if ( this.sup && e.keyCode === 27 ){
+			closeSplitLayer();
+		}
+	});
 	splitLayer.className = 'split-layer';
 
-	var areaFadeOut = function (){
-		this.fadeOut();
-	}.bind(this);
 	greyArea.forEach(function (ele){
 		ele.className = 'grey-area';
-
-		ele.addEventListener('click', areaFadeOut, true);
+		ele.addEventListener('click', closeSplitLayer, true);
 	});
 
 	content.className = 'split-content';
@@ -304,14 +313,27 @@ var CreateSplitLayer = function (parentEle){
 		height: createGetOrSet('h'),
 	});
 
-	CreateSplitLayer.prototype.fadeIn = function (){
-		$(this.ele).fadeIn();
+	CreateSplitLayer.prototype.resize = function (){
+
 	};
-	CreateSplitLayer.prototype.fadeOut = function (sup){
+	CreateSplitLayer.prototype.show = function (cb, time){
+		var thisEleR = $(this.ele);
+		if ( this.sup ){
+			this.greyArea[0].style.height = (this.sup.offsetTop + this.sup.offsetHeight) + 'px';
+			this.greyArea[1].style.height = (document.body.offsetHeight - this.ele.offsetHeight) + 'px';
+
+			thisEleR.fadeIn(cb, time);
+
+			this.sup.style.lineHeight = (this.content.offsetHeight + this.sup.offsetHeight) + 'px';
+		}else{
+			thisEleR.fadeIn(cb, time);
+		}
+	};
+	CreateSplitLayer.prototype.hide = function (cb, time){
 		if (this.sup){
 			this.sup.style.lineHeight = '';
 		}
-		$(this.ele).fadeOut();
+		$(this.ele).fadeOut(cb, time);
 	};
 })();
 
@@ -343,13 +365,14 @@ var clearArrow = function (ele){
 var foontnoteExtend = function (){
 	var splitLayer = new CreateSplitLayer(document.getElementById('article'));
 
-	splitLayer.fadeIn();
-	splitLayer.fadeOut();
+	splitLayer.hide();
 
 	footnotes = collectFootnote();
 
 	footnotes.forEach(function (footnote){
 		footnote.a.onclick = function (){
+			splitLayer.sup = footnote.sup;
+
 			var anthor = footnote.sup.id.replace('fnref:', 'fn:');
 			anthor = document.getElementById(anthor);
 
@@ -358,14 +381,15 @@ var foontnoteExtend = function (){
 
 
 			window.splitLayer = splitLayer;
-
+			/*
 			splitLayer.greyArea[0].style.height = (footnote.sup.offsetTop + footnote.sup.offsetHeight) + 'px';
 			splitLayer.greyArea[1].style.height = (document.body.offsetHeight - splitLayer.ele.offsetHeight) + 'px';
 
 			splitLayer.fadeIn(footnote.sup);
 
 			footnote.sup.style.lineHeight = (splitLayer.content.offsetHeight + footnote.sup.offsetHeight) + 'px';
-			splitLayer.sup = footnote.sup;
+			*/
+			splitLayer.show();
 
 			return false;
 		};
@@ -374,3 +398,20 @@ var foontnoteExtend = function (){
 };
 
 window.addEventListener('load', foontnoteExtend);
+
+
+/* PPE level 2 */
+var isMobile = function (){
+	var
+	手机的UA字段们 = ['Android', 'iPhone', 'iPod', 'iPad', 'Windows Phone'],
+	浏览器UA = navigator.userAgent;
+
+	手机的UA字段们.forEach(function (){
+
+	});
+
+};
+
+au = new Audio;
+au.src = '../t.mp3'
+window.ontouchend = function (){ au.load();au.play(); }

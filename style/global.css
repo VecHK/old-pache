@@ -68,13 +68,20 @@ footer#pachefooter{
 
 /* 顶部class栏 */
 #class {
-	height: 32px;
+	display: inline-block;
 }
+
+#noclass{
+	display: inline-block;
+}
+
 #class li {
-	float: left;
-	list-style-type: none;
-	padding: 1px .5em 1px .5em;
+	display: inline-block;
+
 	margin: 0 .618em 0 .618em;
+	padding: 1px .5em 1px .5em;
+
+	list-style-type: none;
 }
 li#current-class:hover {
 	border-bottom-color: #6789AB;

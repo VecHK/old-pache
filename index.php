@@ -15,8 +15,8 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 if ( isset($_GET['class']) ){
 	switch($display){
 		case 'JSON':
-	//			echo json_encode(getArticleBy($_GET['by'], $_GET['byarg'], $display));
-	//			return 0;
+//			echo json_encode(getArticleBy($_GET['by'], $_GET['byarg'], $display));
+//			return 0;
 			break;
 
 		case 'HTML':
@@ -121,7 +121,7 @@ else if ( isset($_GET['tag']) ){
 			}
 		?>
 	</ul>
-		<form id="pageselect" method="get">
+		<div id="page">
 		<?php
 //			$articleCountObj = new ArticleCount();
 			if ( !isset($_GET[$listingType]) ){
@@ -157,9 +157,10 @@ else if ( isset($_GET['tag']) ){
 			echo '一共有'.articleCount('default').'篇文章';
 		*/
 		?>
-
-			<input name="page" size="4" style="display:none;" />
-		</form>
+			<form method="get" style="display:none;">
+				<input name="page" size="4" />
+			</form>
+		</div>
 
 	<footer id="pachefooter">
 		Hello, Pache

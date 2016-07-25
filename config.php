@@ -24,5 +24,10 @@ class pache{
 	);
 	/* 多说名称 */
 	public $duoshuo = "vechk";
+
+	public $customClass = array(
+		'about' => 999,
+		'links' => 998
+	);
 }
 ?>
