@@ -17,7 +17,6 @@ function backInfo($c, $s){
 	return json_encode(new outputInfo($c, $s));
 }
 
-
 function getArticleBy($by, $byarg, $display){
 	switch($by){
 		case 'id':
@@ -133,6 +132,14 @@ function updateArticleByIdProcess($id, $op){
 	}
 	return echoInfoJson(2, 'fail');
 }
+
+class backTop{
+	public $code = 0;
+	public $info;
+	function __construct($top){
+		$this->info = $top;
+	}
+}
 function createArticleProcess($POST){
 	if ( createArticle($POST) ){
 		$topArticle = getArticleTop();
@@ -141,34 +148,20 @@ function createArticleProcess($POST){
 				return echoInfoJson(101, 'ok, but tag fail');
 			}
 		}
-		class backTop{
-			public $code = 0;
-			public $info;
-			function __construct($top){
-				$this->info = $top;
-			}
-		}
 		echo json_encode(new backTop($topArticle));
 	}else{
 		return echoInfoJson(2, 'fail');
 	}
 }
+/* 以复数文章id删除文章
+	$selid必须是数组
+	$selid不能是零长度数组
+	满足上述条件后返回结果
+ */
 function deleteArticlesByIdProcess($selid){
-	if ( gettype($selid) === 'array' ){
-		if ( count($selid) ){
-			if ( deleteArticlesById($selid) ){
-				return true;
-			}else{
-				return false;
-			}
-		}else{
-			return false;
-		}
-	}else{
-		return false;
-	}
-
+	return (gettype($selid) === 'array') && count($selid) && deleteArticlesById($selid);
 }
+
 class outIndex{
 	public $display;
 	public $article;
@@ -326,17 +319,16 @@ class outTagById{
 	}
 	function __destruct(){
 		if ( $this->display == 'json' ){
-			echo json_encode($this);
+			$this->out = json_encode($this);
 		}else if ( $this->display == 'html' ){
-			$pache = new pache;
-			$str = '<ul id="taglist">';
-			//$str = $str.'<ul>';
-			for ( $i=0; $i<count($this->tagList); ++$i ){
+			$pache = $GLOBALS['pache'];
+			$length = count($this->tagList);
+			for ( $i=0, $str = ''; $i<$length; ++$i ){
 				$str = $str.'<li><a href="'.$pache->root.'?tag='.$this->tagList[$i]['tagname'].'">'.$this->tagList[$i]['tagname'].'</a></li>';
 			}
-			$str = $str.'</ul>';
-			//$str = $str.'</div>';
-			echo $str;
+			$str = '<ul id="taglist">'.$str.'</ul>';
+
+			$this->out = $str;
 		}
 	}
 }

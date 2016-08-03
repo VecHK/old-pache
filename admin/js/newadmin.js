@@ -213,8 +213,8 @@ var viewer = new function (){
 		viewer.tS.clearAll();
 		article.tag.forEach(function ( tag ){
 			viewer.tS.appendItem({
-				'value': tag.tagname,
-				'content': tag.tagname
+				'value': tag,
+				'content': tag
 			});
 		});
 

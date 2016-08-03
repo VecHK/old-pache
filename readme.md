@@ -1,16 +1,14 @@
-#Pache
+# Pache
 个人用小博客
 
 ## How to do?
 首先你需要准备好一些东西……
 
--	[Michelf Markdown](https://github.com/michelf/php-markdown)
-
--	[Google Prettify](https://github.com/google/code-prettify)
-
+ - [Michelf Markdown](https://github.com/michelf/php-markdown)
+ - [Google Prettify](https://github.com/google/code-prettify)
 
 #### Google Prettify
-在 code-prettify-mastery/src/里找到prettify.js，然后复制到 pache/js/ 里
+在 code-prettify-mastery/src/ 里找到prettify.js，然后复制到 pache/js/ 里
 
 关于 Michelf Markdown，具体，看get.php里如何调用
 
@@ -59,6 +57,15 @@ public $createAble = Array(
 
 /* 多说名称 */
 public $duoshuo = "vechk";
+
+/* 自定义类别
+	键名即类名
+	键值即文章ID
+ */
+public $customClass = array(
+	'about' => 999,
+	'links' => 998
+);
 
 ```
 

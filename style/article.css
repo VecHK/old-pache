@@ -219,6 +219,7 @@ h6{ font-size: 1.20em;}
 #article a.footnote:link,#article a.footnote:visited{color:#999;text-decoration:none;}
 #article .footnotes ol{
 	margin: 0;
+	padding: 0;
 }
 #article .footnotes ol *{
 	margin: 0;
@@ -303,7 +304,7 @@ h6{ font-size: 1.20em;}
 
 /* 标签列表 */
 ul#taglist:before {
-	content: 'TAG';
+	/* content: 'ㄨ';*/
 	padding: 2px .5em 2px .5em;
 	/* margin-right: 10px; */
 	background: rgb(59, 59, 70);
@@ -322,6 +323,24 @@ ul#taglist:before {
 	margin: auto;
 	margin-top: 72px;
 }
+#taglist li:nth-child(1){
+	padding: 2px .5em 2px .5em;
+
+	color: azure;
+	font-style: normal;
+	border-bottom-left-radius: 20px;
+	border-top-left-radius: 20px;
+	font-size: medium;
+}
+#taglist li:last-of-type{
+	padding: 2px .5em 2px .5em;
+
+	color: azure;
+	font-style: normal;
+	border-bottom-right-radius: 20px;
+	border-top-right-radius: 20px;
+	font-size: medium;
+}
 
 #taglist li:hover{
 	background: rgba(255, 235, 59, .1);
@@ -330,17 +349,17 @@ ul#taglist:before {
 #taglist li{
 	display: inline-block;
 	margin: 0;
-	padding: 3px .5em 3px .5em;
+	padding: 2px .5em 2px .5em;
 	font-size: medium;
 	font-style: normal;
 
-	box-shadow: 0px 0px 1px #aaa;
+	/* box-shadow: 0px 0px 1px #aaa; */
 
 	transition: background .618s, box-shadow .618s;
 }
 #taglist a{
 	border: 0;
-	color: rgb(39,153,153);
+	color: rgb(59, 59, 70);
 	text-decoration: none;
 	transition: color 0.618s;
 }

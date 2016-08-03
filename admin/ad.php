@@ -41,46 +41,45 @@ if ( !isset($_GET['type']) ){
 	return echoFailJson(1, "type on found");
 }
 
+$display = 'json';
 switch($_GET['type']){
 	case 'gettag':
 		if ( isset($_GET['id']) ){
-			if ( isset($_GET['display']) ){
-				if ( $_GET['display'] == 'json' ){
-					return new outTagById( $_GET['id'], 'json');
-				}
+			if (isset($_GET['display']) && $_GET['display'] !== $display){
+				$display = 'html';
 			}
-			return new outTagById($_GET['id'], 'html');
-		}else{
-			return echoFailJson(1, 'id no found.');
+			return new outTagById((int)$_GET['id'], $display);
 		}
-		break;
+		return echoFailJson(1, 'id no found.');
+	break;
+
 	case 'getindex':
 		if ( isset($_GET['page']) && (int)$_GET['page'] > 0 ){
 			$page = (int) $_GET['page'];
 		}else{
 			$page = 1;
 		}
+
 		if ( isset($_GET['limit']) ){
 			$limit = (int) $_GET['limit'];
 		}else{
 			$limit = $pache->pagelimit;
 		}
-		if( isset($_GET['display']) ){
-			if ( $_GET['display'] == 'json' )
-				return new outIndex($_GET, $page, $limit, 'json');
-		}
-		new outIndex($_GET, $page, $limit, 'html');
 
-		break;
-	case 'getclass':
-		if( isset($_GET['display']) ){
-			if ( $_GET['display'] == 'json' ){
-				echo outClassIndexJson();
-			}
-			return 0;
+		if (isset($_GET['display']) && $_GET['display'] !== $display){
+			$display = 'html';
 		}
-		echo outClassIndexHTML();
-		break;
+		new outIndex($_GET, $page, $limit, $display);
+	break;
+
+	case 'getclass':
+		if( isset($_GET['display']) && $_GET['display'] === 'json' ){
+			echo outClassIndexJson();
+		}else{
+			echo outClassIndexHTML();
+		}
+	break;
+
 	case 'update':
 		if ( isset($_POST['id']) ){
 			if ( checkRequestAny($_POST, $pache->updateAble) ){
@@ -89,9 +88,10 @@ switch($_GET['type']){
 		}else{
 			return echoFailJson(1, 'update: id no found.');
 		}
-		break;
+	break;
+
 	case 'updatetag':
-		break;
+	break;
 
 	case 'new':
 		/*if ( isset($_POST['id']) ){*/
@@ -104,7 +104,8 @@ switch($_GET['type']){
 		}else{
 			return echoFailJson(1, 'new: id no found.');
 		}*/
-		break;
+	break;
+
 	case 'manage':
 		switch( $_GET['manage'] ){
 			case 'del':
@@ -113,13 +114,14 @@ switch($_GET['type']){
 				}else{
 					return echoFailJson(1, 'selid no found');
 				}
-				break;
+			break;
 
 			default:
 				return echoFailJson(1, 'manage default');
 		}
 
-		break;
+	break;
+
 	default:
 		return echoFailJson(1, 'type default.');
 }

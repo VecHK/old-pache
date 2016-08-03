@@ -8,6 +8,17 @@ body, html{
 	font-family: "冬青黑体", "思源黑体 CN Light", "Hiragino Sans GB", "Hiragino Sans GB W3", "microsoft yahei", "WenQuanYi Microhei", "黑体";
 }
 
+.top-shadow{
+	position: absolute;
+	top: -32px;
+	left: 0px;
+
+	height: 32px;
+	width: 100%;
+
+	box-shadow: 0px 0px 12px #999;
+}
+
 footer#pachefooter{
 	margin-top: 48px;
 	width: 100%;
@@ -78,20 +89,23 @@ footer#pachefooter{
 #class li {
 	display: inline-block;
 
-	margin: 0 .618em 0 .618em;
+	vertical-align: top;
+
+	margin: 0 .382em 0 .382em;
 	padding: 1px .5em 1px .5em;
 
 	list-style-type: none;
 }
-li#current-class:hover {
+#current-class:hover {
 	border-bottom-color: #6789AB;
 	border-color: transparent;
 	box-shadow: 0px 0px 8px #3b3b46;
 }
-li#current-class > a{
+#current-class > a{
 	color: aliceblue !important;
 }
-li#current-class {
+
+#current-class {
 	background: rgb(59, 59, 70);
 	border-bottom-left-radius: 4px;
 	border-bottom-right-radius: 4px;
@@ -147,4 +161,48 @@ div.ds-login-buttons {
 }
 a.ds-user-name.ds-highlight, a.ds-user-name.ds-highlight:active, a.ds-user-name.ds-highlight:link{
 	color: rgb(27, 29, 82) !important;
+}
+#ds-notify .ds-logo {
+	display: none !important;
+	background: transparent !important;
+}
+#ds-notify .ds-notify-unread{
+	margin: 0 !important;
+	color: darkred !important;
+}
+#ds-notify .ds-notify-unread *{
+	color: #607D8B !important;
+	text-shadow: 0px 0px 16px #bbb;
+}
+div#ds-notify {
+	border: 1px solid #ccc !important;
+}
+
+#ds-reset .ds-highlight,
+#ds-thread #ds-reset a.ds-comment-context,
+#ds-wrapper #ds-reset .ds-unread-list li a{
+	color: #607D8B !important;
+}
+
+a.ds-unread-comments-count {
+	background: #607D8B !important;
+}
+
+.ds-dialog-footer:before {
+	content: "评论系统采用多说";
+	color: #bbb;
+	font-size: 12px;
+}
+
+.ds-dialog-footer{
+	padding: 10px 15px 10px !important;
+}
+
+.ds-dialog-footer > * {
+	display: none !important;
+	background: none !important;
+}
+
+#ds-wrapper #ds-reset .ds-dialog-close {
+	bottom: 10px !important;
 }

@@ -210,10 +210,18 @@ button{
 }
 
 #editor .edit-area{
-	width: 640px;
+	flex: 3;
+	width: 760px;
 	height: 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
+	padding-right: 8px;
+
+	border-left-style: dotted;
+	border-left-color: brown;
+	border-left-width: thin;
+
+	box-shadow: inset 0px 0px 16px #bbb;
 }
 #editor .edit-area *{
 	border: none;
@@ -221,24 +229,36 @@ button{
 }
 #editor [name="title"]:focus{
 	outline: none;
+
+	color: saddlebrown;
 }
 #editor [name="title"]{
 	display: block;
-	width: 640px;
+	width: 100%;
 	margin: auto;
-
-	font-size: 2em;
+	font-family: Arial, "黑体", "微软雅黑";
+	font-size: 3em;
 	text-align: center;
-
+	text-shadow: 0px 0px 1px #aaa;
 	border-bottom-style: solid;
 	border-bottom-width: thin;
 	border-bottom-color: rgba(255,255,255, 0.5);
+	height: 3em;
 
-	height: 64px;
+	color: slategrey;
+
+	transition: color .382s;
+}
+
+#editor hr {
+	box-shadow: inset 0px 0px 1px grey;
+	height: 2px;
+	width: 800px;
 }
 
 #editor [name="content"]:focus{
 	outline: none;
+	color: saddlebrown;
 }
 #editor [name="content"]{
 	display: block;
@@ -246,14 +266,17 @@ button{
 	margin: auto;
 	padding-top: 10px;
 
-	font-size: 1em;
 	text-align: left;
 
-	border-left-style: dotted;
-	border-left-color: brown;
-	border-left-width: thin;
-
 	resize: none;
+
+	font-family: Arial, "黑体", "微软雅黑";
+	font-weight: 100;
+	font-size: 20px;
+
+	color: slategrey;
+
+	transition: color .382s;
 }
 ::-webkit-scrollbar {
 	width: 6px;
@@ -274,14 +297,15 @@ button{
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	justify-content: space-between;
+	justify-content: flex-start;
 	align-self: auto;
 
-	height: 50%;
+	height: 100%;
 
 	margin: 0px 20px 0px 20px;
 }
-#editor .update *{
+#editor .update > * {
+	margin-top: 3em;
 }
 
 #editor .tag-selector .closeTag:hover{

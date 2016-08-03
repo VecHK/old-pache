@@ -102,6 +102,7 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 
 		<div class="edit-area">
 			<input name="title" placeholder="标题" />
+			<hr />
 			<textarea name="content" placeholder="正文"></textarea>
 		</div>
 	</div>

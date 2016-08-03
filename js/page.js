@@ -401,6 +401,7 @@ window.addEventListener('load', foontnoteExtend);
 
 
 /* PPE level 2 */
+/*
 var isMobile = function (){
 	var
 	手机的UA字段们 = ['Android', 'iPhone', 'iPod', 'iPad', 'Windows Phone'],
@@ -411,7 +412,9 @@ var isMobile = function (){
 	});
 
 };
-
+*/
+/*
 au = new Audio;
 au.src = '../t.mp3'
 window.ontouchend = function (){ au.load();au.play(); }
+*/
