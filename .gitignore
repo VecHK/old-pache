@@ -1,27 +1,3 @@
-# extend
+node_modules/*
 
-/extend/*
-
-#忽略扩展的库
-js/Markdown.Converter.min.js
-js/Markdown.Extra.min.js
-js/Markdown.Sanitizer.min.js
-js/prettify.js
-js/prettify.min.js
-js/taboverride.min.js
-js/TweenMax.min.js
-
-# 忽略一些废弃的
-js/remilia - Copy.js
-js/remilia-0.21-min.js
-js/home.js
-js/iii-fail.js
-js/iii.js
-js/ppp.js
-js/myLoader.js
-
-#console
-/console/*
-
-#图片目录
-img/*
+static/img/*
