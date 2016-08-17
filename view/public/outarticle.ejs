@@ -1,0 +1,11 @@
+<article id="article" class="content">
+<% if (article.type === 'html'){ %>
+	<%- article.article %>
+<% } %>
+<% if (article.type === 'markdown'){ %>
+	<%- article.format %>
+<% } %>
+<% if (article.type === 'text'){ %>
+	<%- article.article %>
+<% } %>
+</article>

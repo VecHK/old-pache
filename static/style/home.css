@@ -1,0 +1,115 @@
+body{
+	margin-top: 48px;
+	margin-bottom: 12px;
+}
+#list{
+	margin: 0px 0px 24px 0px;
+}
+#list, #page{
+	margin-left: calc(9vw)
+}
+/* 主页文章列表 */
+#list{
+	padding: 0;
+	max-width: calc(100vw - 9vw);
+	list-style-position: inside;
+}
+#list li{
+	position: relative;
+	margin: 0px 0px 48px;
+
+	font-size: 3em;
+	font-weight: lighter;
+
+	list-style-type: none;
+}
+#list a:hover{
+	border-bottom: rgba(79,79,90,0.5) dashed 2px;
+}
+#list a{
+	font-family: 'Hiragino Sans GB', DengXian, 'WenQuanYi Microhei', 'Microsoft yahei light', '黑体';
+	color: rgb(59, 59, 70);
+
+	text-decoration: blink;
+
+	border-bottom: transparent dashed 8px;
+
+	transition-duration: .382s;
+	transition-property: border-bottom;
+}
+#list .datetime{
+	display: block;
+	font-size: small;
+	font-family: consolas, courier;
+	color: #633;
+}
+#page .pagecode, .pagecode .bg{
+	border-radius: 999px;
+}
+
+#page, #page .pagecode, #page .current, #page .current .code{
+	display: inline-flex;
+	display: -webkit-inline-flex;
+
+	align-items: center;
+	justify-content: center;
+	-webkit-align-items: center;
+	-webkit-justify-content: center;
+
+	color: azure;
+	font-family: Arial;
+
+	background: transparent;
+}
+
+#page .pagecode:not(.current):hover{
+	box-shadow: 0px 0px 16px grey;
+}
+#page .pagecode:not(.current){
+	background-color: rgb(59, 59, 70);
+	transition: box-shadow .382s, background-color .382s;
+}
+
+#page .pagecode {
+	position: relative;
+
+	width: 48px;
+	height: 48px;
+
+	/* 页码的间距 */
+	margin: 0px 24px 0px 0px;
+}
+#page .pagecode:last-of-type{
+	margin: 0 !important;
+}
+
+#page .current .code{
+	color: rgba(59, 59, 70, .618);
+}
+@keyframes pagebgrotate{
+	from {transform: rotate(0deg);}
+	to {transform: rotate(360deg);}
+}
+#page .bg:hover{
+	animation-play-state: running;
+}
+#page .bg{
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	border: 3px dotted rgba(59, 59, 70, .618);
+	width: calc(100% - 3px * 2);
+	height: calc(100% - 3px * 2);
+
+	animation:pagebgrotate 12s infinite;
+	animation-timing-function: linear;
+
+	animation-play-state: paused;
+}
+
+#page a:visited, #page a:link, #page a:hover{
+	text-decoration: none;
+	color: azure;
+	border: 0;
+}

@@ -1,0 +1,41 @@
+{
+  "name": "pache",
+  "version": "0.3.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mysql2mongodb": "node ./bin/pache-mysql2mongodb.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VecHK/pache.git"
+  },
+  "keywords": [
+    "blog"
+  ],
+  "author": "vec",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VecHK/pache/issues"
+  },
+  "homepage": "https://github.com/VecHK/pache#readme",
+  "dependencies": {
+    "async": "^2.0.1",
+    "body-parser": "~1.15.1",
+    "colors": "^1.1.2",
+    "connect-redis": "^3.1.0",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "ejs": "~2.4.1",
+    "eventproxy": "^0.3.5",
+    "express": "~4.13.4",
+    "express-session": "^1.14.0",
+    "mongodb": "^2.2.5",
+    "mongoskin": "^2.1.0",
+    "morgan": "~1.7.0",
+    "mysql": "^2.11.1",
+    "redis": "^2.6.2",
+    "serve-favicon": "~2.3.0"
+  }
+}

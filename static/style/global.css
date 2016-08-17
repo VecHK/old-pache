@@ -1,0 +1,153 @@
+body, html {
+	margin:0;
+	padding: 0;
+	margin: 0;
+	padding: 0;
+}
+body, html{
+	font-family: "冬青黑体", "思源黑体 CN Light", "Hiragino Sans GB", "Hiragino Sans GB W3", "microsoft yahei", "WenQuanYi Microhei", "黑体";
+}
+
+.top-shadow{
+	position: absolute;
+	top: -32px;
+	left: 0px;
+
+	height: 32px;
+	width: 100%;
+
+	box-shadow: 0px 0px 12px #999;
+}
+
+footer#pachefooter{
+	margin-top: 48px;
+	width: 100%;
+	color: grey;
+	font-size: small;
+	text-align: center;
+}
+
+::selection {
+	background: rgba(260, 86, 84, .25);
+}
+::selection:window-inactive {
+	background: rgba(50, 0, 105, 0.15);
+}
+
+#inprogress{
+	display: none;
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	cursor: wait;
+}
+
+#ppep{
+	position: fixed;
+	left: 20px;
+	bottom: 20px;
+}
+.ppep-control{
+	position: relative;
+	height: 40px;
+}
+.ppep-control > *{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+#ppep .played{
+	width: 0;
+	height: 0;
+	border: 20px transparent solid;
+	border-left-color: slategrey;
+}
+#ppep .paused{
+	width: 20px;
+	height: 40px;
+	border-left: 20px slategrey solid;
+}
+
+
+/* 多说CSS */
+.ds-meta{
+	display: none;
+}
+#ds-thread #ds-reset li.ds-tab{}
+#ds-thread #ds-reset li.ds-tab a.ds-current{
+	border: 0px !important;
+	background-color: transparent !important;
+}
+div.ds-login-buttons {
+	display: none !important;
+}
+#ds-thread #ds-reset .ds-textarea-wrapper{
+	background: transparent !important;
+}
+#ds-thread #ds-reset .ds-post-options{
+	background: transparent !important;
+}
+#ds-thread #ds-reset .ds-sort a.ds-current, #ds-thread #ds-reset .ds-sort a:active{
+	color: rgb(27, 29, 82) !important;
+}
+#ds-thread #ds-reset .ds-sort a {
+	color: #ccc !important;
+}
+#ds-thread #ds-reset li.ds-tab{
+	font-size: 16px !important;
+}
+#ds-thread #ds-reset .ds-comments-info{
+	font-size: 16px !important;
+}
+#ds-thread #ds-reset .ds-comment-body a:hover{
+	color: rgb(27, 29, 82) !important;
+}
+a.ds-user-name.ds-highlight, a.ds-user-name.ds-highlight:active, a.ds-user-name.ds-highlight:link{
+	color: rgb(27, 29, 82) !important;
+}
+#ds-notify .ds-logo {
+	display: none !important;
+	background: transparent !important;
+}
+#ds-notify .ds-notify-unread{
+	margin: 0 !important;
+	color: darkred !important;
+}
+#ds-notify .ds-notify-unread *{
+	color: #607D8B !important;
+	text-shadow: 0px 0px 16px #bbb;
+}
+div#ds-notify {
+	border: 1px solid #ccc !important;
+}
+
+#ds-reset .ds-highlight,
+#ds-thread #ds-reset a.ds-comment-context,
+#ds-wrapper #ds-reset .ds-unread-list li a{
+	color: #607D8B !important;
+}
+
+a.ds-unread-comments-count {
+	background: #607D8B !important;
+}
+
+.ds-dialog-footer:before {
+	content: "评论系统采用多说";
+	color: #bbb;
+	font-size: 12px;
+}
+
+.ds-dialog-footer{
+	padding: 10px 15px 10px !important;
+}
+
+.ds-dialog-footer > * {
+	display: none !important;
+	background: none !important;
+}
+
+#ds-wrapper #ds-reset .ds-dialog-close {
+	bottom: 10px !important;
+}

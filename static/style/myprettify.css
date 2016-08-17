@@ -1,0 +1,112 @@
+pre.prettyprint{
+	position: relative;
+}
+pre.prettyprint:hover > button{
+	opacity: 1;
+}
+pre.prettyprint button{
+	font-size: x-large;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	border: none;
+	background: transparent;
+	color: rgb(192, 214, 243);
+	opacity: 0;
+	transition: opacity 0.618s, text-shadow 0.618s;
+}
+pre.prettyprint button:hover{
+	text-shadow: 0px 0px 10px rgb(192, 214, 243);
+	cursor: pointer;
+}
+pre.prettyprint button:focus{
+	outline: none;
+}
+
+pre.prettyprint code{
+	font-family: Consolas, "宋体";
+	border: 0px;
+	padding: 0;
+	margin: 0;
+}
+.pln {
+	color: #9f9;
+}
+@media screen {
+	.str {
+		color: #00cc99;
+	}
+	.kwd {
+		color: #9ff;
+	}
+	.com {
+		color: #999;
+	}
+	.typ {
+		color: #cba987;
+	}
+	.lit {
+		color: #d99;
+	}
+	.pun,.opn,.clo {
+		color: #99d
+	}
+	.tag {
+		color: #ABCDEF;
+	}
+	.atn {
+		color: #9DA;
+	}
+	.atv {
+		color: #CDC;
+	}
+	.dec,.var {
+		color: ##CC9999;
+	}
+	.fun {
+		color: red
+	}
+}
+@media print,projection {
+	.str {
+		color: #060
+	}
+	.kwd {
+		color: #006;
+		font-weight: bold
+	}
+	.com {
+		color: #600;
+		font-style: italic
+	}
+	.typ {
+		color: #404;
+		font-weight: bold
+	}
+	.lit {
+		color: #044
+	}
+	.pun,.opn,.clo {
+		color: #440
+	}
+	.tag {
+		color: #006;
+		font-weight: bold
+	}
+	.atn {
+		color: #404
+	}
+	.atv {
+		color: #060
+	}
+}
+ol.linenums {
+	margin-top: 0;
+	margin-bottom: 0
+}
+li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8 {
+	list-style-type: none
+}
+li.L1,li.L3,li.L5,li.L7,li.L9 {
+	background: #eee
+}

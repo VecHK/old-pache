@@ -1,0 +1,5 @@
+{
+	"mongoUrl": "mongodb://localhost:27017/test",
+	"mongoCollection": "pache",
+	"native_parse": false
+}

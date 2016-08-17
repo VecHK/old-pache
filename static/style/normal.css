@@ -1,0 +1,14 @@
+#main{
+	width: 100%;
+	/*width: calc( 1366px * 0.618 );*/
+}
+#duoshuo{
+	width: 800px;
+/*	width: calc(1366px * 0.618);*/
+	margin: auto;
+	margin-bottom: 382px;
+}
+
+#list a{
+	padding: 0 .25em;
+}

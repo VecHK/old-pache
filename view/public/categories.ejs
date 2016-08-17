@@ -1,0 +1,17 @@
+<%
+function backItem(item){
+	let id = '',
+		text = '';
+
+	text = item.length ? item : '首页';
+
+	return `<li ${id}><a href="${text}">${text}</a></li>`;
+}
+%>
+<nav id="class">
+<% categories.forEach(item => { %>
+
+	<%- backItem(item); %>
+
+<% }); %>
+</nav>

@@ -1,0 +1,481 @@
+(function (win, doc){
+	var ver = 0.39;
+	console.log(
+		'永远鲜红的',
+		'☾',
+		'&',
+		'bug',
+		'\n\nver:'+ver
+	);
+	var myMethod = function (){
+		var my = this;
+		this.ls = this.localStorage;
+		this.cookie = function (){
+			var my = this;
+			var cookieF = function(){
+				if ( arguments.length === 0 ){
+					return document.cookie;
+				}
+				if ( typeof arguments[0] === 'string' ){
+					var key = arguments[0];
+					return arguments[1] == undefined ? this.cookie.parse()[key] : this.cookie.set(key, arguments[1], arguments[2]);
+				}else if (typeof arguments[0] === 'object'){
+
+				}
+			};
+			var cookieMethod = function (){
+				this.parse = function (){
+					if (!(this instanceof arguments.callee)) {
+						return new arguments.callee();
+					}
+					var obj = this;
+					var rawArr = cookieF().replace(/ /g, '').split(';');
+					function pRaw(item){
+						var keyObjArr = item.split('=');
+						obj[keyObjArr[0]] = decodeURIComponent(keyObjArr[1]);
+					}
+					rawArr.forEach(pRaw);
+					return obj;
+				};
+				this.stringify = function(){
+					var obj = this.parse();
+					var str = '';
+					for (var key in obj){
+						str += key + '=' + encodeURIComponent(obj[key]) + '; ';
+					}
+					return str.substr(0, str.length-2);
+				};
+				this.set = function (key, value, time){
+					var set = new Date();
+					if ( time === undefined ){
+						time = '';
+					}
+					set.setDate( set.getDate() + time );
+					doc.cookie = key + ' = ' + escape(value) + ((time !== undefined) ? ';expires='+exdate.toGMTString() : '');
+				};
+				this.empty = function (key){
+					this.setCookie(key, '');
+				};
+				this.remove = function (){};
+
+			};
+
+			cookieF.__proto__ = new cookieMethod;
+			return cookieF;
+		}();
+
+		this.getRequest = function() {
+			/* thanks jiekk:  http://www.cnblogs.com/jiekk/archive/2011/06/28/2092444.html */
+			function getStrRequest(str){
+				return new RegExp(/\?/g).test(str) ? str.split(/\?/)[1] : str;
+			}
+			var name = arguments[0];
+			var request = win.location.search.substr(1);
+			if ( arguments[1] !== undefined ){
+				name = arguments[0];
+				request = getStrRequest(arguments[1]);
+			}
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+			var r = request.match(reg);
+			if (r != null) return unescape(r[2]);
+			return null;
+		};
+		this.stringifyRequest = function (requestObj){
+			function isArray(Arr){
+				return Array.isArray(Arr);
+			}
+			function stringifyArray(key){
+				var arr = this[key];
+				var str = '' ;
+				for ( var i=0; i<arr.length; ++i ){
+					str += key + '[]=' + encodeURIComponent(this[key][i]) + '&';
+				}
+				return str;
+			}
+			function strSubLast(str){
+				return str.substr(0, str.length-1);
+			}
+			function stringify(obj, keys){
+				return isArray(obj[keys[0]]) ?
+				stringifyArray.apply(obj, [keys.shift()]) :
+				encodeURIComponent(keys[0]) + '=' + encodeURIComponent( obj[keys.shift()] ) + '&';
+			}
+			function objKeysMap(postObj, objKeys){
+					return objKeys.length ? stringify(postObj, objKeys) + arguments.callee(postObj, objKeys) : '';
+			}
+			return strSubLast( objKeysMap( requestObj, Object.keys(requestObj) ));
+		};
+		this.vjax = function(URL, method, pgdata, callback, fail) {
+			method = method.toLowerCase();
+
+			if (window.XMLHttpRequest)
+				var vj = new XMLHttpRequest();
+
+			vj.onreadystatechange = function() {
+				if (vj.readyState == 4 && vj.status == 200) {
+					if (method === 'get') {
+						pgdata(vj.responseText, status);
+					} else if (method === 'post') {
+						callback && callback(vj.responseText, status);
+					}
+				} else if ( vj.readyState === 500 && vj.status === 404 && vj.readyState === 403){
+					fail && fail(status);
+				}
+			};
+			if ( method.toLowerCase() === 'post' ) {
+				vj.open("POST", URL, true);
+				vj.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+
+				if ( typeof pgdata === 'object' ){
+					if ( new RegExp(/\?/).test(URL) ){
+						vj.send( this.stringifyRequest(pgdata) );
+					}else{
+						vj.send( this.stringifyRequest(pgdata) );
+					}
+				}else{
+					vj.send( pgdata );
+				}
+			} else if (method.toLowerCase() === 'get') {
+				vj.open("GET", URL, true);
+				vj.send();
+			} else {
+				throw new Error('Method is empty!')
+			}
+		};
+		this.post = function (URLstr, obj, ok, fail){
+			this.vjax(URLstr, 'POST', obj, ok, fail);
+		};
+		this.get = function (URLstr, ok, fail){
+			this.vjax(URLstr, 'GET', ok, fail);
+		};
+		this.getJSON = function (url, ok, fail){
+			this.get(url,
+				function (data){
+					this.json2obj(data, ok, fail);
+				}.bind(this),
+				fail
+			);
+		};
+		this.encodeJson = function (jsonStr){
+
+		};
+		this.json2obj = function (jsonStr, ok, fail){
+			try{
+				var obj = JSON.parse(jsonStr);
+			}catch(e){
+				console.warn(jsonStr);
+				fail && fail(e, jsonStr);
+				return null;
+			}
+			ok && ok(obj);
+			return obj;
+		};
+		this.jsonp = function (url, jsonpCallback, callback){
+			var tmp = win[jsonpCallback];
+			win[jsonpCallback] = function (json){
+				callback && callback(json);
+			};
+			var script = document.createElement('script');
+			script.src = url;
+			script.addEventListener('load', function (){
+				win[jsonpCallback] = tmp;
+			});
+			$('head')[0].appendChild(script);
+		};
+		this.sendJSON = function(URL, jsonStr, ok, fail) {
+			jsonStr = typeof jsonStr !== 'string' ? JSON.stringify(jsonStr) : jsonStr;
+			this.post(URL, 'json='+jsonStr, ok, fail);
+		};
+
+		this.constructEle = function (cup, eleObj){
+			function conEle( unit ){
+				if ( typeof unit === 'string' ){
+					var ele = my.createEle( unit );
+					return ele;
+				}else{
+					return unit;
+				}
+			}
+			function con(){
+				var objKeys = Object.keys( eleObj );
+				objKeys.forEach(function (key){
+					if ( eleObj[key] instanceof HTMLElement ){
+						cup.appendChild( eleObj[key] );
+					}
+					else if ( typeof eleObj[key] === 'object' ){
+						if ( eleObj.currentConstruct !== undefined ){
+							my.constructEle( eleObj.currentConstruct, eleObj[key]);
+						}else{
+							my.constructEle( conEle(key), eleObj[key]);
+						}
+					}else{
+						cup.appendChild( conEle(eleObj[key]) );
+					}
+				});
+				return cup;
+			}
+			return con();
+		};
+	};
+	var eventMethod = function (){
+		this.click = function (){};
+		this.dClick = function (){};
+		this.rClick = function (){};
+		this.focus = function (){};
+		this.blur = function (){};
+	};
+	var domMethod = function (ele){
+		var my = this;
+		this.addEvent = function (eventName, callback, t){
+			for ( var i in Object.keys(ele) ){
+				ele[i].addEventListener(eventName, callback, t);
+				return ele;
+			}
+		};
+		this.rmEvent = function (eventName, callback, t){
+			for ( var i in Object.keys(ele) )
+				ele[i].removeEventListener(eventName, callback, t);
+		};
+		this.regTransition;
+		this.preEle = function (){
+
+		};
+		this.append = function (appendEle, createFunc){
+			var create;
+			for ( var i in Object.keys(ele) ){
+				create = ele[i].appendChild(
+					function (){
+						if ( typeof appendEle === 'string' ){
+							if ( typeof createFunc === 'function'  ){
+								return ele.createEle(appendEle, createFunc);
+							}
+							return ele.createEle(appendEle)[0];
+						}else if ( typeof appendEle === 'function' ){
+							return appendEle.apply(ele);
+						}else{
+							return appendEle;
+						}
+					}()
+				);
+
+			}
+
+			if ( typeof creaateFunc === 'function' ){
+				return ele;
+			}else{
+				return create;
+			}
+		};
+		this.cssLine = function (){
+			var keys = Array();
+			for ( var cssPropertyName in ele[0].style ){
+				keys.push( cssPropertyName );
+			}
+			var obj = new function (){
+				var cssObj = this;
+				this.lineEnd = function (){
+					return ele;
+				};
+				for ( var i in keys )
+					this[ keys[i] ] = function (key){
+						return function (set){
+							ele[0].style[key] = set;
+							return cssObj;
+						}
+					}(keys[i]);
+			};
+			return obj;
+		};
+		this.css = function (cssObj){
+			if ( typeof cssObj === 'object' ){
+				for ( var i in Object.keys(ele) )
+					for ( var key in cssObj )
+						ele[i].style[ key ] = cssObj[key];
+			}else if ( typeof cssObj === 'string' ){
+				var key = cssObj;
+				for ( var i in Object.keys(ele) )
+					if ( arguments[1] !== undefined ){
+						ele[i].style[ key ] = arguments[1];
+					}else{
+						/* 构造个css Array */
+					}
+			}
+			return this;
+		};
+		var myRequestAnimationFrame = function (f){
+			var com = ['requestAnimationFrame', 'msRequestAnimationFrame','webkitRequestAnimationFrame','mozRequestAnimationFrame'];
+			for ( var i in com ){
+				if ( win[com[i]] ){
+					return win[com[i]](f);
+				}
+			}
+		};
+		var setTransition = function (ele, set){
+			var com = ['transition', 'webkitTransition','msTransition','mozTransition'];
+			for ( var i in com ){
+				if ( ele.style[ com[i] ] !== undefined ){
+					return ele.style[ com[i] ] = set;
+				}
+			}
+		};
+		var removeTransition = function (ele){
+			var com = ['transition', 'webkitTransition','msTransition','mozTransition'];
+			for ( var i in com ){
+				ele.style.removeProperty( com[i] );
+			}
+		}
+		this.fadeIn = function (callback, timeStr){
+			if ( typeof callback === 'function' ){
+				if ( typeof timeStr !== 'number' ){
+					timeStr = 0.618;
+				}
+			}
+			if ( callback === undefined )
+				timeStr = 0.618;
+
+			timeStr = Number(timeStr);
+			for ( var key in Object.keys(ele) ){
+				for ( var key in Object.keys(ele) ){
+					setTransition(ele[key], 'opacity '+ timeStr +'s');
+					ele[key].style.opacity = '0';
+					ele[key].style.removeProperty('display');
+
+					myRequestAnimationFrame(function (){
+						ele[key].__proto__.RMfade && clearTimeout(ele[key].__proto__.RMfade.timeEvent);
+						ele[key].__proto__.RMfade = {
+							timeEvent: setTimeout(function (singleEle){/*暂时的解决方法*/
+								return function (){
+									singleEle.style.opacity = '1';
+									setTimeout(function (){
+										removeTransition(singleEle);
+										singleEle.style.opacity = '';
+										delete ele.__proto__.RMfade;
+										typeof callback === 'function' && callback.apply(singleEle, [ele]);
+									}, timeStr*1000);
+								}
+							}(ele[key]),0)
+						};
+					});
+
+				}
+			}
+
+		};
+		this.fadeOut = function (callback, timeStr){
+			if ( typeof callback === 'function' ){
+				if ( typeof timeStr !== 'number' ){
+					timeStr = 0.618;
+				}
+			}
+			if ( callback === undefined )
+				timeStr = 0.618;
+
+			timeStr = Number(timeStr);
+			for ( var key in Object.keys(ele) ){
+				ele[key].style.opacity = '0';
+				setTransition( ele[key], 'opacity '+ timeStr +'s' );
+				ele[key].__proto__.RMfade && clearTimeout(ele[key].__proto__.RMfade.timeEvent);
+				myRequestAnimationFrame(function (){
+
+					ele[key].__proto__.RMfade = {
+						timeEvent: setTimeout(function (singleEle){
+							return function (){
+								singleEle.style.removeProperty('opacity');
+								removeTransition(singleEle);
+								singleEle.style.display = 'none';
+								typeof callback === 'function' && callback.apply(singleEle,[ele]);
+
+							}
+						}(ele[key]), timeStr*1000)
+					};
+				});
+			}
+		};
+		this.html = function (str){
+			return str === undefined ? ele[0].innerHTML : ( ele[0].innerHTML = str );
+		};
+		this.text = function (str){
+			var resultArr = [];
+			for ( var key in ele ){
+				if ( str === undefined ){
+					return ele[key].textContent || ele[key].innerText;
+				}else{
+					ele[key].textContent ? (ele[key].innerText = str) : ( ele[key].textContent = str );
+				}
+			}
+		};
+
+		this.each = function (callback){
+			for ( var i in Object.keys(ele) ){
+				for ( var nodeI in ele[i].children ){
+					 callback.apply( ele, [ ele[i].children[nodeI], nodeI ]);
+				}
+			}
+		};
+
+		return this;
+	};
+	var publicMethod = function (){
+		this.extend = function(){
+			Array.prototype.allEach =
+			typeof Array.prototype.allEach !== 'undefined' ?
+			Array.prototype.allEach :
+			this.allEach;
+
+			Object.prototype.checkObj =
+			Object.prototype.checkObj !== undefined ?
+			Array.prototype.checkObj :
+			this.checkObj;
+		};
+		this.allEach = function (callback, total){
+			var i = 0;
+			total = Number.isFinite(total) ? total : 0;
+
+			for ( var thisKey in this ){
+				if ( Array.isArray( this[thisKey] ) )
+					total = this[thisKey].allEach(callback, total);
+				else
+					++i && callback(this[thisKey], this, i, total);
+				++total;
+			}
+			return --total;
+		};
+		this.wait = function (callback, timeStr){
+			var my = this;
+			return setTimeout(function (){
+				callback && callback.apply(my instanceof domMethod ? my : f, [] );
+			}, timeStr);
+		};
+		this.createEle = function (eleName, callback){
+			var ele = doc.createElement(eleName);
+			if ( typeof callback === 'function' ){
+				callback && callback.apply( f(ele), [ ele ] );
+				return ele;
+			}else{
+				return f(ele);
+			}
+		};
+	};
+	var f = function (str){
+		if ( typeof str !== 'string' ){
+			var domArr = Array(str);
+		}else if ( Array.isArray(str) ){
+			var domArr = str;
+		}else{
+			var domArr = Array.prototype.slice.apply(doc.querySelectorAll(str));
+		}
+		domArr.__proto__ = new domMethod(domArr);
+		return domArr;
+	};
+
+	myMethod.prototype = new publicMethod;
+
+	publicMethod.prototype = new eventMethod;
+	domMethod.prototype = new publicMethod;
+	f.__proto__ = new myMethod;
+
+	if ( !win.$ )	win.$ = f;
+	if ( !win.$c )	win.$c = f.createEle;
+
+	win.Remilia = f;
+})(window, document);

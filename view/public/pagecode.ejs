@@ -1,0 +1,32 @@
+<%
+html = '';
+
+let countPage = Math.ceil(count / limit),
+	cousor = page - 2,
+	right = page + 2;
+
+if (cousor <= 0){
+	right += Math.abs(cousor) + 1;
+	cousor = 1;
+}
+
+if (right > countPage){
+	cousor -= Math.abs(right-countPage);
+	if (cousor <= 0){
+		cousor = 1;
+	}
+	right = countPage;
+}
+
+
+for (; cousor<=right; ++cousor){
+	if ( page === cousor ){
+		%>
+		<a class="pagecode current"><div class="code"><%= cousor %></div><div class="bg"></div></a><%
+	}else{
+		let tagHref = tags.length && ('tags/' + tags.join(','));
+		%>
+		<a class="pagecode" href="/<%= tagHref %>/<%= cousor %>"><%= cousor %></a><%
+	}
+}
+%>

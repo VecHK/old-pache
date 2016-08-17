@@ -1,0 +1,68 @@
+#main, #duoshuo, #list{
+	width: 100%;
+}
+
+#list li{
+	font-size: 2em;
+	font-weight: lighter;
+}
+#list .summary{
+	word-wrap: break-word;
+	text-align: justify;
+}
+
+#list {
+	margin-left: 1em;
+}
+#page{
+	margin: 0;
+	width: 100%;
+	justify-content: space-around;
+	-webkit-justify-content: space-around;
+}
+#page .pagecode{
+	margin-right: 0px;
+	width: 42px;
+	height: 42px;
+}
+
+#main header{
+	height: 38.2vh;
+}
+#main header h1{
+	font-size: 2em;
+}
+
+#article{
+	padding-left: 1em;
+	padding-right: 1em;
+
+	width: calc( 100% - 2em);
+
+	font-family: "Hiragino Sans GB", "microsoft yahei", "WenQuanYi Microhei", "黑体";
+	font-size: 18px;
+}
+#article.content blockquote {
+	padding: 0;
+	margin: auto 0 auto 0.5em;
+}
+#article .footnote{
+
+}
+#taglist{
+	width: 100%;
+}
+
+#article table{
+	max-width: 100%;
+}
+
+#article-nofound{
+	flex-direction: column;
+}
+
+.split-layer .split-content{
+	width: calc( 100% - 2em) !important;
+	padding-left: 1em !important;
+	padding-right: 1em !important;
+}
