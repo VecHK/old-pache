@@ -24,9 +24,9 @@ for (; cousor<=right; ++cousor){
 		%>
 		<a class="pagecode current"><div class="code"><%= cousor %></div><div class="bg"></div></a><%
 	}else{
-		let tagHref = tags.length && ('tags/' + tags.join(','));
+		let tagHref = Array.isArray(tags) ? ('tags/' + tags.join(',') + '/') : '';
 		%>
-		<a class="pagecode" href="/<%= tagHref %>/<%= cousor %>"><%= cousor %></a><%
+		<a class="pagecode" href="/<%= tagHref %><%= cousor %>"><%= cousor %></a><%
 	}
 }
 %>

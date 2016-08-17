@@ -1,7 +1,7 @@
 let data = require('../model/data'),
 	async = require('async');
 
-let limit = 5;
+let limit = 10;
 let home = {
 	page: 1,
 	listing(req, res, next){
@@ -14,7 +14,7 @@ let home = {
 			skip: (home.page - 1) * limit,
 			limit,
 		};
-		if (req.tags.length){
+		if (req.tags && req.tags.length){
 			get.tags = {'$all': req.tags};
 		}
 
