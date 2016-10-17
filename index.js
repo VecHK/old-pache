@@ -1,13 +1,15 @@
 #!/usr/bin/env node
+
+/* 彩色终端字 */
+require('./lib/outinfo');
+
 /* 复制自express-generator */
 let app = require('./app');
 let debug = require('debug')('first-app:server');
 let http = require('http');
 
-/* 彩色终端字 */
-require('./lib/outinfo');
 
-console.info('--Welcome to Pache World--'.silly);
+console.info('--Pache Blog System--'.silly);
 
 let port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);

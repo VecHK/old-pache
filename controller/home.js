@@ -1,46 +1,70 @@
+const pache = require('../setting.json');
+
 let data = require('../model/data'),
 	async = require('async');
 
-let limit = 10;
+const limit = pache.listingLimit;
 let home = {
-	page: 1,
+	limit: pache.listingLimit,
 	listing(req, res, next){
-		home.setPage(req.params.pagecode);
+		if (req.pagecode === undefined || Number.isNaN(req.pagecode)) {
+			var page = 1;
+		} else {
+			var page = req.pagecode;
+		}
 
 		let
 		get = {},
 		condition = {
 			sort: {time: -1},
-			skip: (home.page - 1) * limit,
+			skip: (page - 1) * limit,
 			limit,
 		};
-		if (req.tags && req.tags.length){
-			get.tags = {'$all': req.tags};
+		if (req.tags !== undefined) {
+			if (Array.isArray(req.tags) && req.tags.length) {
+				get.tags = {'$all': req.tags};
+			} else {
+				get.tags = [];
+			}
 		}
 
 		data.getArticles(items => {
 			data.backCount(count => {
 				res.render('home', {
-					page: home.page,
-					tags: req.tags,
-					count,
+					categories: pache.categories,
+					tags: (function (){
+						if (req.tags !== undefined) {
+							if (Array.isArray(req.tags) && req.tags.length) {
+								return req.tags;
+							} else {
+								return '';	//空标签
+							}
+						} else {
+							return undefined;	//首页
+						}
+					})(),
 					limit,
+					page,
+					count,
 					items,
 				});
 			}, get);
 		}, get, condition);
 	},
-	setPage(pagecode){
-		if(pagecode){
-			home.page = parseInt(pagecode);
-		}else{
-			home.page = 1;
-		}
+	integerPage(pagecode){
+		return parseInt(pagecode);
 	},
 	parseTags(tagsParams){
 		let arr = [];
-		if (tagsParams !== undefined){
+		if (tagsParams !== undefined) {
+			tagsParams = tagsParams.replace(/ /g, '');
+
 			arr = tagsParams.split(',');
+
+			if (!arr[0].length) {
+				outinfo.warn('isEmptyArray');
+				arr = [];
+			}
 		}
 		return arr;
 	},

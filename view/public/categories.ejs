@@ -1,17 +1,54 @@
 <%
-function backItem(item){
-	let id = '',
-		text = '';
+function backCategories(categories, cTags){
+	let str = '',
+		noTag = true,
+		home,
+		empty;
 
-	text = item.length ? item : '首页';
+	let list = categories.map(item => {
+		let output = {
+			id: '',
+			text: '',
+			href: '',
+			className: '',
+		};
 
-	return `<li ${id}><a href="${text}">${text}</a></li>`;
+		if (typeof(item) === 'string') {
+			output.href = "/tags/" + item;
+			output.text = item;
+
+			if (Array.isArray(tags) && tags.includes(item)) {
+				output.className = 'current-categories';
+				noTag = false;
+			}
+		} else {
+			output.href = item.url;
+			output.text = item.text;
+			if (item.type === 'home') {
+				home = output;
+			} else if (item.type === 'empty') {
+				output.href = 'notags';
+				empty = output;
+			}
+		}
+		return output;
+	});
+
+	if (typeof(tags) === 'string') {
+		empty.className = 'current-categories';
+	} else if (typeof(tags) === 'undefined') {
+		home.className = 'current-categories';
+	} else if (Array.isArray(tags) && noTag) {
+		empty.className = 'current-categories';
+	}
+
+	list.forEach(output => {
+		str += `<li class="${output.className}" ${output.id}><a href="${output.href}">${output.text}</a></li>`;
+	});
+
+	return str;
 }
 %>
-<nav id="class">
-<% categories.forEach(item => { %>
-
-	<%- backItem(item); %>
-
-<% }); %>
+<nav id="categories">
+	<%- backCategories(categories, tags || []); %>
 </nav>

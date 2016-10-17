@@ -18,6 +18,54 @@ body, html{
 
 	box-shadow: 0px 0px 12px #999;
 }
+#categories {
+	display: inline-block;
+	margin-bottom: 48px;
+}
+
+#noclass{
+	display: inline-block;
+}
+
+#categories li {
+	display: inline-block;
+
+	vertical-align: top;
+
+	margin: 0 .382em 0 .382em;
+	padding: 1px .5em 1px .5em;
+
+	list-style-type: none;
+}
+.current-categories:hover {
+	border-bottom-color: #6789AB;
+	border-color: transparent;
+	box-shadow: 0px 0px 8px #3b3b46;
+}
+.current-categories > a{
+	color: aliceblue !important;
+}
+
+.current-categories {
+	background: rgb(59, 59, 70);
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	box-shadow: 0px 0px 1px #3b3b46;
+	transition: box-shadow 0.382s;
+}
+#categories a:link{
+	color: grey;
+	text-decoration: none;
+}
+#categories a:visited{
+	color: grey;
+	text-decoration: none;
+}
+#categories a:hover{
+	color: #009999;
+	text-decoration: underline;
+}
+
 
 footer#pachefooter{
 	margin-top: 48px;

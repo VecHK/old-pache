@@ -1,3 +1,5 @@
+const pache = require('../setting.json');
+
 let data = require('../model/data'),
 	eventproxy = require('eventproxy');
 
@@ -14,8 +16,9 @@ let article = {
 		article.setId(req.params.id);
 		data.getArticleById(article.id, item => {
 			item = item || {
-				title: '啊哦，出事了',
-				article: `<div id="article-nofound">
+				title: '阿噢，出事了',
+				article: '',
+				format: `<div id="article-nofound">
 				<div id="float" ><img class="floatimg" src="/img/articleNoFound.jpg"/></div>
 				<ul>
 					<li>文章因为一些不可抗力，boom了</li>
@@ -26,7 +29,8 @@ let article = {
 				type: 'html',
 				tags: [],
 			};
-			res.render('article', {article: item});
+			item.categories = pache.categories;
+			res.render('article', item);
 		});
 	},
 	fail(req, res, next){

@@ -1,5 +1,26 @@
 {
-	"mongoUrl": "mongodb://localhost:27017/test",
-	"mongoCollection": "pache",
-	"native_parse": false
+	"mongo": {
+		"mongoUrl": "mongodb://127.0.0.1:27017/test",
+		"mongoCollection": "pache",
+		"native_parse": false,
+		"passwd": "pache"
+	},
+	"listingLimit": 10,
+	"defaultTitle": "myBlog",
+	"adminPassword": "pache",
+	"categories": [
+		{
+			"type": "home",
+			"text": "首页",
+			"url": "/"
+		},
+		"生活",
+		"编程",
+		"转载",
+		{
+			"type": "empty",
+			"text": "其他",
+			"url": "/tags"
+		}
+	]
 }

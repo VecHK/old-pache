@@ -1,0 +1,313 @@
+html, body {
+	width: 100%;
+	height: 100%;
+
+	padding: 0;
+	margin: 0;
+}
+main {
+	margin: auto;
+	width: 800px;
+}
+#menu {
+	display: inline-flex;
+
+	margin: 1em;
+}
+#menu > *:hover {
+	background: darkred;
+	color: white;
+}
+#menu > * {
+	padding: 5px 10px;
+
+	cursor: pointer;
+
+	border: 0;
+	box-shadow: 0px 0px 1px #333;
+	background: transparent;
+
+	font-family: Courier, "黑体", "微软雅黑";
+
+	transition: background .618s, color .618s;
+}
+
+
+#articles {
+	padding: 0;
+	margin: 0;
+}
+#articles > .article-item {
+	display: flex;
+	margin: 15px 0px;
+	align-items: center;
+}
+
+#articles .article-item:nth-child(2n) {
+	background: rgba(255, 255, 0, .382);
+}
+
+.article-item input:checked + .label {
+	background: rgba(0, 255, 255, .382);
+}
+
+.article-item .label {
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+
+
+.item-title span {
+	cursor: pointer;
+}
+
+.time-time {
+	flex: 1;
+	font-family: consolars;
+}
+
+.editor {
+	/* display: flex; */
+	position: fixed;
+	top: 0;
+	left: 0;
+
+	padding: 0px calc(50% - 760px/2);
+
+	width: 760px;
+	height: 100%;
+
+	background: white;
+
+	overflow: auto;
+}
+.editor form {
+	position: relative;
+}
+#eidtor input {
+
+}
+.editor input[name="title"]:focus {
+	color: saddlebrown;
+}
+.editor input[name="title"] {
+	padding: .5em 0;
+	border: 0;
+	background: transparent;
+	outline: none;
+	display: block;
+	width: 100%;
+	font-family: Arial, 黑体, 微软雅黑;
+	font-size: 3em;
+	text-align: center;
+	text-shadow: rgb(170, 170, 170) 0px 0px 1px;
+	border-bottom-style: solid;
+	border-bottom-width: thin;
+	border-bottom-color: rgba(255, 255, 255, 0.498039);
+	height: 3em;
+	color: rgb(48, 103, 133);
+	margin: auto;
+	transition: color 0.382s;
+}
+.side-line {
+	width: 1px;
+	height: 64px;
+	background: black;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	background: linear-gradient(to bottom, #bbb, white);
+	/* display: none; */
+}
+.editor textarea[name="article"]:focus {
+	color: rgba(59, 59, 70, 0.85);
+}
+.editor textarea[name="article"] {
+	display: block;
+	padding: 20px 40px;
+	width: calc(100% - 40px * 2);
+	color: slategrey;
+	font-size: 20px;
+	font-family: Courier, "黑体";
+	background: transparent;
+	outline: none;
+	resize: none;
+	overflow: hidden;
+	border: 0;
+	/* box-shadow: 0px 0px 3px #999; */
+	transition: color .618s;
+	border-left: 1px solid #bbb;
+}
+
+.pam-list {
+}
+.item {
+	margin-bottom: 20px;
+	display: flex;
+	align-items: center;
+	align-content: center;
+}
+.item span {
+	font-size: 1.5em;
+	font-family: courier, '黑体';
+	cursor: pointer;
+}
+.item .item-tag {
+	display: flex;
+	justify-content: flex-start;
+	margin: 0;
+
+	height: 10px;
+	font-size: 10px;
+}
+.item .item-tag > li {
+	cursor: pointer;
+	list-style-type: none;
+	margin-left: 16px;
+}
+
+.item input[type="checkbox"] {
+	height: 2em;
+	width: 2em;
+}
+
+
+.pagecode {
+	display: flex;
+	justify-content: flex-start;
+	font-size: 1.2em;
+	font-family: Courier;
+}
+.pagecode > * {
+	cursor: pointer;
+	margin-left: 8px;
+	width: 1.2em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+}
+.pagecode > .current-pagecode {
+	opacity: 0.618;
+	cursor: default;
+}
+
+.top-shadow {
+	position: fixed;
+	top: -32px;
+	left: 0px;
+	height: 32px;
+	width: 100%;
+	box-shadow: 0px 0px 12px #999;
+}
+
+.tager input:focus {
+	width: 100px;
+}
+.tager input {
+	display: inline-flex;
+	outline: none;
+
+	margin: 0px 8px;
+	padding: 2px 8px;
+
+	height: 22px;
+	width: 40px;
+	transition: width .618s;
+
+	background: rgba(59, 59, 70, 0);
+
+	color: rgba(59, 59, 70, 1);
+	font-size: 12px;
+	font-family: '宋体';
+
+	border: 0;
+	border-radius: 8px;
+	box-shadow: 0px 0px 1px grey;
+}
+.tag-item {
+	background: rgb(59, 59, 70);
+	display: inline-flex;
+	color: azure;
+	padding: 2px 8px;
+	border-radius: 8px;
+	box-shadow: 0px 0px 1px grey;
+	margin: 0px 8px;
+	font-size: 1em;
+	height: 22px;
+	font-family: "Hiragino Sans GB", "Microsoft JhengHei", "WenQuanYi Microhei", 黑体;
+	cursor: pointer;
+}
+
+.tag-item > span {}
+
+.tag-item > button {
+	background: transparent;
+	border: 0;
+	color: azure;
+}
+
+.tag-list {
+	margin: 10px 0px;
+	display: inline-block;
+}
+
+.tager {
+	display: inline-flex;
+	align-content: center;
+	align-items: center;
+}
+.editor .submit:hover {
+	color: rgba(59, 59, 70, 1);
+	border-bottom: 1px solid rgba(59, 59, 70, 1);
+}
+.editor .submit {
+	cursor: pointer;
+	font-weight: 900;
+	font-family: Courier;
+
+	color: rgba(59, 59, 70, .382);
+	border-bottom: 1px solid rgba(59, 59, 70, .382);
+	transition: color .618s, border-bottom .618s;
+}
+.editor .help-button {
+	cursor: help;
+	opacity: .382;
+}
+.editor .editor-side > * {
+	width: 24px;
+	text-align: center;
+	margin: 16px 0px;
+}
+.editor .editor-side {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	font-size: 2em;
+	font-family: Courier;
+	font-weight: 800;
+}
+.editor .article-id {
+	position: absolute;
+	top: 10px;
+	right: 32px;
+	font-size: 16px;
+	font-family: Courier;
+	color: #999;
+}
+.pam-menu {
+	display: inline-flex;
+}
+.pam-menu > div > * {
+	cursor: pointer;
+}
+.menu-items {
+	display: inline-flex;
+}
+.menu-item {
+	display: inline-flex;
+	margin: 4px 8px;
+	border: 1px solid #bbb;
+	padding: 1px 6px;
+}

@@ -12,17 +12,20 @@
 	<link rel="stylesheet" href="/style/min.css" type="text/css" media="screen and (max-width: 759px)" />
 </head>
 <body>
-<ul id="list">
-<% for (let item of items){ %>
-<% let time = item.time.toLocaleDateString(); %>
-	<li>
-		<div class="link">
-			<a href="/article/<%= item._id %>"><%= item.title %></a>
-		</div>
-		<div class="datetime"><%= time %></div>
-	</li>
-<% } %>
-</ul>
-<div><div id="page"><% include public/pagecode %></div></div>
+	<div class="top-shadow"></div>
+	
+	<% include public/categories %>
+	<ul id="list">
+	<% for (let item of items){ %>
+	<% let time = item.time.toLocaleDateString(); %>
+		<li>
+			<div class="link">
+				<a href="/article/<%= item._id %>"><%= item.title %></a>
+			</div>
+			<div class="datetime"><%= time %></div>
+		</li>
+	<% } %>
+	</ul>
+	<div><div id="page"><% include public/pagecode %></div></div>
 </body>
 </html>
