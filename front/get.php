@@ -37,9 +37,9 @@ print <<<EOT
 	<script type="text/javascript" src="js/remilia.js"></script>
 
 	<script type="application/javascript" src="js/page.js" def></script>
-
-<!--
 	<script type="text/javascript" src="js/page-scroll.js" def></script>
+<!--
+
 	<script type="text/javascript" src="js/dotBG.js" def></script>
 	<script type="text/javascript" src="js/iii.js"></script>
 	<script type="text/javascript" src="js/ppp.js"></script>
@@ -61,6 +61,12 @@ print <<<EOT
 		{$articleComponent->outTagList()}
 	</div>
 		{$commentComponent->out()}
+
+	<div id="ppep">
+		<div class="ppep-control">
+			<div class="play-status"></div>
+		</div>
+	</div>
 </body>
 </html>
 EOT;

@@ -72,3 +72,14 @@ article#article{
 	width: 42px;
 	height: 42px;
 }
+
+#time time {
+	font-weight: 100;
+}
+#list .datetime {
+	font-weight: 100;
+}
+
+footer#pachefooter {
+	font-weight: 100;
+}

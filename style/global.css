@@ -22,8 +22,10 @@ body, html{
 footer#pachefooter{
 	margin-top: 48px;
 	width: 100%;
-	color: grey;
+	color: rgba(0, 0, 0, 0.618);
 	font-size: small;
+	font-weight: bold;
+	font-family: courier;
 	text-align: center;
 }
 
@@ -123,6 +125,32 @@ footer#pachefooter{
 #class a:hover{
 	color: #009999;
 	text-decoration: underline;
+}
+
+#ppep{
+	position: fixed;
+	left: 20px;
+	bottom: 20px;
+}
+.ppep-control{
+	position: relative;
+	height: 40px;
+}
+.ppep-control > *{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+#ppep .played{
+	width: 0;
+	height: 0;
+	border: 20px transparent solid;
+	border-left-color: slategrey;
+}
+#ppep .paused{
+	width: 20px;
+	height: 40px;
+	border-left: 20px slategrey solid;
 }
 
 

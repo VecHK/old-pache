@@ -1,7 +1,6 @@
 <?php
 header('Content-type: text/html;charset=utf-8');
 
-require_once('article.php');
 require_once('config.php');
 $pache = new pache;
 
@@ -16,7 +15,7 @@ class HomeService{
 
 		$model = FrontData::getInstance();
 
-		if ($this->listingType === 'class'){
+		if ($this->listingType === 'categories'){
 			$this->articles = $model->getArticlesByCategories($this->categories, $start, $pache->pagelimit);
 		}
 		else if ($this->listingType === 'tag'){
@@ -38,9 +37,9 @@ class HomeController extends HomeService{
 		$page = $this->page - 1;
 
 		/* 以分类遍历 */
-		if ( isset($_GET['class']) ){
-			$this->categories = $_GET['class'];
-			$this->listingType = 'class';
+		if ( isset($_GET['categories']) ){
+			$this->categories = $_GET['categories'];
+			$this->listingType = 'categories';
 		}
 		/* 以tag遍历 */
 		else if ( isset($_GET['tag']) ){

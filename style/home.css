@@ -29,16 +29,19 @@ ul#list{
 }
 #list li div.link:hover{}
 #list a {
-	font-family: 'Hiragino Sans GB', DengXian, 'WenQuanYi Microhei', 'Microsoft yahei light', '黑体';
+	font-family: 'Courier', 'Hiragino Sans GB', 'Microsoft JhengHei', 'WenQuanYi Microhei', '黑体';
 	color: rgb(59, 59, 70);
+	font-weight: 200;
 
 	text-decoration: blink;
 	text-shadow: rgba(27, 29, 82, 0.13) 0px 0px 5px;
 }
 #list .datetime{
-	font-size: small;
 	display: block;
-	font-family: Arial;
+	font-size: small;
+	font-family: Courier;
+	font-weight: bold;
+	color: rgba(0, 0, 0, 0.618);
 }
 #list .summary{
 	font-size: medium;

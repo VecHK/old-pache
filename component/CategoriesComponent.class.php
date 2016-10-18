@@ -28,7 +28,7 @@ class CategoriesComponent{
 	public static function createLi($cate, $current, $href, $name){
 		$li = ($cate === $current) ? '<li id="current-class">' : '<li>';
 
-		$href = $GLOBALS['pache']->root.'?class='.$href;
+		$href = $GLOBALS['pache']->root.'?categories='.$href;
 		return $li."<a href=\"{$href}\">$name</a></li>";
 	}
 
@@ -38,10 +38,10 @@ class CategoriesComponent{
 		/* 检查当前的位置（是get.php还是index.php） */
 		if ( isset($GLOBALS['getView']) ){
 			$service = GetService::getInstance();
-			$currentCategories = $service->article['class'];
+			$currentCategories = $service->article['categories'];
 		}
-		else if( isset($_GET['class']) ){
-			$currentCategories = $_GET['class'];
+		else if( isset($_GET['categories']) ){
+			$currentCategories = $_GET['categories'];
 		}else{
 			$currentCategories = NULL;
 		}

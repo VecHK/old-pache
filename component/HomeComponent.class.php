@@ -32,14 +32,14 @@ class HomeComponent{
 			$listingTypeValue = $home->tag;
 		}
 		else if ( isset($home->categories) ){
-			$listingType = 'class';
+			$listingType = 'categories';
 			$listingTypeValue = $home->categories;
 		}else{
 			$listingType = '';
 			$listingTypeValue = NULL;
 		}
 
-		$countPage = ceil($model->articleCount($listingType,$listingTypeValue) / $pache->pagelimit);
+		$countPage = ceil($model->articleCount($listingType, $listingTypeValue) / $pache->pagelimit);
 
 		$i=$page;
 		if ( ($i-4)<1 ){

@@ -277,7 +277,7 @@ function getArticlesByTag($tag, $start, $limit){
 function insertTagsById($id, $tagArr){
 	$sql = connectSQL();
 
-	$sqlstr = "DELETE  FROM `pache_tag` WHERE articleid = ".(int)$id;
+	$sqlstr = "DELETE FROM `pache_tag` WHERE articleid = ".(int)$id;
 	$sqlresult = mysql_query($sqlstr, $sql->con);
 
 	if ( !$sqlresult ){

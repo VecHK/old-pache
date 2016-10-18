@@ -43,6 +43,10 @@ code {
 	border: solid 1px #AAA;
 }
 
+figure{
+	margin: 2em 0px;
+}
+
 figure figcaption {
 	color: #666;
 	font-size: 12px;
@@ -259,7 +263,7 @@ h6{ font-size: 1.20em;}
 	color: rgb(59, 59, 70);
 	font-size: 48px;
 	font-weight: 100;
-	font-family: "Hiragino Sans GB", DengXian, "WenQuanYi Microhei", "Microsoft yahei light", "黑体";
+	font-family: 'Courier', 'Hiragino Sans GB', 'Microsoft JhengHei', 'WenQuanYi Microhei', '黑体';
 
 	border-width: 5;
 	border-bottom-right-radius: 61.8px;
@@ -297,9 +301,12 @@ h6{ font-size: 1.20em;}
 	position: absolute;
 	width: 100%;
 
-	color: rgb(27, 29, 82);
 	text-align: center;
+
 	font-size: small;
+	font-family: Courier;
+	font-weight: bold;
+	color: rgba(0, 0, 0, 0.618);
 }
 
 /* 标签列表 */
@@ -394,8 +401,12 @@ ul#taglist:before {
 }
 .split-layer .split-content{
 	margin: auto;
+	border-top: 1px dotted rgba(0, 0, 0, 0.182);
+	border-bottom: 1px dotted rgba(0, 0, 0, 0.182);
+	padding: 10px;
+	padding-bottom: 10px;
 }
 .grey-area {
 	cursor: pointer;
-	background-color: rgba(128, 128, 128, 0.59);
+	background-color: rgba(255, 255, 255, 0.618);
 }

@@ -1,7 +1,5 @@
 <?php
 
-//require('article.php');
-
 require('config.php');
 $pache = new pache;
 
@@ -44,7 +42,7 @@ class GetService{
 		}
 		$this->article = array(
 			'id' => null,
-			'class' => '',
+			'categories' => '',
 			'title' => '出现了点问题',
 			'article' => '<div id="article-nofound"><div id="float" style="position:relative;margin: auto;" ><img class="floatimg" src="articleNoFound.jpg" style="display:block; margin:auto;" /></div>当你看到这个页面的时候，说明文章因为不可抗力被删除了。或者你请求的id是一个未知数，Pache无法提供</div><div></div>',
 			'type' => 'html'
