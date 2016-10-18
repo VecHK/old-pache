@@ -64,7 +64,8 @@ if ( isset($_GET['page']) && (int)$_GET['page']>0 ){
 				<div class='pagebutton next' style="display:none;">下一页</div>
 			</div>
 			<button class="delete">删除</button>
-			<button class='create'>创建文章</button>
+			<button class="create">创建文章</button>
+			<button class="draft">草稿</button>
 		</div>
 		<ul class="list">
 

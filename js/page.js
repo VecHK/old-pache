@@ -413,8 +413,3 @@ var isMobile = function (){
 
 };
 */
-/*
-au = new Audio;
-au.src = '../t.mp3'
-window.ontouchend = function (){ au.load();au.play(); }
-*/

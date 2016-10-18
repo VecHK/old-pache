@@ -4,6 +4,10 @@ require_once('SQLInit.class.php');
 
 /* 数据层面 */
 class SQLPDO extends SQLInit{
+	/* 表名 */
+	static $PACHETAGTABLE = 'pache_tag';
+	static $PACHEARTICLETABLE = 'pache_article';
+
 	/* 单例 */
 	private static $instance;
 

@@ -15,7 +15,7 @@ class GetFrontData extends SQLPDO{
 	}
 
 	public function getCategories(){
-		$sql = "SELECT DISTINCT class FROM `pache_article`";
+		$sql = "SELECT DISTINCT categories FROM `pache_article`";
 
 		return $this->fetchColumn($sql, 0);
 	}
@@ -64,9 +64,8 @@ class GetFrontData extends SQLPDO{
 			break;
 
 			case 'categories':
-			case 'class':
 				$categories = func_get_arg(1);
-				$sql = "SELECT count(*) AS counts FROM `pache_article` WHERE class = ?";
+				$sql = "SELECT count(*) AS counts FROM `pache_article` WHERE categories = ?";
 
 				return $this->preFetchColumn($sql, 0, Array($categories));
 
@@ -116,14 +115,13 @@ class GetFrontData extends SQLPDO{
 		$order = self::$articlesOrder;
 		$limit = self::backLimit($start, $limit);
 
-		$sql = "SELECT `id`,`title`,`permission`,`time` FROM `pache_article` WHERE class = ? {$order} {$limit}";
+		$sql = "SELECT `id`,`title`,`permission`,`time` FROM `pache_article` WHERE categories = ? {$order} {$limit}";
 
 		return $this->preFetchAll($sql, Array($categories), PDO::FETCH_ASSOC);
 	}
 }
 
 class FrontData extends GetFrontData{
-	/* 单例 */
 	private static $instance;
 	/**
 	* 获得单例对象

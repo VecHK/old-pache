@@ -8,7 +8,6 @@ $('textarea')
 	.addEvent('focus', eventResizeTextarea, true)
 	.addEvent('keydown', eventResizeTextarea, true);
 
-
 var envir = {
 	/* mode: 'new'(create Articcle), 'update'(edit Article) */
 	'mode': null,
@@ -189,7 +188,7 @@ var display = new function (){
 					this.style.display = '';
 				}
 			}
-		}
+		},
 	};
 	$('#editor').fadeOut(function (){
 
@@ -613,7 +612,7 @@ var manager = new function(){
 
 display.loadArticleList(envir.page, envir.limit);
 
-/* tanks http://www.aa25.cn/code/515.shtml */
+/* thanks http://www.aa25.cn/code/515.shtml */
 function ResizeTextarea(a,row){
 	var agt = navigator.userAgent.toLowerCase();
 	var is_op = (agt.indexOf("opera") != -1);
