@@ -26,8 +26,9 @@ body{
 	border-bottom: rgba(79,79,90,0.5) dashed 2px;
 }
 #list a{
-	font-family: 'Hiragino Sans GB', DengXian, 'WenQuanYi Microhei', 'Microsoft yahei light', '黑体';
+	font-family: 'Courier', 'Hiragino Sans GB', 'Microsoft JhengHei', 'WenQuanYi Microhei', '黑体';
 	color: rgb(59, 59, 70);
+	font-weight: 200;
 
 	text-decoration: blink;
 

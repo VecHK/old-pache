@@ -256,7 +256,7 @@ header h1{
 	color: rgb(59, 59, 70);
 	font-size: 48px;
 	font-weight: 100;
-	font-family: "Hiragino Sans GB", DengXian, "WenQuanYi Microhei", "Microsoft yahei light", "黑体";
+	font-family: "Hiragino Sans GB", "WenQuanYi Microhei", "Microsoft yahei light", "黑体";
 }
 
 /* 时间栏 */
@@ -379,8 +379,12 @@ ul#taglist:before {
 }
 .split-layer .split-content{
 	margin: auto;
+	border-top: 1px dotted rgba(0, 0, 0, 0.182);
+	border-bottom: 1px dotted rgba(0, 0, 0, 0.182);
+	padding: 10px;
+	padding-bottom: 10px;
 }
 .grey-area {
 	cursor: pointer;
-	background-color: rgba(128, 128, 128, 0.59);
+	background-color: rgba(255, 255, 255, 0.618);
 }
