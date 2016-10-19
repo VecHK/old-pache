@@ -18,7 +18,6 @@ let article = {
 			item = item || {
 				title: '阿噢，出事了',
 				article: '',
-				mod: new Date,
 				format: `<div id="article-nofound">
 				<div id="float" ><img class="floatimg" src="/img/articleNoFound.jpg"/></div>
 				<ul>

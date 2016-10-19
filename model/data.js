@@ -96,6 +96,16 @@ let data = {
 			}
 		);
 	},
+	insertData(data, callback){
+		collection.insert(data, (err, ret) => {
+			if (err) {
+				outinfo.fail('insertData error.');
+				throw new Error(err);
+			} else {
+				callback(ret);
+			}
+		});
+	},
 	insertArticle(articleData, cb){
 		let set = this.articleDataFilter(articleData);
 

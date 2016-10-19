@@ -41,9 +41,9 @@
 			<h1><%= title %></h1>
 			<%
 				var modd;
-				if (mod){
+				try {
 					modd = mod.toLocaleDateString();
-				}else{
+				} catch (e) {
 					modd = '';
 				}
 			%>

@@ -104,11 +104,9 @@ init.go(function (){
 
 	app.use('/auth', login.auth);
 	app.use('/api/articles', RESTful.articles);
-	//app.use('/api', RESTful);
-
-	app.get('/:pagecode', (req, res, next) => {
+	app.use('/:pagecode', (req, res, next) => {
 		req.pagecode = parseInt(req.params.pagecode);
-		next();
+		home.listing(req, res, next);
 	});
 	app.get('/', home.listing);
 
