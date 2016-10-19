@@ -69,7 +69,7 @@ init.go(function (){
 	app.use(express.static(path.join(__dirname, 'static')));
 	app.use('/img', express.static(path.join(__dirname, 'static/img')));
 	app.use('/article/img', express.static(path.join(__dirname, 'static/img')));
-
+	app.use('/article/', express.static(path.join(__dirname, 'static')));
 	app.use('/article/:id', article.get);
 
 	app.use('/tags/', (req, res, next) => {

@@ -3,6 +3,8 @@ const pache = require('../lib/pache.js'),
 	HyperDown = require('../static/Parser.js'),
 	markdownParser = new HyperDown;
 
+markdownParser.commonWhiteList += '|audio';
+
 let setting = pache.mongo,
 	mongoskin = require('mongoskin');
 

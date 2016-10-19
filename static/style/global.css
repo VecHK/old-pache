@@ -40,7 +40,7 @@ body, html{
 .current-categories:hover {
 	border-bottom-color: #6789AB;
 	border-color: transparent;
-	box-shadow: 0px 0px 8px #3b3b46;
+	box-shadow: 0px 0px 4px #3b3b46;
 }
 .current-categories > a{
 	color: aliceblue !important;
