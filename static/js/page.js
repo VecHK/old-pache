@@ -2,54 +2,8 @@
 	原pache.js
 
  - articleNoFound
- - dateQuery
- - htmlConsole
 
 */
-/* 应废弃的项目 */
-var htmlConsole = function (ele){
-	var my = this;
-	this.conEle = createHtmlConsoleEle();
-	this.log = function (str){
-		var li = $c('li', function (ele){
-			this.text(str);
-		});
-		this.conEle.appendChild( li );
-		return li;
-	};
-	function createHtmlConsoleEle(){
-		return $c('div', function (ele){
-			ele.className = "html-console";
-			this.text('htmlConsole v0.01a');
-			this.css({
-				'display': 'block',
-				'position': 'relative',
-				'width': '100%',
-				'max-height': '0px',
-				'padding': '0px',
-				'margin': '0px',
-				'overflow': 'scroll',
-				'background': 'rgba(27, 29, 82, 0.14)',
-				'border-top-left-radius': '5px',
-				'border-top-right-radius': '5px',
-
-				'transition': 'max-height 0.618s'
-			});
-		})
-	};
-	console.log(ele.parentNode);
-	ele.parentNode.insertBefore( this.conEle, ele );
-	function inspect(){
-/*
-		this.logg = this.log;
-		this.log = function (){
-			this.logg.apply(this, arguments);
-			//console.logg.apply(console, arguments);
-		};
-*/
-	}
-	inspect.apply(console);
-}
 
 var noFound = function (ele){
 	var $ = function (str, dom){
@@ -110,19 +64,6 @@ function codeLight(){
 				console.warn(item);
 				item.innerHTML = prettyPrintOne(item.innerHTML);
 				item.parentElement.className = 'prettyprint';
-				if ( item.className === 'javascript' ){
-					item.parentElement.insertBefore($c('button', function (ele){
-						this.text('▶');
-						this.addEvent('click', function (ele){
-							var console = new htmlConsole(item.parentElement);
-							var hCon = console;	/* 兼容以前的文章 */
-							return function (){
-								$(console.conEle).css( {'max-height': '220px'} );
-								eval( $(ele.parentElement.getElementsByClassName('javascript')[0]).text() );
-							}
-						}(ele),false);
-					}), item.parentElement.firstChild );
-				}
 			}
 			return true;
 		}
@@ -131,49 +72,14 @@ function codeLight(){
 	unit(Array.prototype.slice.call(arguments));
 }
 
-var myDateFormat = function (d){
-	var zeros = function (s){
-		var s = s.toString();
-		if ( s.length === 1 ){
-			s = '0' + s;
-		}
-		return s;
-	};
-	var str = '';
-	str +=zeros( (1900 + d.getYear()) ) + '/'
-		+ zeros((d.getMonth())+1) + '/'
-		+ zeros(d.getDate()) + ' '
-		+ zeros(d.getHours()) + ':'
-		+ zeros(d.getMinutes()) + ':'
-		+ zeros(d.getSeconds())
-	;
-	return str;
-};
-function queryTime(){
-	var articleTime = $( $('#time time')[0] ).text();
-	var articleLtime = $( $('#time time')[1] ).text();
-	(function (){
-		console.log(articleTime);
-		articleTime = new Date(articleTime);
-		articleLtime = new Date(articleLtime);
-
-		if ( articleLtime > articleTime ){
-			document.getElementById('time').innerHTML = '<ins><time datetime="'+myDateFormat(articleTime)+'">'+myDateFormat(articleTime)+'</time></ins>'+'<time>'+myDateFormat(articleLtime)+'</time>';
-			document.getElementById('time').title = "创建于 "+myDateFormat(articleTime);
-		}else{
-			document.getElementById('time').innerHTML = '<time datetime="'+myDateFormat(articleTime)+'">'+ myDateFormat(articleTime) +'</time>'
-		}
-	})();
-}
-
 window.addEventListener('load', function (){
 	try{
 		try{
 			noFound();
 		}catch(e){
-			//queryTime();
 		}
-		codeLight.apply(null, document.getElementById('article').getElementsByTagName('code'));
+
+		codeLight.apply(null, $$('#article code'));
 	}catch(e){
 
 	}
@@ -196,7 +102,7 @@ var objExt = function (source, newobj){
 };
 
 var collectFootnote = function (){
-	var pre = $('sup[id]');
+	var pre = $$('sup[id]');
 
 	return Array.prototype.map.call(pre, function (ele){
 		var a = ele.getElementsByTagName('a');
@@ -312,23 +218,22 @@ var CreateSplitLayer = function (parentEle){
 
 	};
 	CreateSplitLayer.prototype.show = function (cb, time){
-		var thisEleR = $(this.ele);
 		if ( this.sup ){
 			this.greyArea[0].style.height = (this.sup.offsetTop + this.sup.offsetHeight) + 'px';
 			this.greyArea[1].style.height = (document.body.offsetHeight - this.ele.offsetHeight) + 'px';
 
-			thisEleR.fadeIn(cb, time);
+			fadeIn(this.ele, cb, time);
 
 			this.sup.style.lineHeight = (this.content.offsetHeight + this.sup.offsetHeight) + 'px';
 		}else{
-			thisEleR.fadeIn(cb, time);
+			fadeIn(this.ele, cb, time);
 		}
 	};
 	CreateSplitLayer.prototype.hide = function (cb, time){
 		if (this.sup){
 			this.sup.style.lineHeight = '';
 		}
-		$(this.ele).fadeOut(cb, time);
+		fadeOut(this.ele, cb, time);
 	};
 })();
 
@@ -336,7 +241,7 @@ var CreateSplitLayer = function (parentEle){
 /* 清除内容栏的箭头 */
 var clearArrow = function (ele){
 	var
-	as = ele.querySelectorAll('[href].footnote-backref'),
+	as = $$('[href].footnote-backref', ele),
 	clearEmptyNode = function (e){
 		var parent = e.parentNode;
 		if ( parent === ele ){
@@ -349,11 +254,8 @@ var clearArrow = function (ele){
 			return clearEmpty(parent);
 		}
 	};
-	Array.prototype.forEach.call(as, function (a){
-		var parent = a.parentNode;
-		parent.removeChild(a);
-
-		clearEmptyNode(parent);
+	as.forEach(function (a){
+		removeElement(a);
 	});
 };
 
@@ -365,29 +267,21 @@ var foontnoteExtend = function (){
 	footnotes = collectFootnote();
 
 	footnotes.forEach(function (footnote){
-		footnote.a.onclick = function (){
+		footnote.a.onclick = function () {
 			splitLayer.sup = footnote.sup;
 
-			var anthor = footnote.sup.id.replace('fnref:', 'fn:');
+			var anthor = footnote.sup.id.replace('fnref-', 'fn-');
 			anthor = document.getElementById(anthor);
-
 			splitLayer.content.innerHTML = anthor.innerHTML;
+
 			clearArrow(splitLayer.content);
 
-
 			window.splitLayer = splitLayer;
-			/*
-			splitLayer.greyArea[0].style.height = (footnote.sup.offsetTop + footnote.sup.offsetHeight) + 'px';
-			splitLayer.greyArea[1].style.height = (document.body.offsetHeight - splitLayer.ele.offsetHeight) + 'px';
-
-			splitLayer.fadeIn(footnote.sup);
-
-			footnote.sup.style.lineHeight = (splitLayer.content.offsetHeight + footnote.sup.offsetHeight) + 'px';
-			*/
 			splitLayer.show();
 
 			return false;
 		};
+
 	});
 
 };
