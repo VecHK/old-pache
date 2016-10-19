@@ -7,7 +7,7 @@ var $ = function (sel, ele){
 	return ele.querySelector(sel);
 };
 
-const
+var
 parseJSON = (str) => JSON.parse(str)
 fill = num => ((num / 10 < 1) ? '0' : 0) + num,
 toStr = (t, s) => t.map(fill).join(s),
@@ -25,7 +25,7 @@ toSummaryTime = d => {
 
 	return toStr(date, '/') + ' ' + toStr(time, ':');
 };
-let rmEle = (arr, item, result = arr.indexOf(item)) => (result >= 0) && arr.splice(result, 1) && rmEle(arr, item);
+var rmEle = (arr, item, result = arr.indexOf(item)) => (result >= 0) && arr.splice(result, 1) && rmEle(arr, item);
 
 function fadeIn(ele, cb, time) {
 	time = time || 618;
@@ -64,7 +64,7 @@ function isArray(Arr){
 	return Array.isArray(Arr);
 }
 
-let rjax = (() => {
+var rjax = (() => {
 	var stringifyRequest = (function (){
 		const backValueKey = (key, value) => `${key}=` + encodeURIComponent(value);
 		const stringifyArray = (key, arr) => arr.length ? arr.map(item => backValueKey(key, item)).join('&') : backValueKey(key, '');
@@ -96,7 +96,7 @@ let rjax = (() => {
 	};
 })();
 
-let removeElement = (ele) => {
+var removeElement = (ele) => {
 	let parent = ele.parentNode;
 	if (parent) {
 		parent.removeChild(ele);

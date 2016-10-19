@@ -4,7 +4,9 @@
  - articleNoFound
 
 */
-
+var isElement = function (ele){
+	return ele instanceof HTMLElement;
+};
 var noFound = function (ele){
 	var $ = function (str, dom){
 		dom = dom || document;
@@ -13,7 +15,7 @@ var noFound = function (ele){
 
 	var f =  $('#float');
 
-	if ( f === undefined ){
+	if ( !isElement(f) ){
 		return 0;
 	}
 
@@ -73,16 +75,9 @@ function codeLight(){
 }
 
 window.addEventListener('load', function (){
-	try{
-		try{
-			noFound();
-		}catch(e){
-		}
+	noFound();
 
-		codeLight.apply(null, $$('#article code'));
-	}catch(e){
-
-	}
+	codeLight.apply(null, $$('#article code'));
 });
 
 

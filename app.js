@@ -67,6 +67,7 @@ init.initList.push(function requestInit(cbObj){
 init.go(function (){
 	/* 静态文件位置 */
 	app.use(express.static(path.join(__dirname, 'static')));
+	app.use('/img', express.static(path.join(__dirname, 'static/img')));
 	app.use('/article/img', express.static(path.join(__dirname, 'static/img')));
 
 	app.use('/article/:id', article.get);
@@ -109,7 +110,7 @@ init.go(function (){
 		req.pagecode = parseInt(req.params.pagecode);
 		next();
 	});
-	app.use('/', home.listing);
+	app.get('/', home.listing);
 
 	// 404
 	app.use(function(req, res, next) {
