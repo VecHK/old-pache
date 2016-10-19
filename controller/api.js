@@ -63,7 +63,7 @@ const api = {
 		if (!Array.isArray(article.tags)) {
 			article.tags = [];
 		}
-		if (article.type === undefined || !article.length) {
+		if (article.type === undefined || !article.article.length) {
 			article.type = 'text';
 		}
 
