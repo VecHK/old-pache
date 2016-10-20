@@ -8,29 +8,21 @@ var isElement = function (ele){
 	return ele instanceof HTMLElement;
 };
 var noFound = function (ele){
-	var $ = function (str, dom){
-		dom = dom || document;
-		return dom.querySelector(str);
-	};
-
 	var f =  $('#float');
 
-	if ( !isElement(f) ){
+	if (!isElement(f)) {
 		return 0;
 	}
 
 	var sImg = $('img', f);
 
-	var fImg = new Image();
+	var fImg = new Image;
+	fImg.className = 'floatimg';
 	fImg.src = sImg.src;
-	fImg.style.position = 'absolute';
-	fImg.style.opacity = 0.1;
-	fImg.style.top = 0;
 
 	fImg.onload = function (){
 		f.style.width = fImg.width + 'px';
 		f.style.height = fImg.height + 'px';
-		console.log(f);
 	};
 
 	var
@@ -45,9 +37,9 @@ var noFound = function (ele){
 		this.top = top + 'px';
 	}.bind(fImg.style);
 	window.intervalFloat = setInterval(function (){
-		if (round()){
+		if (round()) {
 			setStyle(0, getNumber());
-		}else{
+		} else {
 			setStyle(getNumber(), 0);
 		}
 	}, 64);
@@ -59,25 +51,22 @@ function escape2Html(str) {
 	var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
 	return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
 }
-function codeLight(){
-	function unit(arr){
-		function light(item){
-			if ( item.className !== '' ){
-				console.warn(item);
-				item.innerHTML = prettyPrintOne(item.innerHTML);
-				item.parentElement.className = 'prettyprint';
-			}
-			return true;
-		}
-		return arr.length && light(arr.shift()) && arguments.callee(arr);
-	}
-	unit(Array.prototype.slice.call(arguments));
+
+function processor(ele){
+	ele.innerHTML = prettyPrintOne(ele.innerHTML);
+	ele.parentElement.className = 'prettyprint';
+	return ele;
+}
+function codeLight(elementArray){
+	return elementArray.filter(function (item) {
+		return (item.className !== '') && processor(item);
+	});
 }
 
 window.addEventListener('load', function (){
 	noFound();
 
-	codeLight.apply(null, $$('#article code'));
+	codeLight($$('#article code'));
 });
 
 
@@ -285,7 +274,7 @@ window.addEventListener('load', foontnoteExtend);
 
 
 /* PPE level 2 */
-/*
+
 var isMobile = function (){
 	var
 	手机的UA字段们 = ['Android', 'iPhone', 'iPod', 'iPad', 'Windows Phone'],
@@ -296,4 +285,16 @@ var isMobile = function (){
 	});
 
 };
-*/
+var HPP = function (){
+
+};
+HPP.prototype
+
+var EnableStreamPlayer = function () {
+	return $$('audio[hiddenheart]').map(function (ele){
+		return new HPP(ele);
+	});
+};
+window.addEventListener('load', function (e){
+	window.ArticlePlayers = EnableStreamPlayer();
+});

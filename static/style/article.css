@@ -106,7 +106,6 @@ pre{
 	margin: 0px;
 	padding: 10px;
 
-	max-height: 480px;
 	line-height: 130%;
 
 	overflow: auto;
@@ -275,6 +274,11 @@ header h1{
 }
 #float img{
 	box-shadow: none;
+}
+#float .floatimg {
+	position: absolute;
+	top: 0;
+	opacity: 0.1;
 }
 #article-nofound{
 	opacity: 0.618;

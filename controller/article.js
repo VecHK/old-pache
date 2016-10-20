@@ -19,7 +19,7 @@ let article = {
 				title: '阿噢，出事了',
 				article: '',
 				format: `<div id="article-nofound">
-				<div id="float" ><img class="floatimg" src="/img/articleNoFound.jpg"/></div>
+				<div id="float" ><img class="float-bg" src="/img/articleNoFound.jpg"/></div>
 				<ul>
 					<li>文章因为一些不可抗力，boom了</li>
 					<li>请求的文章可能是个未知数，提供不能orz</li>
